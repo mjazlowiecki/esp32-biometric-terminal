@@ -1,65 +1,89 @@
 #include <stdio.h>
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "driver/uart.h"
 #include "driver/gpio.h"
+//from ESP32 POV
+#define FP_TX_PIN GPIO_NUM_16 
+#define FP_RX_PIN GPIO_NUM_17
 
-#define ENC_SIA GPIO_NUM_27
-#define ENC_SIB GPIO_NUM_26
-#define ENC_SW GPIO_NUM_25
+//Use Hardware ESP32 UART prot
+#define FP_UART_NUM UART_NUM_1
+#define BUF_SIZE (1024)
 
 void app_main(void)
 {
-    //configuration struct
-    gpio_config_t io_conf = {
-        .intr_type = GPIO_INTR_DISABLE, // disable interrupts as we probre in loop
-        .mode = GPIO_MODE_INPUT,        // PINs as Input
+   //configure R307s
+   uart_config_t uart_config = {
+    .baud_rate = 57600,
+    .data_bits = UART_DATA_8_BITS,
+    .parity = UART_PARITY_DISABLE,
+    .stop_bits = UART_STOP_BITS_1,
+    .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
+    .source_clk = UART_SCLK_DEFAULT,
+   };
 
-        //Pion configuration bitmask
-        .pin_bit_mask = (1ULL << ENC_SIA ) | (1ULL << ENC_SIB) | (1ULL << ENC_SW),
-        .pull_down_en = 0,      //disable pulldown
-        .pull_up_en = 1         //enable pullup to 3.3V
-    };
+   //Initialize UART driver 
+   uart_driver_install(FP_UART_NUM, BUF_SIZE *2, 0, 0, NULL, 0);
+   //Load configuration
+   uart_param_config(FP_UART_NUM, &uart_config);
+   //Write pins to UART Interface
+   uart_set_pin(FP_UART_NUM, FP_TX_PIN, FP_RX_PIN, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
 
-    gpio_config(&io_conf);
+   //Handshake command definition:
+   uint8_t handshake_cmd[] = {
+    0xEF, 0x01,             //Header
+    0xFF, 0xFF, 0xFF, 0xFF, //Default Module addr
+    0x01,                   //pckg ID 0x01 = command
+    0x00, 0x03,             //pckg length = 3 bytes
+    0x35,                   //Instruction code 0x35 = Handshake
+    0x00, 0x39              //checksum = 0x01 + 0x00 + 0x03 + 0x35 = 0x39
+   };
+
+    printf("\n--- R307S Comm test---\n");
+
+    while(1)
+    {
+        printf("\nSent HandShake (0x35)...\n");
+        uart_write_bytes(FP_UART_NUM, (const char *)handshake_cmd, sizeof(handshake_cmd));
+
+        vTaskDelay(pdMS_TO_TICKS(500)); //0.5s to process
+
+        uint8_t data[128]; // Response buffer
+        int length = 0;
+
+        uart_get_buffered_data_len(FP_UART_NUM, (size_t*)&length); //check response buffer
+    if (length > 0) {
+            // read array
+            length = uart_read_bytes(FP_UART_NUM, data, length, pdMS_TO_TICKS(100));
+            
+            printf("Received %d bytes: ", length);
+            for (int i = 0; i < length; i++) {
+                printf("%02X ", data[i]);
+            }
+            printf("\n");
+
+            // validate data
+            // Acknowledge package identifier is 0x07 (6th index of array)
+            if (length >= 12 && data[6] == 0x07) {
+                // Confirmation code is on 9th
+                uint8_t confirmation_code = data[9];
+                
+                if (confirmation_code == 0x00) {
+                    printf("SUCCESS (0x00)!\n");
+                } else {
+                    printf("Error, code: 0x%02X\n", confirmation_code);
+                }
+            } else {
+                printf("Received garbage. Check pins!\n");
+            }
+        } else {
+            printf("No answer! Check input 5V and cables TX/RX.\n");
+        }
+
+        // wait 3 sec to send another ping
+        vTaskDelay(pdMS_TO_TICKS(3000));
+    }
     
-    //variables for the encoder
-
-    int last_sia = gpio_get_level(ENC_SIA);   //store the SIA initial state
-    int counter = 0;                          //rotation counter
-
-    //program loop
-    while(1) {
-
-        int current_sia = gpio_get_level(ENC_SIA);
-        int current_sib = gpio_get_level(ENC_SIB);
-        int current_sw = gpio_get_level(ENC_SW);
-
-        //rotation logic
-        //we look for the moment where sia switches from '1' to '0' (falling edge)
-        
-        if(last_sia == 1 && current_sia == 0)
-        {
-            //if SIB = '0' we are turniing to the right
-            if(current_sib == 0)
-            {
-                counter++;
-                printf("Right (CW) | Counter %d\n", counter);
-            } else // if SIB is '1' that means we are turning left
-            {
-                counter--;
-                printf("Left (CW) | Counter %d\n", counter);
-            }
-        }
-            //remember the sia state to use it in next loop iteration
-            last_sia = current_sia;
-
-            if(current_sw == 0)
-            {
-                printf("Button pressed! - Resetting counter...");
-                counter = 0;                          //Reset Counter
-                vTaskDelay(200 / portTICK_PERIOD_MS); //Simple debouncing   
-            }
-            //FreeRTOS delay 
-            vTaskDelay(pdMS_TO_TICKS(10));
-        }
 }

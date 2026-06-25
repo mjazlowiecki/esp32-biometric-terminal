@@ -1,11 +1,15 @@
 #include "fingerprint.h"
+#include "sdcard.h"
 #include "signal.h"
 #include "ui.h"
 #include "u8g2.h"
 #include "u8g2_esp32_hal.h"
+#include "wifi_mqtt.h"
+#include "zegar_rtc.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -80,8 +84,30 @@ void app_main(void)
     oled_init(); 
     fingerprint_init();
     sdcard_init();
+    zegar_rtc_init();
+    wifi_mqtt_init();
 
     while(1) {
+        // --- NOWY KOD: Obsluga wiadomosci z serwera ---
+        if (new_cloud_cmd) {
+            new_cloud_cmd = false; // Zerujemy flage
+            
+            // Piszczenie i miganie!
+            led_yellow(true); buzzer_beep_error(); buzzer_beep_error(); led_yellow(false);
+            
+            // Wyswietlenie na caly ekran
+            u8g2_ClearBuffer(&u8g2);
+            u8g2_SetFont(&u8g2, u8g2_font_ncenB10_tr);
+            u8g2_DrawStr(&u8g2, 0, 20, "KOMUNIKAT:");
+            u8g2_SetFont(&u8g2, u8g2_font_helvR08_tr);
+            u8g2_DrawStr(&u8g2, 0, 45, cloud_cmd_buf); // Tu wypisze tekst z chmury!
+            u8g2_SendBuffer(&u8g2);
+            
+            // Pokazuj to przez 3 sekundy i wymus powrot do czystego ekranu
+            vTaskDelay(pdMS_TO_TICKS(3000));
+            u8g2_ClearBuffer(&u8g2);
+            u8g2_SendBuffer(&u8g2);
+        }
         switch(current_state) {
            case STATE_IDLE:
                 // 1. Sprawdzamy czy uzytkownik kliknal enkoder (Wyzwolenie trybu dodawania)
@@ -185,7 +211,7 @@ void app_main(void)
                 
                 // NOWE: Wywołanie zapisu na kartę MicroSD!
                 sdcard_log_activity(current_scanned_user_id, current_selected_activity, "START");
-                
+                mqtt_send_log(current_scanned_user_id, current_selected_activity, "START");
                 // Wyswietlenie powiadomienia na ekranie
                 u8g2_ClearBuffer(&u8g2);
                 u8g2_SetFont(&u8g2, u8g2_font_ncenB08_tr);

@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "driver/gpio.h"
 
+// Piny SPI zgodnie z Twoim schematem Altium
 #define PIN_MISO  GPIO_NUM_19
 #define PIN_MOSI  GPIO_NUM_23
 #define PIN_CLK   GPIO_NUM_18

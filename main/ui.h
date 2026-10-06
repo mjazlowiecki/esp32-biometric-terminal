@@ -2,7 +2,6 @@
 #include "u8g2.h"
 #include <stdbool.h>
 
-// Definicje pinow enkodera
 #define ENC_SIA_PIN GPIO_NUM_27
 #define ENC_SIB_PIN GPIO_NUM_26
 #define ENC_SW_PIN  GPIO_NUM_25

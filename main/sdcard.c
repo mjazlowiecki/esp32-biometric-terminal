@@ -1,5 +1,5 @@
 #include "sdcard.h"
-#include "zegar_rtc.h" // KLUCZOWE: Dodajemy obsluge zegara
+#include "zegar_rtc.h" 
 #include <stdio.h>
 #include <string.h>
 #include <sys/unistd.h>
@@ -20,7 +20,7 @@ void sdcard_init(void) {
     
     sdmmc_card_t *card;
     sdmmc_host_t host = SDSPI_HOST_DEFAULT();
-    host.max_freq_khz = 400; // Niska predkosc = wysoka niezawodnosc na stykowce
+    host.max_freq_khz = 400; 
     
     spi_bus_config_t bus_cfg = {
         .mosi_io_num = PIN_MOSI,
@@ -61,7 +61,6 @@ void sdcard_log_activity(uint8_t user_id, const char* activity_name, const char*
         return;
     }
     
-    // --- MAGIA: Pobranie czasu z modulu RTC ---
     char timestamp[32];
     rtc_get_timestamp(timestamp, sizeof(timestamp));
     

@@ -6,11 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 
-// ==========================================
-// WPISZ TU DANE DO SWOJEGO HOTSPOTU Z TELEFONU
-// ==========================================
-#define WIFI_SSID      "Mój_Hotspot"
-#define WIFI_PASS      "MojeHaslo123"
+#define WIFI_SSID      "Robux_Generator"
+#define WIFI_PASS      "12345678"
 
 #define BROKER_URL     "mqtt://broker.hivemq.com"
 #define MQTT_TOPIC     "smiw/terminal/maciej/logs"
@@ -19,11 +16,9 @@
 static esp_mqtt_client_handle_t mqtt_client = NULL;
 static bool is_mqtt_connected = false;
 
-// Zmienne globalne do komunikatow
 volatile bool new_cloud_cmd = false;
 char cloud_cmd_buf[64] = {0};
 
-// Inicjalizacja domyslnych aktywnosci (zanim nadejda z chmury)
 char dynamic_activities[MAX_ACTIVITIES][MAX_ACTIVITY_NAME_LEN] = {
     "Praca", "Nauka", "Przerwa"
 };
@@ -45,7 +40,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             
         case MQTT_EVENT_DATA:
             if (strncmp(event->topic, MQTT_CMD_TOPIC, event->topic_len) == 0) {
-                char rx_buf[256];
+                // Zmniejszamy bufor do 64 bajtow, aby uniknac bledu kompilatora "format-truncation"
+                char rx_buf[64];
                 snprintf(rx_buf, sizeof(rx_buf), "%.*s", event->data_len, event->data);
                 
                 // Sprawdzamy czy Node-RED przyslal nowa liste aktywnosci
@@ -67,7 +63,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                     new_cloud_cmd = true;
                 } 
                 else {
-                    // Zwykly komunikat np. "Koniec zmiany"
+              
                     snprintf(cloud_cmd_buf, sizeof(cloud_cmd_buf), "%s", rx_buf);
                     new_cloud_cmd = true; 
                     printf("[MQTT] OTRZYMANO KOMENDE: %s\n", cloud_cmd_buf);

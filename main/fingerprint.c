@@ -3,10 +3,29 @@
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "u8g2.h" 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define BUF_SIZE 256
+
+extern u8g2_t u8g2;
+
+static void fp_draw_msg(const char* title, const char* msg) {
+    u8g2_ClearBuffer(&u8g2);
+    
+    u8g2_SetFont(&u8g2, u8g2_font_ncenB10_tr);
+    int w1 = u8g2_GetStrWidth(&u8g2, title);
+    u8g2_DrawStr(&u8g2, (128 - w1) / 2, 25, title);
+    
+    u8g2_SetFont(&u8g2, u8g2_font_helvR08_tr);
+    int w2 = u8g2_GetStrWidth(&u8g2, msg);
+    u8g2_DrawStr(&u8g2, (128 - w2) / 2, 45, msg);
+    
+    u8g2_SendBuffer(&u8g2);
+}
+
 
 void fingerprint_init(void) {
     uart_config_t uc = {
@@ -18,7 +37,6 @@ void fingerprint_init(void) {
         .source_clk = UART_SCLK_DEFAULT
     };
     
-    // Zwiększony bufor do 1024 (tak jak w Twoim dzialajacym kodzie)
     uart_driver_install(FP_UART_NUM, 1024, 0, 0, NULL, 0); 
     uart_param_config(FP_UART_NUM, &uc);
     uart_set_pin(FP_UART_NUM, FP_TX_PIN, FP_RX_PIN, -1, -1);
@@ -42,10 +60,9 @@ static void send_cmd(uint8_t pid, uint8_t len, uint8_t *content) {
     free(pkt);
 }
 
-// Totalnie bezbłędny parser bez użycia timerów!
 static uint8_t get_resp(uint8_t *d) {
     uint8_t byte; 
-    int attempts = 40; // 40 prob * 10ms = 400ms na odpowiedz
+    int attempts = 40; 
     bool hdr = false;
     
     while(attempts > 0) {
@@ -57,24 +74,24 @@ static uint8_t get_resp(uint8_t *d) {
                 } 
             }
         } else {
-            attempts--; // Zmniejszamy licznik tylko, gdy nie ma danych w buforze
+            attempts--; 
         }
     }
     
-    if(!hdr) return 0xFF; // Ramka nie nadeszła
+    if(!hdr) return 0xFF; 
     
     uint8_t buf[20]; 
     int len = uart_read_bytes(FP_UART_NUM, buf, 10, pdMS_TO_TICKS(100));
     
     if(len >= 7) { 
         if(d) { d[0] = 0xEF; d[1] = 0x01; memcpy(d+2, buf, len); } 
-        return buf[7]; // Kod statusu
+        return buf[7]; 
     }
     return 0xFF;
 }
 
 bool fingerprint_test_connection(void) {
-    return true; // Pomijamy, czytnik budzi się sam po komendach skanowania
+    return true; 
 }
 
 int fingerprint_scan(void) {
@@ -98,29 +115,38 @@ int fingerprint_scan(void) {
 
 bool fingerprint_enroll(uint8_t id) {
     uint8_t gen[] = {0x01}; uint8_t ch1[] = {0x02, 0x01}; uint8_t ch2[] = {0x02, 0x02}; uint8_t reg[] = {0x05};
+    
+    char title_buf[32];
+    snprintf(title_buf, sizeof(title_buf), "DODAJ ID: %d", id);
+    
+    // 1. Krok pierwszy - poloz palec
+    fp_draw_msg(title_buf, "Przyloz palec...");
     printf("[ENROLL] Poloz palec (ID: %d)...\n", id);
     
-    // Czysta pętla oczekująca na przyłożenie palca
     while(1) { 
         send_cmd(0x01, 3, gen); 
-        if(get_resp(NULL) == 0) break; // Sukces - zdjecie zrobione!
+        if(get_resp(NULL) == 0) break; 
         vTaskDelay(pdMS_TO_TICKS(100)); 
     }
     
     send_cmd(0x01, 4, ch1); get_resp(NULL);
-    printf("[ENROLL] Zdjecie 1 zrobione. ZABIERZ PALEC.\n");
-    vTaskDelay(pdMS_TO_TICKS(2000));
     
+    fp_draw_msg(title_buf, "Zabierz palec!");
+    printf("[ENROLL] Zdjecie 1 zrobione. ZABIERZ PALEC.\n");
+    vTaskDelay(pdMS_TO_TICKS(1500)); 
+    
+    fp_draw_msg(title_buf, "Przyloz ponownie...");
     printf("[ENROLL] Poloz ponownie TEN SAM palec...\n");
     while(1) { 
         send_cmd(0x01, 3, gen); 
-        if(get_resp(NULL) == 0) break; // Sukces - drugie zdjecie zrobione!
+        if(get_resp(NULL) == 0) break; 
         vTaskDelay(pdMS_TO_TICKS(100)); 
     }
     
     send_cmd(0x01, 4, ch2); get_resp(NULL);
     send_cmd(0x01, 3, reg);
     
+
     if(get_resp(NULL) == 0) {
         uint8_t str[] = {0x06, 0x01, (uint8_t)(id >> 8), (uint8_t)(id & 0xFF)};
         send_cmd(0x01, 6, str);
@@ -129,6 +155,7 @@ bool fingerprint_enroll(uint8_t id) {
             return true;
         }
     }
+    
     printf("[ENROLL] BLAD ZAPISU!\n");
     return false;
 }

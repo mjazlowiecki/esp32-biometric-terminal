@@ -1,5 +1,4 @@
 {
-  "C_Cpp.intelliSenseEngine": "default",
   "idf.extensionActivationMode": "always",
   "idf.openOcdConfigs": [
     "board/esp32-wrover-kit-3.3v.cfg"
@@ -13,7 +12,8 @@
   "clangd.arguments": [
     "--background-index",
     "--query-driver=**",
-    "--compile-commands-dir=c:\\Users\\LENOVO\\Desktop\\SMiW sem. 6\\Oprogramowanie\\SMiW_Uniwersalny_Terminal_IoT\\build"
-  ],
-  "idf.flashType": "UART"
+    "--compile-commands-dir=c:\\Users\\LENOVO\\Desktop\\SMiW sem. 6\\Oprogramowanie\\SMiW_Uniwersalny_Terminal_IoT\\build"  ],
+  "idf.flashType": "UART",
+  "idf.port": "COM3",
+  "C_Cpp.intelliSenseEngine": "disabled"
 }

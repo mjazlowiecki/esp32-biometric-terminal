@@ -1,9 +1,10 @@
-#include "esp_log_config.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_log.h"
+#include "freertos/FreeRTOS.h" // IWYU pragma: keep
+
 #include "esp_err.h"
+#include "esp_log.h"
+#include "esp_log_config.h"
 #include "freertos/projdefs.h"
+#include "freertos/task.h"
 #include "indicators.h"
 #include <stdbool.h>
 
@@ -17,5 +18,4 @@ void app_main(void)
     indicate_success();
     vTaskDelay(pdMS_TO_TICKS(2000));
     indicate_error();
-
-}    
+}

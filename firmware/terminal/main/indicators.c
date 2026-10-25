@@ -87,6 +87,25 @@ static void led_timer_cb(void *arg)
     s_flash_led = LED_COUNT;                 
 }
 
+static void led_flash(led_t led, uint32_t duration_ms)
+{
+    (void)esp_timer_stop(s_led_timer);
+    led_set(s_flash_led, false);
+
+    s_flash_led = led;
+    led_set(led, true);
+    (void)esp_timer_start_once(s_led_timer, (uint64_t)duration_ms * 1000);
+}
+
+static void indicate(led_t led, uint32_t freq_hz, uint32_t beep_ms)
+{
+    led_flash(led, LED_FLASH_MS);
+    if (buzzer_beep(freq_hz, beep_ms) != ESP_OK) 
+    {
+        ESP_LOGW(TAG, "Nie udalo sie zagrac sygnalu %lu Hz", freq_hz);
+    }
+}
+
 esp_err_t indicators_init(void)
 {
     uint64_t mask = 0;
@@ -165,25 +184,6 @@ esp_err_t buzzer_beep(uint32_t freq_hz, uint32_t duration_ms)
         return err;
     }
     return esp_timer_start_once(s_buzzer_timer, (uint64_t)duration_ms * 1000);
-}
-
-static void led_flash(led_t led, uint32_t duration_ms)
-{
-    (void)esp_timer_stop(s_led_timer);
-    led_set(s_flash_led, false);
-
-    s_flash_led = led;
-    led_set(led, true);
-    (void)esp_timer_start_once(s_led_timer, (uint64_t)duration_ms * 1000);
-}
-
-static void indicate(led_t led, uint32_t freq_hz, uint32_t beep_ms)
-{
-    led_flash(led, LED_FLASH_MS);
-    if (buzzer_beep(freq_hz, beep_ms) != ESP_OK) 
-    {
-        ESP_LOGW(TAG, "Nie udalo sie zagrac sygnalu %lu Hz", freq_hz);
-    }
 }
 
 void indicate_success(void)

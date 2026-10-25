@@ -12,6 +12,7 @@
   "clangd.arguments": [
     "--background-index",
     "--query-driver=**",
+    "--header-insertion=never",
     "--compile-commands-dir=c:\\Users\\LENOVO\\Desktop\\SMiW sem. 6\\Oprogramowanie\\SMiW_Uniwersalny_Terminal_IoT\\build"  ],
   "idf.flashType": "UART",
   "idf.port": "COM3",

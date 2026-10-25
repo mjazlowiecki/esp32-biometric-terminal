@@ -1,3 +1,4 @@
+#include "esp_log_config.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
@@ -12,9 +13,9 @@ void app_main(void)
 {
     ESP_LOGI(TAG, "Firmware v3 start");
     ESP_ERROR_CHECK(indicators_init());
-    led_set(LED_GREEN, true);
 
-    ESP_ERROR_CHECK(buzzer_beep(2000,200));
-    ESP_LOGI(TAG, "buzzer dziala, app_main kontynuuje prace");
+    indicate_success();
+    vTaskDelay(pdMS_TO_TICKS(2000));
+    indicate_error();
 
 }    

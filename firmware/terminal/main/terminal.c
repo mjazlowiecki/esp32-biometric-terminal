@@ -14,7 +14,7 @@ void app_main(void)
     ESP_ERROR_CHECK(indicators_init());
     led_set(LED_GREEN, true);
 
-    ESP_ERROR_CHECK(buzzer_tone(2000));
-    vTaskDelay(pdMS_TO_TICKS(200));
-    buzzer_off();
+    ESP_ERROR_CHECK(buzzer_beep(2000,200));
+    ESP_LOGI(TAG, "buzzer dziala, app_main kontynuuje prace");
+
 }    

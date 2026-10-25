@@ -12,7 +12,9 @@ typedef enum {
 } led_t ;
 
 esp_err_t indicators_init(void);
+
 void led_set(led_t led, bool on);
 
+esp_err_t buzzer_beep(uint32_t freq_hz, uint64_t duration_ms);
 esp_err_t buzzer_tone(uint32_t freq_hz);
 void buzzer_off(void);

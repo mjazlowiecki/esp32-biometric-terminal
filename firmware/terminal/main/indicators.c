@@ -1,10 +1,12 @@
 #include "indicators.h"
 #include "esp_err.h"
+#include "esp_timer.h"
 #include "hal/gpio_types.h"
 #include "soc/clk_tree_defs.h"
 #include "soc/gpio_num.h"
 #include <driver/gpio.h>
 #include <driver/ledc.h>
+#include <stdint.h>
 
 static const gpio_num_t led_pins[LED_COUNT] = {
     [LED_RED]      =   GPIO_NUM_12,
@@ -18,6 +20,15 @@ static const gpio_num_t led_pins[LED_COUNT] = {
 #define BUZZER_CHANNEL  LEDC_CHANNEL_0
 #define BUZZER_DUTY_RES LEDC_TIMER_10_BIT
 #define BUZZER_DUTY_HALF (1 << 9)
+
+static esp_timer_handle_t s_buzzer_timer;
+
+static void buzzer_timer_cb(void *arg)
+{
+
+    (void)arg;
+    buzzer_off();
+}
 
 static esp_err_t buzzer_init(void)
 {
@@ -43,7 +54,19 @@ static esp_err_t buzzer_init(void)
         .duty       = 0,
         .hpoint     = 0,
     };
-    return ledc_channel_config(&channel);
+    
+    err = ledc_channel_config(&channel);
+    if (err != ESP_OK)
+    {
+        return err;
+    }
+
+    const esp_timer_create_args_t timer_args = {
+        .callback = buzzer_timer_cb,
+        .name = "buzzer",
+    };
+
+    return esp_timer_create(&timer_args, &s_buzzer_timer);
 }
 
 esp_err_t indicators_init(void)
@@ -101,4 +124,16 @@ void buzzer_off(void)
 {
     ledc_set_duty(BUZZER_MODE, BUZZER_CHANNEL, 0);
     ledc_update_duty(BUZZER_MODE, BUZZER_CHANNEL);
+}
+
+esp_err_t buzzer_beep(uint32_t freq_hz, uint64_t duration_ms)
+{
+    (void)esp_timer_stop(s_buzzer_timer);
+
+    esp_err_t err = buzzer_tone(freq_hz);
+    if (err != ESP_OK)
+    {
+        return err;
+    }
+    return esp_timer_start_once(s_buzzer_timer, (uint64_t)duration_ms * 1000);
 }

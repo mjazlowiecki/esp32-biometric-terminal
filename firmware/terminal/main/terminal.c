@@ -23,7 +23,21 @@ void app_main(void)
         encoder_event_t ev;
         if (encoder_get_event(&ev, portMAX_DELAY))
         {
-            ESP_LOGI(TAG, "Enkoder: %s", ev == ENC_EVENT_RIGHT ? "prawo" : "lewo");
+            switch (ev)
+            {
+                case ENC_EVENT_LEFT:
+                    ESP_LOGI(TAG, "lewo");
+                    break;
+                case ENC_EVENT_RIGHT:
+                    ESP_LOGI(TAG, "prawo");
+                    break;
+                case ENC_EVENT_PRESS:
+                    ESP_LOGI(TAG, "klik");
+                    break;
+                case ENC_EVENT_LONG_PRESS:
+                    ESP_LOGI(TAG, "dlugie wcisniecie");
+                    break;
+            }
         }
     }
 }

@@ -9,6 +9,8 @@ typedef enum
 {
     ENC_EVENT_LEFT,
     ENC_EVENT_RIGHT,
+    ENC_EVENT_PRESS,
+    ENC_EVENT_LONG_PRESS,
 } encoder_event_t;
 
 esp_err_t encoder_init(void);

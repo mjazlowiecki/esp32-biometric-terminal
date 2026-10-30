@@ -7,3 +7,4 @@
 
 esp_err_t ds3231_init(void);
 esp_err_t ds3231_read_time(struct tm *out, bool *valid);
+esp_err_t ds3231_set_time(const struct tm *t);

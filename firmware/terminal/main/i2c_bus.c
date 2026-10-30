@@ -1,7 +1,9 @@
 #include "i2c_bus.h"
 
+#include "driver/i2c_master.h"
 #include "esp_check.h"
 #include "esp_log.h"
+
 
 static const char *TAG = "i2c_bus";
 

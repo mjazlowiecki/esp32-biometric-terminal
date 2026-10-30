@@ -1,0 +1,5 @@
+dependencies:
+  idf: ">=5.5"
+  u8g2:
+    git: https://github.com/olikraus/u8g2.git
+    version: "2.36.19"

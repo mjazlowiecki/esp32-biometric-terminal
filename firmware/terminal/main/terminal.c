@@ -4,11 +4,11 @@
 #include "encoder.h"
 #include "esp_err.h"
 #include "esp_log.h"
-#include "esp_log_config.h"
 #include "freertos/projdefs.h"
 #include "freertos/task.h"
 #include "i2c_bus.h"
 #include "indicators.h"
+#include "oled.h"
 #include <stdbool.h>
 
 static const char *TAG = "terminal";
@@ -20,6 +20,18 @@ void app_main(void)
     ESP_ERROR_CHECK(i2c_bus_init());
     i2c_bus_scan();
     ESP_ERROR_CHECK(ds3231_init());
+
+    // OLED Test
+    ESP_ERROR_CHECK(oled_init());
+
+    u8g2_t *d = oled_get();
+    u8g2_ClearBuffer(d);
+    u8g2_DrawFrame(d, 0, 0, 128, 64);
+    u8g2_SetFont(d, u8g2_font_ncenB10_tr);
+    u8g2_DrawStr(d, 8, 26, "Firmware V3");
+    u8g2_SetFont(d, u8g2_font_6x10_tr);
+    u8g2_DrawStr(d, 8, 48, "SSD1309 + i2c_bus");
+    u8g2_SendBuffer(d);
 
     struct tm t;
     bool valid;

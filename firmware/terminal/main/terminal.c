@@ -10,8 +10,52 @@
 #include "indicators.h"
 #include "oled.h"
 #include <stdbool.h>
+#include <time.h>
 
 static const char *TAG = "terminal";
+
+#define CLOCK_POLL_MS 250
+
+static void clock_draw(u8g2_t *d, const struct tm *t, bool valid)
+{
+    char time_str[9];  // "HH:MM:SS" + '\0'
+    char date_str[11]; // "DD.MM.YYYY" + '\0'
+    strftime(time_str, sizeof(time_str), "%H:%M:%S", t);
+    strftime(date_str, sizeof(date_str), "%d.%m.%Y", t);
+
+    int w = u8g2_GetDisplayWidth(d);
+    u8g2_ClearBuffer(d);
+
+    u8g2_SetFont(d, u8g2_font_logisoso24_tn);
+    u8g2_DrawStr(d, (w - u8g2_GetStrWidth(d, time_str)) / 2, 34, time_str);
+
+    u8g2_SetFont(d, u8g2_font_6x10_tr);
+    u8g2_DrawStr(d, (w - u8g2_GetStrWidth(d, date_str)) / 2, 50, date_str);
+
+    if (!valid)
+    {
+        u8g2_DrawStr(d, 0, 63, "Czas niepewny");
+    }
+    u8g2_SendBuffer(d);
+}
+
+static void clock_update(u8g2_t *d)
+{
+    static int s_last_sec = -1;
+
+    struct tm t;
+    bool valid;
+    if (ds3231_read_time(&t, &valid) != ESP_OK)
+    {
+        return;
+    }
+    if (t.tm_sec == s_last_sec)
+    {
+        return;
+    }
+    s_last_sec = t.tm_sec;
+    clock_draw(d, &t, valid);
+}
 
 void app_main(void)
 {
@@ -20,18 +64,8 @@ void app_main(void)
     ESP_ERROR_CHECK(i2c_bus_init());
     i2c_bus_scan();
     ESP_ERROR_CHECK(ds3231_init());
-
-    // OLED Test
     ESP_ERROR_CHECK(oled_init());
-
     u8g2_t *d = oled_get();
-    u8g2_ClearBuffer(d);
-    u8g2_DrawFrame(d, 0, 0, 128, 64);
-    u8g2_SetFont(d, u8g2_font_ncenB10_tr);
-    u8g2_DrawStr(d, 8, 26, "Firmware V3");
-    u8g2_SetFont(d, u8g2_font_6x10_tr);
-    u8g2_DrawStr(d, 8, 48, "SSD1309 + i2c_bus");
-    u8g2_SendBuffer(d);
 
     struct tm t;
     bool valid;
@@ -50,25 +84,19 @@ void app_main(void)
         ESP_LOGI(TAG, "RTC mial OSF - ustawiono czas");
     }
 
-    for (int i = 0; i < 2; i++)
-    {
-        struct tm t;
-        bool valid;
-
-        if (ds3231_read_time(&t, &valid) == ESP_OK)
-        {
-            ESP_LOGI(TAG, "RTC: %04d-%02d-%02d %02d:%02d:%02d %s", t.tm_year + 1900, t.tm_mon + 1,
-                     t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
-                     valid ? "(OK)" : "(OSF: czas niewiarygodny)");
-        }
-        vTaskDelay(pdMS_TO_TICKS(3000));
-    }
     ESP_ERROR_CHECK(encoder_init());
+
+    TickType_t poll_period = pdMS_TO_TICKS(CLOCK_POLL_MS);
+    TickType_t last_poll   = xTaskGetTickCount();
+    clock_update(d);
 
     while (1)
     {
+        TickType_t elapsed = xTaskGetTickCount() - last_poll;
+        TickType_t wait    = (elapsed < poll_period) ? poll_period - elapsed : 0;
+
         encoder_event_t ev;
-        if (encoder_get_event(&ev, portMAX_DELAY))
+        if (encoder_get_event(&ev, wait))
         {
             switch (ev)
             {
@@ -79,12 +107,17 @@ void app_main(void)
                     ESP_LOGI(TAG, "prawo");
                     break;
                 case ENC_EVENT_PRESS:
-                    ESP_LOGI(TAG, "klik");
+                    ESP_LOGI(TAG, "klik %d", xTaskGetTickCount());
                     break;
                 case ENC_EVENT_LONG_PRESS:
                     ESP_LOGI(TAG, "dlugie wcisniecie");
                     break;
             }
+        }
+        if (xTaskGetTickCount() - last_poll >= poll_period)
+        {
+            last_poll = xTaskGetTickCount();
+            clock_update(d);
         }
     }
 }

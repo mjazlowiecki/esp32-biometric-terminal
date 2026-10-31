@@ -47,7 +47,6 @@ CMakeFiles/
 cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
-dependencies.lock
 # Python environment files
 *.pyc
 *.pyo
@@ -79,3 +78,5 @@ Desktop.ini
 
 secrets.h
 sdkconfig.old
+
+.cache/

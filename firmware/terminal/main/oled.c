@@ -40,7 +40,15 @@ static uint8_t oled_byte_cb(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *ar
             s_tx_len += arg_int;
             return 1;
         case U8X8_MSG_BYTE_END_TRANSFER:
-            return i2c_master_transmit(s_dev, s_tx_buf, s_tx_len, OLED_TIMEOUT_MS) == ESP_OK;
+        {
+            esp_err_t err = i2c_master_transmit(s_dev, s_tx_buf, s_tx_len, OLED_TIMEOUT_MS);
+            if (err != ESP_OK)
+            {
+                ESP_LOGW(TAG, "I2C (%u B): %s", (unsigned)s_tx_len, esp_err_to_name(err));
+                return 0;
+            }
+            return 1;
+        }
         default:
             return 0;
     }

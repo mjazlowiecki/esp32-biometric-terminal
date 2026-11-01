@@ -1,0 +1,15 @@
+menu "Terminal - siec"
+
+    config TERMINAL_WIFI_SSID
+        string "SSID sieci Wi-Fi"
+        default ""
+        help
+            Nazwa sieci, do ktorej laczy sie terminal.
+
+    config TERMINAL_WIFI_PASSWORD
+        string "Haslo sieci Wi-Fi"
+        default ""
+        help
+            Haslo sieci. Trafia do sdkconfig, ktory jest poza repozytorium.
+
+endmenu

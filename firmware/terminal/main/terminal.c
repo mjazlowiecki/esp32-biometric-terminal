@@ -8,6 +8,8 @@
 #include "freertos/task.h"
 #include "i2c_bus.h"
 #include "indicators.h"
+#include "net.h"
+#include "nvs_flash.h"
 #include "oled.h"
 #include <stdbool.h>
 #include <time.h>
@@ -30,6 +32,7 @@ static void clock_draw(u8g2_t *d, const struct tm *t, bool valid)
     u8g2_DrawStr(d, (w - u8g2_GetStrWidth(d, time_str)) / 2, 34, time_str);
 
     u8g2_SetFont(d, u8g2_font_6x10_tr);
+    u8g2_DrawStr(d, 0, 8, net_is_connected() ? "WiFi" : "offline");
     u8g2_DrawStr(d, (w - u8g2_GetStrWidth(d, date_str)) / 2, 50, date_str);
 
     if (!valid)
@@ -60,11 +63,18 @@ static void clock_update(u8g2_t *d)
 void app_main(void)
 {
     ESP_LOGI(TAG, "Firmware v3 start");
+    ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(indicators_init());
     ESP_ERROR_CHECK(i2c_bus_init());
     i2c_bus_scan();
     ESP_ERROR_CHECK(ds3231_init());
     ESP_ERROR_CHECK(oled_init());
+
+    if (net_init() != ESP_OK)
+    {
+        ESP_LOGW(TAG, "Siec niedostepna - praca offline");
+    }
+
     u8g2_t *d = oled_get();
 
     struct tm t;
@@ -107,7 +117,7 @@ void app_main(void)
                     ESP_LOGI(TAG, "prawo");
                     break;
                 case ENC_EVENT_PRESS:
-                    ESP_LOGI(TAG, "klik %d", xTaskGetTickCount());
+                    ESP_LOGI(TAG, "klik");
                     break;
                 case ENC_EVENT_LONG_PRESS:
                     ESP_LOGI(TAG, "dlugie wcisniecie");

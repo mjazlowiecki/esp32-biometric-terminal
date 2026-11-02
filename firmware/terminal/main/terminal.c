@@ -11,6 +11,7 @@
 #include "net.h"
 #include "nvs_flash.h"
 #include "oled.h"
+#include "timesync.h"
 #include <stdbool.h>
 #include <time.h>
 
@@ -44,20 +45,17 @@ static void clock_draw(u8g2_t *d, const struct tm *t, bool valid)
 
 static void clock_update(u8g2_t *d)
 {
-    static int s_last_sec = -1;
+    static int s_last = -1;
 
-    struct tm t;
-    bool valid;
-    if (ds3231_read_time(&t, &valid) != ESP_OK)
+    time_t now = time(NULL);
+    if (now == s_last)
     {
         return;
     }
-    if (t.tm_sec == s_last_sec)
-    {
-        return;
-    }
-    s_last_sec = t.tm_sec;
-    clock_draw(d, &t, valid);
+    s_last = now;
+    struct tm local;
+    localtime_r(&now, &local);
+    clock_draw(d, &local, timesync_is_valid());
 }
 
 void app_main(void)
@@ -68,31 +66,19 @@ void app_main(void)
     ESP_ERROR_CHECK(i2c_bus_init());
     i2c_bus_scan();
     ESP_ERROR_CHECK(ds3231_init());
+    ESP_ERROR_CHECK(timesync_init());
     ESP_ERROR_CHECK(oled_init());
 
-    if (net_init() != ESP_OK)
+    if (net_init() == ESP_OK)
+    {
+        ESP_ERROR_CHECK(timesync_start_sntp());
+    }
+    else
     {
         ESP_LOGW(TAG, "Siec niedostepna - praca offline");
     }
 
     u8g2_t *d = oled_get();
-
-    struct tm t;
-    bool valid;
-    ESP_ERROR_CHECK(ds3231_read_time(&t, &valid));
-    if (!valid)
-    {
-        struct tm now = {
-            .tm_year = 2026 - 1900,
-            .tm_mon  = 10 - 1,
-            .tm_mday = 30,
-            .tm_hour = 16,
-            .tm_min  = 30,
-            .tm_sec  = 0,
-        };
-        ESP_ERROR_CHECK(ds3231_set_time(&now));
-        ESP_LOGI(TAG, "RTC mial OSF - ustawiono czas");
-    }
 
     ESP_ERROR_CHECK(encoder_init());
 
@@ -127,6 +113,7 @@ void app_main(void)
         if (xTaskGetTickCount() - last_poll >= poll_period)
         {
             last_poll = xTaskGetTickCount();
+            timesync_poll();
             clock_update(d);
         }
     }

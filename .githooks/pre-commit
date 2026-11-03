@@ -1,0 +1,9 @@
+#!/bin/sh
+# Blokuje commit, jesli do sdkconfig.defaults trafily dane sieci Wi-Fi
+# (idf.py save-defconfig zapisuje tam kazda opcje rozna od domyslnej).
+
+if git diff --cached -- '*sdkconfig.defaults' | grep -q '^+.*CONFIG_TERMINAL_WIFI_'; then
+    echo "BLAD: sdkconfig.defaults zawiera CONFIG_TERMINAL_WIFI_* (SSID/haslo)."
+    echo "Usun te linie z pliku i dodaj go ponownie: git add <plik>"
+    exit 1
+fi

@@ -11,9 +11,13 @@
 #include "net.h"
 #include "nvs_flash.h"
 #include "oled.h"
+#include "sdcard.h"
+#include "string.h"
 #include "timesync.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
+
 
 static const char *TAG = "terminal";
 
@@ -67,6 +71,33 @@ void app_main(void)
     i2c_bus_scan();
     ESP_ERROR_CHECK(ds3231_init());
     ESP_ERROR_CHECK(timesync_init());
+
+    if (sdcard_init() == ESP_OK)
+    {
+        FILE *f = fopen(SDCARD_MOUNT_POINT "/test.txt", "a");
+        if (f != NULL)
+        {
+            fprintf(f, "start: %lld\n", (long long)time(NULL));
+            fclose(f);
+        }
+
+        f = fopen(SDCARD_MOUNT_POINT "/test.txt", "r");
+        if (f != NULL)
+        {
+            char line[32];
+            while (fgets(line, sizeof(line), f) != NULL)
+            {
+                line[strcspn(line, "\n")] = '\0';
+                ESP_LOGI(TAG, "SD: %s", line);
+            }
+            fclose(f);
+        }
+    }
+    else
+    {
+        ESP_LOGE(TAG, "Brak karty SD - zdarzenia nie beda zapisywane...");
+        indicate_error();
+    }
     ESP_ERROR_CHECK(oled_init());
 
     if (net_init() == ESP_OK)

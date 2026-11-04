@@ -4,6 +4,9 @@
 #include "encoder.h"
 #include "esp_err.h"
 #include "esp_log.h"
+#include "esp_rom_crc.h"
+#include "esp_timer.h"
+#include "event_store.h"
 #include "freertos/projdefs.h"
 #include "freertos/task.h"
 #include "i2c_bus.h"
@@ -17,7 +20,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-
 
 static const char *TAG = "terminal";
 
@@ -74,30 +76,18 @@ void app_main(void)
 
     if (sdcard_init() == ESP_OK)
     {
-        FILE *f = fopen(SDCARD_MOUNT_POINT "/test.txt", "a");
-        if (f != NULL)
+        if (event_store_init() != ESP_OK)
         {
-            fprintf(f, "start: %lld\n", (long long)time(NULL));
-            fclose(f);
-        }
-
-        f = fopen(SDCARD_MOUNT_POINT "/test.txt", "r");
-        if (f != NULL)
-        {
-            char line[32];
-            while (fgets(line, sizeof(line), f) != NULL)
-            {
-                line[strcspn(line, "\n")] = '\0';
-                ESP_LOGI(TAG, "SD: %s", line);
-            }
-            fclose(f);
+            ESP_LOGE(TAG, "Magazyn zdarzen niedostepny!");
+            indicate_error();
         }
     }
     else
     {
-        ESP_LOGE(TAG, "Brak karty SD - zdarzenia nie beda zapisywane...");
+        ESP_LOGE(TAG, "Brak karty SD - zdarzenia nie beda zapisywane!");
         indicate_error();
     }
+
     ESP_ERROR_CHECK(oled_init());
 
     if (net_init() == ESP_OK)
@@ -129,15 +119,35 @@ void app_main(void)
             {
                 case ENC_EVENT_LEFT:
                     ESP_LOGI(TAG, "lewo");
+                    led_set(LED_GREEN, true);
+                    led_set(LED_RED, false);
                     break;
                 case ENC_EVENT_RIGHT:
                     ESP_LOGI(TAG, "prawo");
+                    led_set(LED_GREEN, false);
+                    led_set(LED_RED, true);
                     break;
                 case ENC_EVENT_PRESS:
-                    ESP_LOGI(TAG, "klik");
+                {
+                    uint32_t seq;
+                    int64_t t0    = esp_timer_get_time();
+                    esp_err_t err = event_store_append(1, 1, EVENT_ACTION_START, &seq);
+                    int64_t us    = esp_timer_get_time() - t0;
+                    if (err == ESP_OK)
+                    {
+                        ESP_LOGI(TAG, "Zapisano zdarzenie #%lu w %lld ms", (unsigned long)seq,
+                                 us / 1000);
+                        indicate_success();
+                    }
+                    else
+                    {
+                        indicate_error();
+                    }
                     break;
+                }
                 case ENC_EVENT_LONG_PRESS:
                     ESP_LOGI(TAG, "dlugie wcisniecie");
+                    led_set(LED_YELLOW, true);
                     break;
             }
         }

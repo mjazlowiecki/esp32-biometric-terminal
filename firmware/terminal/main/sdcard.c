@@ -1,7 +1,6 @@
 #include "sdcard.h"
 
 #include "driver/sdspi_host.h"
-#include "driver/spi_master.h"
 #include "esp_check.h"
 #include "esp_vfs_fat.h"
 #include "sdmmc_cmd.h"

@@ -123,10 +123,18 @@ void app_main(void)
                     led_set(LED_RED, false);
                     break;
                 case ENC_EVENT_RIGHT:
-                    ESP_LOGI(TAG, "prawo");
-                    led_set(LED_GREEN, false);
-                    led_set(LED_RED, true);
+                {
+                    event_record_t rec;
+                    if (event_store_peek(&rec) == ESP_OK)
+                    {
+                        ESP_LOGI(TAG, "Do wyslania: #%lu", (unsigned long)rec.seq);
+                    }
+                    else
+                    {
+                        ESP_LOGI(TAG, "Nic do wyslania");
+                    }
                     break;
+                }
                 case ENC_EVENT_PRESS:
                 {
                     uint32_t seq;
@@ -146,9 +154,14 @@ void app_main(void)
                     break;
                 }
                 case ENC_EVENT_LONG_PRESS:
-                    ESP_LOGI(TAG, "dlugie wcisniecie");
-                    led_set(LED_YELLOW, true);
+                {
+                    event_record_t rec;
+                    if (event_store_peek(&rec) == ESP_OK && event_store_ack(rec.seq) == ESP_OK)
+                    {
+                        ESP_LOGI(TAG, "ACK #%lu - zakladka przesunieta", (unsigned long)rec.seq);
+                    }
                     break;
+                }
             }
         }
         if (xTaskGetTickCount() - last_poll >= poll_period)

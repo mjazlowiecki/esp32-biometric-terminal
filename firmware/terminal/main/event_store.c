@@ -27,6 +27,8 @@ static uint32_t s_acked_seq;    // zakladka: potwierdzone wszystko do tego numer
 static uint32_t s_record_count; // ile pelnych rekordow jest w pliku
 static bool s_ready;            // true dopiero po udanym event_store_init
 
+static uint32_t s_send_index; // pozycja pierwszego rekordu niepotwierdzonego
+
 uint32_t event_record_crc(const event_record_t *rec)
 {
     return esp_rom_crc32_le(0, (const uint8_t *)rec, offsetof(event_record_t, crc));
@@ -68,6 +70,27 @@ static bool find_last_valid(uint32_t *out_seq)
     return false;
 }
 
+// W wątpliwej sytuacji zawsze wybieramy ponowne wysłanie, nigdy pominięcie.
+static uint32_t find_send_index(void)
+{
+    event_record_t rec;
+    for (uint32_t i = s_record_count; i > 0; i--)
+    {
+        if (read_record(i - 1, &rec) != ESP_OK)
+        {
+            // rekord z błędnym CRC nie zatrzymuje szukania, bo nie wiemy,
+            // czy był potwierdzony, więc traktujemy go jak niewysłany,
+            ESP_LOGW(TAG, "Blad odczytu przy szukaniu zakladki - wysle wszystko od poczatku");
+            return 0;
+        }
+        if (event_record_crc(&rec) == rec.crc && rec.seq <= s_acked_seq)
+        {
+            return i; // rekord i-1 potwierdzony, wiec wszystko od pozycji [i] czeka na wysylke
+        }
+    }
+    return 0;
+}
+
 esp_err_t event_store_init(void)
 {
     ESP_RETURN_ON_ERROR(nvs_open(NVS_NAMESPACE, NVS_READWRITE, &s_nvs), TAG, "nvs_open");
@@ -106,8 +129,10 @@ esp_err_t event_store_init(void)
         ESP_RETURN_ON_ERROR(nvs_commit(s_nvs), TAG, "nvs_commit");
     }
 
-    ESP_LOGI(TAG, "Dziennik: %lu rekordow, next_seq=%lu, acked_seq=%lu",
-             (unsigned long)s_record_count, (unsigned long)s_next_seq, (unsigned long)s_acked_seq);
+    s_send_index = find_send_index();
+    ESP_LOGI(TAG, "Dziennik: %lu rekordow, next_seq=%lu, acked_seq=%lu, do wyslania: %lu",
+             (unsigned long)s_record_count, (unsigned long)s_next_seq, (unsigned long)s_acked_seq,
+             (unsigned long)(s_record_count - s_send_index));
 
     s_ready = true;
     return ESP_OK;
@@ -150,6 +175,48 @@ esp_err_t event_store_append(uint16_t user_id, uint16_t activity_id, event_actio
     if (out_seq != NULL)
     {
         *out_seq = seq;
+    }
+    return ESP_OK;
+}
+
+esp_err_t event_store_peek(event_record_t *out)
+{
+    ESP_RETURN_ON_FALSE(s_ready, ESP_ERR_INVALID_STATE, TAG, "magazyn niezainicjowany");
+
+    while (s_send_index < s_record_count)
+    {
+        ESP_RETURN_ON_ERROR(read_record(s_send_index, out), TAG, "odczyt pozycji %lu",
+                            (unsigned long)s_send_index);
+        if (event_record_crc(out) == out->crc)
+        {
+            return ESP_OK;
+        }
+        ESP_LOGE(TAG, "Pomijam uszkodzony rekord na pozycji %lu", (unsigned long)s_send_index);
+        s_send_index++;
+    }
+    return ESP_ERR_NOT_FOUND;
+}
+
+esp_err_t event_store_ack(uint32_t seq)
+{
+    ESP_RETURN_ON_FALSE(s_ready, ESP_ERR_INVALID_STATE, TAG, "magazyn niezainicjowany");
+    ESP_RETURN_ON_FALSE(seq < s_next_seq, ESP_ERR_INVALID_ARG, TAG,
+                        "ACK #%lu dla zdarzenia, ktorego nie ma!", (unsigned long)seq);
+
+    if (seq <= s_acked_seq)
+    {
+        return ESP_OK; // spozniony albo zdublowany ACK - nic do zrobienia
+    }
+
+    ESP_RETURN_ON_ERROR(nvs_set_u32(s_nvs, NVS_KEY_ACKED, seq), TAG, "nvs_set");
+    ESP_RETURN_ON_ERROR(nvs_commit(s_nvs), TAG, "nvs_commit");
+    s_acked_seq = seq;
+
+    event_record_t rec;
+    while (s_send_index < s_record_count && read_record(s_send_index, &rec) == ESP_OK &&
+           rec.seq <= s_acked_seq)
+    {
+        s_send_index++;
     }
     return ESP_OK;
 }

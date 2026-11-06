@@ -7,6 +7,7 @@
 #include "esp_rom_crc.h"
 #include "esp_timer.h"
 #include "event_store.h"
+#include "fingerprint.h"
 #include "freertos/projdefs.h"
 #include "freertos/task.h"
 #include "i2c_bus.h"
@@ -85,6 +86,24 @@ void app_main(void)
     else
     {
         ESP_LOGE(TAG, "Brak karty SD - zdarzenia nie beda zapisywane!");
+        indicate_error();
+    }
+
+    if (fp_init() == ESP_OK)
+    {
+        uint16_t templates;
+        if (fp_template_count(&templates) == ESP_OK)
+        {
+            ESP_LOGI(TAG, "Czytnik OK, szablonow w pamieci: %u", templates);
+        }
+        else
+        {
+            indicate_error();
+        }
+    }
+    else
+    {
+        ESP_LOGE(TAG, "Czytnik linii papilarnych niedostepny!");
         indicate_error();
     }
 

@@ -11,7 +11,6 @@
 #include "esp_log.h"
 #include "freertos/task.h"
 
-
 static const char *TAG = "fp";
 
 #define FP_UART     UART_NUM_2
@@ -29,11 +28,26 @@ static const char *TAG = "fp";
 #define FP_PID_ACK 0x07       // identyfikator pakietu: odpowiedz
 
 #define FP_HDR_LEN    9    // naglowek 2 + adres 4 + PID 1 + dlugosc 2 (str. 7)
-#define FP_MAX_PARAMS 16   // najdluzsza obslugiwana odpowiedz: ReadSysPara, 16 B (str. 12)
+#define FP_MAX_PARAMS 32   // najdluzsza obslugiwana odpowiedz: ReadIndexTable, 32 B (str. 21)
 #define FP_TIMEOUT_MS 1000 // str. 1: obraz < 0,5 s, przeszukanie bazy < 1 s
 
+// kody instrukcji - str. 9
+#define FP_CMD_GEN_IMG      0x01
+#define FP_CMD_GEN_CHAR     0x02
+#define FP_CMD_SEARCH       0x04
+#define FP_CMD_REG_MODEL    0x05
+#define FP_CMD_STORE        0x06
 #define FP_CMD_TEMPLATE_NUM 0x1D
-#define FP_CONF_OK          0x00
+#define FP_CMD_READ_INDEX   0x1F
+
+// kody potwierdzenia - str. 8
+#define FP_CONF_OK        0x00
+#define FP_CONF_NO_FINGER 0x02
+
+// baza szablonow -str. 1: pojemnosc 1000; str. 21: tablica indeksow
+#define FP_CAPACITY       1000
+#define FP_INDEX_PAGES    4  // 4 strony x 256 = 1024 >= 1000
+#define FP_INDEX_PAGE_LEN 32 // 256 miejsc na strone = 256 bitow = 32 bajty
 
 static bool s_ready; // true dopiero po udanym fp_init
 
@@ -165,4 +179,58 @@ esp_err_t fp_template_count(uint16_t *count)
 
     *count = ((uint16_t)p[0] << 8) | p[1];
     return ESP_OK;
+}
+
+esp_err_t fp_capture(void)
+{
+    const uint8_t cmd[] = {FP_CMD_GEN_IMG};
+    uint8_t conf;
+
+    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, NULL, 0), TAG, "GenImg");
+
+    if (conf == FP_CONF_OK)
+    {
+        return ESP_OK;
+    }
+    if (conf == FP_CONF_NO_FINGER)
+    {
+        return ESP_ERR_NOT_FOUND;
+    }
+    ESP_LOGW(TAG, "GenImg: kod potwierdzenia 0x%02X", conf);
+    return ESP_FAIL;
+}
+
+esp_err_t fp_find_free_id(uint16_t *id)
+{
+    for (uint8_t page = 0; page < FP_INDEX_PAGES; page++)
+    {
+        const uint8_t cmd[] = {FP_CMD_READ_INDEX, page};
+        uint8_t conf;
+        uint8_t table[FP_INDEX_PAGE_LEN];
+
+        ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, table, sizeof(table)), TAG,
+                            "ReadIndexTable");
+        ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "ReadIndexTable: kod 0x%02X", conf);
+
+        if (page == 0)
+        {
+            ESP_LOG_BUFFER_HEX(TAG, table, 4); // TYMCZASOWO: sprawdzenie kolejnosci bitow
+        }
+
+        for (uint16_t bit = 0; bit < FP_INDEX_PAGE_LEN * 8; bit++)
+        {
+            uint16_t candidate = page * 256 + bit;
+            if (candidate >= FP_CAPACITY)
+            {
+                return ESP_ERR_NOT_FOUND; // baza pelna
+            }
+            bool used = table[bit / 8] & (1 << (bit % 8));
+            if (!used)
+            {
+                *id = candidate;
+                return ESP_OK;
+            }
+        }
+    }
+    return ESP_ERR_NOT_FOUND;
 }

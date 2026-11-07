@@ -4,7 +4,6 @@
 #include "encoder.h"
 #include "esp_err.h"
 #include "esp_log.h"
-#include "esp_rom_crc.h"
 #include "esp_timer.h"
 #include "event_store.h"
 #include "fingerprint.h"
@@ -95,6 +94,11 @@ void app_main(void)
         if (fp_template_count(&templates) == ESP_OK)
         {
             ESP_LOGI(TAG, "Czytnik OK, szablonow w pamieci: %u", templates);
+            uint16_t free_id;
+            if (fp_find_free_id(&free_id) == ESP_OK)
+            {
+                ESP_LOGI(TAG, "Pierwsze wolne miejsce w bazie: %u", free_id);
+            }
         }
         else
         {
@@ -137,10 +141,20 @@ void app_main(void)
             switch (ev)
             {
                 case ENC_EVENT_LEFT:
-                    ESP_LOGI(TAG, "lewo");
-                    led_set(LED_GREEN, true);
-                    led_set(LED_RED, false);
+                {
+                    int64_t t0    = esp_timer_get_time();
+                    esp_err_t err = fp_capture();
+                    int64_t ms    = (esp_timer_get_time() - t0) / 1000;
+                    if (err == ESP_OK)
+                    {
+                        ESP_LOGI(TAG, "Zdjecie palca pobrane (%lld ms)", ms);
+                    }
+                    else if (err == ESP_ERR_NOT_FOUND)
+                    {
+                        ESP_LOGI(TAG, "Brak palca (%lld ms)", ms);
+                    }
                     break;
+                }
                 case ENC_EVENT_RIGHT:
                 {
                     event_record_t rec;

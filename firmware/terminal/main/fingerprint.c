@@ -5,10 +5,12 @@
 
 #include "freertos/FreeRTOS.h" // IWYU pragma: keep
 
+#include "driver/gpio.h"
 #include "driver/uart.h"
 #include "esp_check.h"
 #include "esp_log.h"
 #include "freertos/task.h"
+
 
 static const char *TAG = "fp";
 
@@ -53,6 +55,7 @@ esp_err_t fp_init(void)
         uart_set_pin(FP_UART, FP_PIN_TX, FP_PIN_RX, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE), TAG,
         "uart_set_pin");
 
+    ESP_RETURN_ON_ERROR(gpio_set_pull_mode(FP_PIN_RX, GPIO_PULLUP_ONLY), TAG, "pull-up RX");
     vTaskDelay(pdMS_TO_TICKS(FP_POWERUP_MS));
 
     s_ready = true;

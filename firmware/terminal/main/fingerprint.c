@@ -1,5 +1,6 @@
 #include "fingerprint.h"
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -9,6 +10,7 @@
 #include "driver/uart.h"
 #include "esp_check.h"
 #include "esp_log.h"
+#include "esp_timer.h"
 #include "freertos/task.h"
 
 static const char *TAG = "fp";
@@ -41,13 +43,16 @@ static const char *TAG = "fp";
 #define FP_CMD_READ_INDEX   0x1F
 
 // kody potwierdzenia - str. 8
-#define FP_CONF_OK        0x00
-#define FP_CONF_NO_FINGER 0x02
+#define FP_CONF_OK              0x00
+#define FP_CONF_NO_FINGER       0x02
+#define FP_CONF_NOT_SAME_FINGER 0x0A // RegModel: pliki cech z roznych palcow (str. 15)
 
 // baza szablonow -str. 1: pojemnosc 1000; str. 21: tablica indeksow
 #define FP_CAPACITY       1000
 #define FP_INDEX_PAGES    4  // 4 strony x 256 = 1024 >= 1000
 #define FP_INDEX_PAGE_LEN 32 // 256 miejsc na strone = 256 bitow = 32 bajty
+
+#define FP_ENROLL_STEP_TIMEOUT_MS 10000 // czas oczekiwania na palec
 
 static bool s_ready; // true dopiero po udanym fp_init
 
@@ -212,11 +217,6 @@ esp_err_t fp_find_free_id(uint16_t *id)
                             "ReadIndexTable");
         ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "ReadIndexTable: kod 0x%02X", conf);
 
-        if (page == 0)
-        {
-            ESP_LOG_BUFFER_HEX(TAG, table, 4); // TYMCZASOWO: sprawdzenie kolejnosci bitow
-        }
-
         for (uint16_t bit = 0; bit < FP_INDEX_PAGE_LEN * 8; bit++)
         {
             uint16_t candidate = page * 256 + bit;
@@ -224,6 +224,8 @@ esp_err_t fp_find_free_id(uint16_t *id)
             {
                 return ESP_ERR_NOT_FOUND; // baza pelna
             }
+            // Kolejnosc bitow sprawdzona doswiadczalnie (dokumentacja jej nie podaje):
+            // miejsce 0 = najmlodszy bit bajtu 0 (po zapisie ID 0 tablica = 01 00 00 00)
             bool used = table[bit / 8] & (1 << (bit % 8));
             if (!used)
             {
@@ -233,4 +235,93 @@ esp_err_t fp_find_free_id(uint16_t *id)
         }
     }
     return ESP_ERR_NOT_FOUND;
+}
+
+static esp_err_t fp_wait_finger(bool present, uint32_t timeout_ms)
+{
+    int64_t deadline = esp_timer_get_time() + (int64_t)timeout_ms * 1000;
+
+    while (esp_timer_get_time() < deadline)
+    {
+        esp_err_t err = fp_capture();
+
+        if (present && err == ESP_OK)
+        {
+            return ESP_OK; // palec jest i obraz zrobiony
+        }
+        if (!present && err == ESP_ERR_NOT_FOUND)
+        {
+            return ESP_OK; // palca juz nie ma
+        }
+        if (err != ESP_OK && err != ESP_ERR_NOT_FOUND && err != ESP_FAIL)
+        {
+            return err; // blad komunikacji - nie ma sensu czekac dalej
+        }
+        // probuj ponownie...
+    }
+    return ESP_ERR_TIMEOUT;
+}
+
+static esp_err_t fp_gen_char(uint8_t buffer_id)
+{
+    const uint8_t cmd[] = {FP_CMD_GEN_CHAR, buffer_id};
+    uint8_t conf;
+    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, NULL, 0), TAG, "GenChar");
+    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "GenChar(%u): kod 0x%02X", buffer_id,
+                        conf);
+
+    return ESP_OK;
+}
+
+static esp_err_t fp_reg_model(void)
+{
+    const uint8_t cmd[] = {FP_CMD_REG_MODEL}; // str. 15
+    uint8_t conf;
+    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, NULL, 0), TAG, "RegModel");
+    ESP_RETURN_ON_FALSE(conf != FP_CONF_NOT_SAME_FINGER, ESP_ERR_INVALID_STATE, TAG,
+                        "RegModel: rozne palce");
+    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "RegModel: kod 0x%02X", conf);
+    return ESP_OK;
+}
+
+static esp_err_t fp_store(uint8_t buffer_id, uint16_t id)
+{
+    const uint8_t cmd[] = {FP_CMD_STORE, buffer_id, id >> 8, id & 0xFF};
+    uint8_t conf;
+    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, NULL, 0), TAG, "Store");
+    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "Store (ID &u): kod 0x%02X", id, conf);
+    return ESP_OK;
+}
+
+esp_err_t fp_enroll(uint16_t *out_id, fp_enroll_cb_t on_step)
+{
+    uint16_t id;
+    ESP_RETURN_ON_ERROR(fp_find_free_id(&id), TAG, "brak wolnego miejsca w bazie");
+
+    for (uint8_t buffer = 1; buffer <= 2; buffer++)
+    {
+        if (on_step != NULL)
+        {
+            on_step(buffer == 1 ? FP_STEP_PLACE_FIRST : FP_STEP_PLACE_SECOND);
+        }
+        ESP_RETURN_ON_ERROR(fp_wait_finger(true, FP_ENROLL_STEP_TIMEOUT_MS), TAG,
+                            "czekanie na palec");
+        ESP_RETURN_ON_ERROR(fp_gen_char(buffer), TAG, "cechy palca");
+
+        if (buffer == 1)
+        {
+            if (on_step != NULL)
+            {
+                on_step(FP_STEP_REMOVE);
+            }
+            ESP_RETURN_ON_ERROR(fp_wait_finger(false, FP_ENROLL_STEP_TIMEOUT_MS), TAG,
+                                "czekanie na zabranie palca");
+        }
+    }
+
+    ESP_RETURN_ON_ERROR(fp_reg_model(), TAG, "laczenie w szablon");
+    ESP_RETURN_ON_ERROR(fp_store(1, id), TAG, "zapis szablonu");
+
+    *out_id = id;
+    return ESP_OK;
 }

@@ -17,6 +17,7 @@
 #include "sdcard.h"
 #include "string.h"
 #include "timesync.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
@@ -62,6 +63,23 @@ static void clock_update(u8g2_t *d)
     struct tm local;
     localtime_r(&now, &local);
     clock_draw(d, &local, timesync_is_valid());
+}
+
+static void enroll_step(fp_enroll_step_t step)
+{
+    switch (step)
+    {
+        case FP_STEP_PLACE_FIRST:
+            ESP_LOGI(TAG, ">>> Przyloz palec");
+            break;
+        case FP_STEP_REMOVE:
+            ESP_LOGI(TAG, ">>> Zabierz palec");
+            indicate_success();
+            break;
+        case FP_STEP_PLACE_SECOND:
+            ESP_LOGI(TAG, ">>> Przyloz TEN SAM palec ponownie");
+            break;
+    }
 }
 
 void app_main(void)
@@ -188,10 +206,20 @@ void app_main(void)
                 }
                 case ENC_EVENT_LONG_PRESS:
                 {
-                    event_record_t rec;
-                    if (event_store_peek(&rec) == ESP_OK && event_store_ack(rec.seq) == ESP_OK)
+                    uint16_t id;
+                    esp_err_t err = fp_enroll(&id, enroll_step);
+                    if (err == ESP_OK)
                     {
-                        ESP_LOGI(TAG, "ACK #%lu - zakladka przesunieta", (unsigned long)rec.seq);
+                        ESP_LOGI(TAG, "Zarejestrowano palec pod ID %u", id);
+                        indicate_success();
+                        uint16_t next;
+                        fp_find_free_id(&next); // pokaze tez pierwsze bajty tablicy indeksow
+                        ESP_LOGI(TAG, "Nastepne wolne ID: %u", next);
+                    }
+                    else
+                    {
+                        ESP_LOGE(TAG, "Rejestracja nieudana: %s", esp_err_to_name(err));
+                        indicate_error();
                     }
                     break;
                 }

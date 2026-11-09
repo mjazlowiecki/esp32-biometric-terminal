@@ -10,6 +10,17 @@ typedef enum
     FP_STEP_PLACE_SECOND, // przyloz ten sam palec ponownie
 } fp_enroll_step_t;
 
+typedef enum {
+    FP_ID_NO_FINGER,    // nikt nie przylozyl palca
+    FP_ID_MATCH,        // rozpoznano: wynik w *id i *score
+    FP_ID_NO_MATCH      //brak w bazie
+} fp_id_result_t;
+
+//proba identyfikacji 1:N
+//return - czy komuniakcja sie udala
+//*result  - co wyszlo?
+esp_err_t fp_identify(fp_id_result_t *result, uint16_t *id, uint16_t *score);
+
 typedef void (*fp_enroll_cb_t)(fp_enroll_step_t step);
 
 esp_err_t fp_init(void);

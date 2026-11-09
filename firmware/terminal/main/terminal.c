@@ -160,16 +160,29 @@ void app_main(void)
             {
                 case ENC_EVENT_LEFT:
                 {
+                    fp_id_result_t res;
+                    uint16_t id, score;
                     int64_t t0    = esp_timer_get_time();
-                    esp_err_t err = fp_capture();
+                    esp_err_t err = fp_identify(&res, &id, &score);
                     int64_t ms    = (esp_timer_get_time() - t0) / 1000;
-                    if (err == ESP_OK)
+
+                    if (err != ESP_OK)
                     {
-                        ESP_LOGI(TAG, "Zdjecie palca pobrane (%lld ms)", ms);
+                        ESP_LOGE(TAG, "Blad czytnika: %s", esp_err_to_name(err));
                     }
-                    else if (err == ESP_ERR_NOT_FOUND)
+                    else if (res == FP_ID_MATCH)
                     {
-                        ESP_LOGI(TAG, "Brak palca (%lld ms)", ms);
+                        ESP_LOGI(TAG, "Rozpoznano ID %u, wynik %u (%lld ms)", id, score, ms);
+                        indicate_success();
+                    }
+                    else if (res == FP_ID_NO_MATCH)
+                    {
+                        ESP_LOGW(TAG, "Palec nierozpoznany (%lld ms)", ms);
+                        indicate_error();
+                    }
+                    else
+                    {
+                        ESP_LOGI(TAG, "Brak palca");
                     }
                     break;
                 }

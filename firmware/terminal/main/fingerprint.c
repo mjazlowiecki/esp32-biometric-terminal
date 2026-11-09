@@ -46,6 +46,7 @@ static const char *TAG = "fp";
 #define FP_CONF_OK              0x00
 #define FP_CONF_NO_FINGER       0x02
 #define FP_CONF_NOT_SAME_FINGER 0x0A // RegModel: pliki cech z roznych palcow (str. 15)
+#define FP_CONF_NOT_FOUND       0x09 // search -> brak szablonu w bazie (str 20 z dokumentacji)
 
 // baza szablonow -str. 1: pojemnosc 1000; str. 21: tablica indeksow
 #define FP_CAPACITY       1000
@@ -126,7 +127,7 @@ static esp_err_t fp_read_ack(uint8_t *conf, uint8_t *params, size_t params_len)
     uint8_t hdr[FP_HDR_LEN];
     int got = uart_read_bytes(FP_UART, hdr, sizeof(hdr), pdMS_TO_TICKS(FP_TIMEOUT_MS));
     ESP_RETURN_ON_FALSE(got == (int)sizeof(hdr), ESP_ERR_TIMEOUT, TAG,
-                        "brak odpowiedzi (odebrano %d B od naglowka), got");
+                        "brak odpowiedzi (odebrano %d B naglowka)", got);
 
     uint16_t header = ((uint16_t)hdr[0] << 8) | hdr[1];
     uint32_t addr =
@@ -323,5 +324,35 @@ esp_err_t fp_enroll(uint16_t *out_id, fp_enroll_cb_t on_step)
     ESP_RETURN_ON_ERROR(fp_store(1, id), TAG, "zapis szablonu");
 
     *out_id = id;
+    return ESP_OK;
+}
+
+esp_err_t fp_identify(fp_id_result_t *result, uint16_t *id, uint16_t *score)
+{
+    esp_err_t err = fp_capture();
+    if (err == ESP_ERR_NOT_FOUND)
+    {
+        *result = FP_ID_NO_FINGER;
+        return ESP_OK;
+    }
+    ESP_RETURN_ON_ERROR(err, TAG, "GenImg");
+    ESP_RETURN_ON_ERROR(fp_gen_char(1), TAG, "cechy palca");
+
+    //"Search": schowek nr , od miejsca 0 - 1000 miejsc
+    const uint8_t cmd[] = {FP_CMD_SEARCH, 1, 0x00, 0x00, FP_CAPACITY >> 8, FP_CAPACITY & 0xFF};
+    uint8_t conf;
+    uint8_t p[4]; // PageID 2B + MatchScore 2B = 4B
+    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, p, sizeof(p)), TAG, "Search");
+
+    if (conf == FP_CONF_NOT_FOUND)
+    {
+        *result = FP_ID_NO_MATCH;
+        return ESP_OK;
+    }
+    ESP_RETURN_ON_FALSE(conf == ESP_OK, ESP_FAIL, TAG, "Search: kod 0x%02X", conf);
+
+    *id     = ((uint16_t)p[0] << 8) | p[1];
+    *score  = ((uint16_t)p[2] << 8) | p[3];
+    *result = FP_ID_MATCH;
     return ESP_OK;
 }

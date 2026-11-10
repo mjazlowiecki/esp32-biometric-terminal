@@ -175,5 +175,6 @@ esp_err_t encoder_init(void)
 
 bool encoder_get_event(encoder_event_t *event, TickType_t timeout)
 {
+    assert(s_event_queue != NULL && "encoder_init() nie zostalo wywolane");
     return xQueueReceive(s_event_queue, event, timeout) == pdTRUE;
 }

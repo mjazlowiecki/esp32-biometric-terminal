@@ -80,3 +80,12 @@ secrets.h
 sdkconfig.old
 
 .cache/
+
+# Altium Designer - pliki generowane
+History/
+__Previews/
+Project Logs for */
+Project Outputs for */
+*.PrjPcbStructure
+*.SchDocPreview
+*.PcbDocPreview

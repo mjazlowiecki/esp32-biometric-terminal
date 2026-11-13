@@ -60,7 +60,7 @@ to the power source a CR2032 battery keeps the DS3231 working.
 | Storage | microSD | SPI |
 | Input | rotary encoder with push button | PCNT + GPIO |
 
-<img src="docs/img/pcb-front.jpg" width="420"> <img src="docs/img/pcb-altium.png" width="420">
+<img src="docs/img/pcb-front.png" width="420"> <img src="docs/img/pcb-back.png" width="420">
 
 ## Build
 

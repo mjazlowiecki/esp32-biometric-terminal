@@ -1,0 +1,15 @@
+Component   : GCT_USB4105-GF-A
+PCB Library : IoT_Uni_Term_PcbLib.PcbLib
+Date        : 14.11.2026
+Time        : 20:21:05
+
+
+
+Dimension : 13.716 x 18.72 mm
+
+ Layer(s)              Pads(s)  Tracks(s)  Fill(s)  Arc(s)  Text(s)
+--------------------------------------------------------------------
+ Multi Layer                 6          0        0       0        0
+ Top Overlay                 0          4        0       1        0
+--------------------------------------------------------------------
+ Total                       6          4        0       1        0

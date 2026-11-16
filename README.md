@@ -1,34 +1,45 @@
-# IoT Time-Tracking Terminal with Biometric Authentication  (v2 — custom PCB)
+# IoT Time-Tracking Terminal with Biometric Authentication
 
 An ESP32 terminal that records who performed which activity and for how long,
-authenticated by fingerprint — and keeps working offline and reports to central server.
+authenticated by fingerprint — and keeps working offline, synchronising with a
+central server once the network returns.
 
 Engineering thesis at the Silesian University of Technology (defence: January 2027).
 
-<img src="docs/img/terminal.jpg" width="640" alt="Biometric time-tracking terminal">
-<img src="docs/img/terminal_2.jpg" width="640" alt="Biometric time-tracking terminal working">
+<p align="center">
+  <img src="docs/img/terminal.jpg" width="640" alt="Biometric time-tracking terminal">
+  <br>
+  <em>The terminal running on PCB revision 1</em>
+</p>
+
+<p align="center">
+  <img src="docs/img/terminal_2.jpg" width="520">
+  <br>
+  <em>Fingerprint enrolment in progress</em>
+</p>
 
 ## The problem
 
-A terminal which logs only to the server will lose all logs whenever Wi-Fi fails and a
-local-only log is of no use for reporting. My solution does both things: we store each event in a 
-powerloss-proof log at the terminal itself,
-and synchronize it with the central server whenever Wi-Fi returns, without any losses or duplicates.
+A terminal that logs only to a server loses every event recorded while Wi-Fi is down.
+A terminal that logs only locally is useless for reporting. This project does both:
+each event is first written to a crash-safe log on the device, then synchronised with
+the central server once the network returns — with no lost and no duplicated events.
 
 ## How it works
 
-**Event store.** The termianl features a microSD-based, append-only binary log with a CRC-32 in each 20-byte entry.
-The event number is pre-reserved in NVS *prior* to writing the record, hence
-a power outage may cause a gap in the numbers, but - still, no two events will ever have
-the same number. On startup, the log is truncated to the last whole record. So there remains no data corrupted.
+**Event store.** An append-only binary log on a microSD card, with a CRC-32 in each
+20-byte record. The sequence number is reserved in NVS *before* the record is written,
+so a power cut can leave a gap in the numbering but never two different events sharing
+one number. On boot the log is truncated to whole records, so a torn write cannot
+corrupt the file.
 
-**Delivery.** Events are published through MQTT with QoS level 1 and the read cursor will be advanced only
-when the sequence number is acknowledged by the server. It provides at-least once delivery guarantee.
-The server performs deduplication using `device_id, seq` which effectively makes it _exactly_ once delivery.
+**Delivery.** Events are published over MQTT with QoS 1, and the read cursor only
+advances once the server acknowledges the sequence number. Delivery is at-least-once;
+the server de-duplicates on `(device_id, seq)`, which makes it effectively exactly-once.
 
-**Time.** DS3231 maintains UTC, making the timestamp work after a power loss even without a network.
-When there is Wi-Fi connection, SNTP resets the clock; the display is set to local time. When the terminal is not connected
-to the power source a CR2032 battery keeps the DS3231 working. 
+**Time.** A DS3231 RTC keeps UTC, so timestamps survive a power loss even without a
+network, backed by a CR2032 cell while the terminal is unpowered. SNTP corrects the
+clock whenever Wi-Fi is available, and the display converts to local time.
 
 ## Measured on hardware
 
@@ -38,16 +49,32 @@ to the power source a CR2032 battery keeps the DS3231 working.
 | Durable event write (incl. fsync) | 11–14 ms |
 | Fingerprint capture | ~230 ms |
 
-## Status
+Measured on revision 1 hardware with the SPI bus at 5 MHz.
 
-- [x] Custom 2-layer PCB (Altium Designer, manufactured by JLCPCB)
-- [x] Fingerprint enrolment and 1:N identification (R307S, UART)
-- [x] OLED menu with rotary encoder, LED and buzzer feedback
-- [x] Crash-safe event log on microSD
-- [x] Wi-Fi, RTC and SNTP time synchronisation
-- [ ] MQTT synchronisation with acknowledgements
-- [ ] Central server: Mosquitto, database, dashboard (Raspberry Pi)
-- [ ] 3D-printed enclosure
+## Hardware revisions
+
+<p align="center">
+  <img src="docs/img/pcb-rev1-front.png" width="420">
+  <img src="docs/img/pcb-rev1-back.png" width="420">
+  <br>
+  <em>Revision 1 — currently in use</em>
+</p>
+
+<p align="center">
+  <img src="docs/img/pcb-rev2-top.png" width="420">
+  <img src="docs/img/pcb-rev2-bottom.png" width="420">
+  <br>
+  <em>Revision 2 — in production, driven by measurements taken on revision 1</em>
+</p>
+
+Changes in revision 2:
+
+- DS3231 RTC in place of the DS1307, so the clock survives a power loss without a network
+- footprint for the 2.42" SSD1309 display
+- shorter SPI routing, allowing the microSD bus to run at full speed
+- external pull-up on the fingerprint sensor's RX line
+- status LED moved off a strapping pin
+- test points for 5 V, 3.3 V and ground; named connectors for every external module
 
 ## Hardware
 
@@ -60,7 +87,17 @@ to the power source a CR2032 battery keeps the DS3231 working.
 | Storage | microSD | SPI |
 | Input | rotary encoder with push button | PCNT + GPIO |
 
-<img src="docs/img/pcb-front.png" width="420"> <img src="docs/img/pcb-back.png" width="420">
+## Status
+
+- [x] Fingerprint enrolment and 1:N identification (R307S, UART)
+- [x] OLED menu with rotary encoder, LED and buzzer feedback
+- [x] Crash-safe event log on microSD
+- [x] Wi-Fi, RTC and SNTP time synchronisation
+- [x] Custom 2-layer PCB, revision 1 (Altium Designer, manufactured by JLCPCB)
+- [ ] PCB revision 2 — in production
+- [ ] MQTT synchronisation with acknowledgements
+- [ ] Central server: Mosquitto, database, dashboard (Raspberry Pi)
+- [ ] 3D-printed enclosure
 
 ## Build
 

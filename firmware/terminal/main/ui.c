@@ -97,7 +97,9 @@ static void draw_main(void)
 
     u8g2_SetFont(s_d, u8g2_font_6x10_tr);
     u8g2_DrawStr(s_d, (w - u8g2_GetStrWidth(s_d, date_str)) / 2, 48, date_str);
-    u8g2_DrawStr(s_d, (w - u8g2_GetStrWidth(s_d, "Przyloz palec")) / 2, 62, "Przyloz palec");
+
+    const char *hint = event_store_is_ready() ? "Przyloz palec" : "Brak karty SD!";
+    u8g2_DrawStr(s_d, (w - u8g2_GetStrWidth(s_d, hint)) / 2, 62, hint);
 
     u8g2_SendBuffer(s_d);
 }
@@ -231,7 +233,10 @@ void ui_tick(void)
         {
             static time_t s_last_sec;
             time_t now = time(NULL);
-            main_check_finger();
+            if (event_store_is_ready())
+            {
+                main_check_finger(); // bez karty nie ma sensu pytac czujnika
+            }
             if (now != s_last_sec)
             {
                 s_last_sec = now;
@@ -300,7 +305,7 @@ void ui_on_encoder(encoder_event_t ev)
                 else
                 {
                     indicate_error();
-                    ui_message("Blad zapisu!", "Zdarzenie NIE zapisane");
+                    ui_message("Blad zapisu!", "Sprawdz karte SD");
                 }
             }
             else if (ev == ENC_EVENT_LONG_PRESS)

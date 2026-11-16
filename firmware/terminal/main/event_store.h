@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 #include "esp_err.h"
 
@@ -33,6 +34,8 @@ esp_err_t event_store_append(uint16_t user_id, uint16_t activity_id, event_actio
 
 esp_err_t event_store_peek(event_record_t *out);
 esp_err_t event_store_ack(uint32_t seq);
+
+bool event_store_is_ready(void);
 
 _Static_assert(sizeof(event_record_t) == 20, "zmienil sie rozmiar rekordu - format pliku!");
 

@@ -138,6 +138,11 @@ esp_err_t event_store_init(void)
     return ESP_OK;
 }
 
+bool event_store_is_ready(void)
+{
+    return s_ready;
+}
+
 esp_err_t event_store_append(uint16_t user_id, uint16_t activity_id, event_action_t action,
                              uint32_t *out_seq)
 {

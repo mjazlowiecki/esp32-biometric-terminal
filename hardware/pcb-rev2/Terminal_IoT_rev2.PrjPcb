@@ -67,23 +67,6 @@ GenerateClassCluster=0
 DocumentUniqueId=PMUXJGOG
 
 [Document2]
-DocumentPath=IoT_Uni_Tem_PCB.PcbDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=0
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=XFSLCMFT
-
-[Document3]
 DocumentPath=IoT_Uni_Term_SchLib.SchLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -100,7 +83,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=CVZLHQQK
 
-[Document4]
+[Document3]
 DocumentPath=IoT_Uni_Term_PcbLib.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -117,8 +100,59 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=DVKWTIGL
 
-[Document5]
+[Document4]
 DocumentPath=IoT_Universal_Terminal_mJazłowiecki.OutJob
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
+[Document5]
+DocumentPath=Terminal_IoT_rev2.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=KSFVRUYI
+
+[Document6]
+DocumentPath=CAMtastic1.Cam
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
+[Document7]
+DocumentPath=CAMtastic2.Cam
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -139,75 +173,143 @@ DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Design Rul
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\NC Drill\IoT_Uni_Tem_PCB.DRR
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Design Rule Check - Terminal_IoT_rev2.html
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.EXTREP
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\NC Drill\IoT_Uni_Tem_PCB.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBL
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBO
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBP
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBS
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GKO
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GM
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTL
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GM
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTO
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTP
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTO
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTS
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTP
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\NC Drill\IoT_Uni_Tem_PCB.LDP
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.GTS
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.REP
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\NC Drill\IoT_Uni_Tem_PCB.LDP
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\ExportSTEP\IoT_Uni_Tem_PCB.step
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Gerber\IoT_Uni_Tem_PCB.REP
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\NC Drill\IoT_Uni_Tem_PCB.TXT
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\ExportSTEP\IoT_Uni_Tem_PCB.step
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Pick Place\Pick Place for IoT_Uni_Tem_PCB.txt
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\NC Drill\IoT_Uni_Tem_PCB.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument19]
+DocumentPath=Project Outputs for IoT_Universal_Terminal_mJazłowiecki\Pick Place\Pick Place for IoT_Uni_Tem_PCB.txt
+DItemRevisionGUID=
+
+[GeneratedDocument20]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2-RoundHoles-NonPlated.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument21]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2-RoundHoles-Plated.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument22]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2-SlotHoles-Plated.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument23]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.DRR
+DItemRevisionGUID=
+
+[GeneratedDocument24]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.EXTREP
+DItemRevisionGUID=
+
+[GeneratedDocument25]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GBL
+DItemRevisionGUID=
+
+[GeneratedDocument26]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GBO
+DItemRevisionGUID=
+
+[GeneratedDocument27]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GBP
+DItemRevisionGUID=
+
+[GeneratedDocument28]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GBS
+DItemRevisionGUID=
+
+[GeneratedDocument29]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GM
+DItemRevisionGUID=
+
+[GeneratedDocument30]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument31]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument32]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument33]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument34]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument35]
 DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.NET
+DItemRevisionGUID=
+
+[GeneratedDocument36]
+DocumentPath=Project Outputs for Terminal_IoT_rev2\Terminal_IoT_rev2.REP
 DItemRevisionGUID=
 
 [Configuration1]
@@ -264,57 +366,53 @@ Name=Netlist Outputs
 Description=
 TargetPrinter=HP LaserJet P1005
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
-OutputType1=RacalNetlist
-OutputName1=Racal Netlist
+OutputType1=CadnetixNetlist
+OutputName1=Cadnetix Netlist
 OutputDocumentPath1=
 OutputVariantName1=
 OutputDefault1=0
-OutputType2=RINFNetlist
-OutputName2=RINF Netlist
+OutputType2=CalayNetlist
+OutputName2=Calay Netlist
 OutputDocumentPath2=
 OutputVariantName2=
 OutputDefault2=0
-OutputType3=ProtelNetlist
-OutputName3=Protel
+OutputType3=EDIF
+OutputName3=EDIF for PCB
 OutputDocumentPath3=
 OutputVariantName3=
 OutputDefault3=0
-Configuration3_Name1=ForceUpdateSettings
-Configuration3_Item1=False
-Configuration3_Name2=OutputConfigurationParameter1
-Configuration3_Item2=NetlistVersion=0|Record=ProtelNetlistView|DocumentPath=[Project]
-OutputType4=PCADnltNetlist
-OutputName4=PCADnlt Netlist
+OutputType4=EESofNetlist
+OutputName4=EESof Netlist
 OutputDocumentPath4=
 OutputVariantName4=
 OutputDefault4=0
-OutputType5=Protel2Netlist
-OutputName5=Protel2 Netlist
+OutputType5=IntergraphNetlist
+OutputName5=Intergraph Netlist
 OutputDocumentPath5=
 OutputVariantName5=
 OutputDefault5=0
-OutputType6=WireListNetlist
-OutputName6=WireList Netlist
+OutputType6=MentorBoardStationNetlist
+OutputName6=Mentor BoardStation Netlist
 OutputDocumentPath6=
 OutputVariantName6=
 OutputDefault6=0
-OutputType7=XSpiceNetlist
-OutputName7=Mixed Sim Netlist
+OutputType7=MultiWire
+OutputName7=MultiWire
 OutputDocumentPath7=
 OutputVariantName7=
 OutputDefault7=0
-OutputType8=TelesisNetlist
-OutputName8=Telesis Netlist
+OutputType8=OrCadPCB2Netlist
+OutputName8=Orcad/PCB2 Netlist
 OutputDocumentPath8=
 OutputVariantName8=
 OutputDefault8=0
-OutputType9=SciCardsNetlist
-OutputName9=SciCards Netlist
+OutputType9=PADSNetlist
+OutputName9=PADS ASCII Netlist
 OutputDocumentPath9=
 OutputVariantName9=
 OutputDefault9=0
-OutputType10=TangoNetlist
-OutputName10=Tango Netlist
+OutputType10=Pcad
+OutputName10=Pcad for PCB
 OutputDocumentPath10=
 OutputVariantName10=
 OutputDefault10=0
@@ -323,53 +421,57 @@ OutputName11=PCAD Netlist
 OutputDocumentPath11=
 OutputVariantName11=
 OutputDefault11=0
-OutputType12=EESofNetlist
-OutputName12=EESof Netlist
+OutputType12=PCADnltNetlist
+OutputName12=PCADnlt Netlist
 OutputDocumentPath12=
 OutputVariantName12=
 OutputDefault12=0
-OutputType13=IntergraphNetlist
-OutputName13=Intergraph Netlist
+OutputType13=Protel2Netlist
+OutputName13=Protel2 Netlist
 OutputDocumentPath13=
 OutputVariantName13=
 OutputDefault13=0
-OutputType14=EDIF
-OutputName14=EDIF for PCB
+OutputType14=ProtelNetlist
+OutputName14=Protel
 OutputDocumentPath14=
 OutputVariantName14=
 OutputDefault14=0
-OutputType15=CadnetixNetlist
-OutputName15=Cadnetix Netlist
+Configuration14_Name1=ForceUpdateSettings
+Configuration14_Item1=False
+Configuration14_Name2=OutputConfigurationParameter1
+Configuration14_Item2=NetlistVersion=0|Record=ProtelNetlistView|DocumentPath=[Project]
+OutputType15=RacalNetlist
+OutputName15=Racal Netlist
 OutputDocumentPath15=
 OutputVariantName15=
 OutputDefault15=0
-OutputType16=CalayNetlist
-OutputName16=Calay Netlist
+OutputType16=RINFNetlist
+OutputName16=RINF Netlist
 OutputDocumentPath16=
 OutputVariantName16=
 OutputDefault16=0
-OutputType17=PADSNetlist
-OutputName17=PADS ASCII Netlist
+OutputType17=SciCardsNetlist
+OutputName17=SciCards Netlist
 OutputDocumentPath17=
 OutputVariantName17=
 OutputDefault17=0
-OutputType18=Pcad
-OutputName18=Pcad for PCB
+OutputType18=TangoNetlist
+OutputName18=Tango Netlist
 OutputDocumentPath18=
 OutputVariantName18=
 OutputDefault18=0
-OutputType19=OrCadPCB2Netlist
-OutputName19=Orcad/PCB2 Netlist
+OutputType19=TelesisNetlist
+OutputName19=Telesis Netlist
 OutputDocumentPath19=
 OutputVariantName19=
 OutputDefault19=0
-OutputType20=MentorBoardStationNetlist
-OutputName20=Mentor BoardStation Netlist
+OutputType20=WireListNetlist
+OutputName20=WireList Netlist
 OutputDocumentPath20=
 OutputVariantName20=
 OutputDefault20=0
-OutputType21=MultiWire
-OutputName21=MultiWire
+OutputType21=XSpiceNetlist
+OutputName21=Mixed Sim Netlist
 OutputDocumentPath21=
 OutputVariantName21=
 OutputDefault21=0
@@ -388,7 +490,7 @@ OutputDefault1=0
 [OutputGroup3]
 Name=Documentation Outputs
 Description=
-TargetPrinter=HP LaserJet P1005
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=Composite
 OutputName1=Composite Drawing
@@ -437,7 +539,21 @@ OutputName8=PCBLIB Prints
 OutputDocumentPath8=
 OutputVariantName8=[No Variations]
 OutputDefault8=0
-PageOptions8=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
+PageOptions8=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=0|PaperKind=A4|PaperIndex=9
+Configuration8_Name1=OutputConfigurationParameter1
+Configuration8_Item1=DesignatorDisplayMode=Physical|PrintArea=DesignExtent|PrintAreaLowerLeftCornerX=0|PrintAreaLowerLeftCornerY=0|PrintAreaUpperRightCornerX=0|PrintAreaUpperRightCornerY=0|Record=PcbPrintView|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\IoT_Uni_Term_PcbLib.PcbLib
+Configuration8_Name2=OutputConfigurationParameter2
+Configuration8_Item2=IncludeBoardCutouts=False|IncludeBottomLayerComponents=True|IncludeMultiLayerComponents=True|IncludeTopLayerComponents=True|IncludeViewports=True|Index=0|Mirror=False|Name=Multilayer Composite Print|PadNumberFontSize=14|Record=PcbPrintOut|ShowHoles=False|ShowPadNets=False|ShowPadNumbers=False|SubstituteFonts=False|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\IoT_Uni_Term_PcbLib.PcbLib
+Configuration8_Name3=OutputConfigurationParameter3
+Configuration8_Item3=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|DrillType=Regular|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=TopOverlay|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\IoT_Uni_Term_PcbLib.PcbLib
+Configuration8_Name4=OutputConfigurationParameter4
+Configuration8_Item4=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|DrillType=Regular|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=TopLayer|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\IoT_Uni_Term_PcbLib.PcbLib
+Configuration8_Name5=OutputConfigurationParameter5
+Configuration8_Item5=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|DrillType=Regular|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=BottomLayer|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\IoT_Uni_Term_PcbLib.PcbLib
+Configuration8_Name6=OutputConfigurationParameter6
+Configuration8_Item6=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|DrillType=Regular|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=MultiLayer|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\IoT_Uni_Term_PcbLib.PcbLib
+Configuration8_Name7=OutputConfigurationParameter7
+Configuration8_Item7=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|DrillType=Regular|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical2|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\IoT_Uni_Term_PcbLib.PcbLib
 OutputType9=PDF3D
 OutputName9=PDF3D
 OutputDocumentPath9=
@@ -501,22 +617,22 @@ Name=Fabrication Outputs
 Description=
 TargetPrinter=HP LaserJet P1005
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
-OutputType1=Board Stack Report
-OutputName1=Report Board Stack
+OutputType1=CompositeDrill
+OutputName1=Composite Drill Drawing
 OutputDocumentPath1=
-OutputVariantName1=
+OutputVariantName1=[No Variations]
 OutputDefault1=0
 PageOptions1=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
-OutputType2=CompositeDrill
-OutputName2=Composite Drill Drawing
+OutputType2=Drill
+OutputName2=Drill Drawing/Guides
 OutputDocumentPath2=
 OutputVariantName2=[No Variations]
 OutputDefault2=0
 PageOptions2=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
-OutputType3=Drill
-OutputName3=Drill Drawing/Guides
+OutputType3=Board Stack Report
+OutputName3=Report Board Stack
 OutputDocumentPath3=
-OutputVariantName3=[No Variations]
+OutputVariantName3=
 OutputDefault3=0
 PageOptions3=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
 OutputType4=Final
@@ -525,48 +641,56 @@ OutputDocumentPath4=
 OutputVariantName4=[No Variations]
 OutputDefault4=0
 PageOptions4=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
-OutputType5=Gerber
-OutputName5=Gerber Files
+OutputType5=Gerber X2
+OutputName5=Gerber X2 Files
 OutputDocumentPath5=
 OutputVariantName5=[No Variations]
 OutputDefault5=0
-OutputType6=Gerber X2
-OutputName6=Gerber X2 Files
+OutputType6=ODB
+OutputName6=ODB++ Files
 OutputDocumentPath6=
 OutputVariantName6=[No Variations]
 OutputDefault6=0
-OutputType7=IPC2581
-OutputName7=IPC-2581 Files
+OutputType7=Mask
+OutputName7=Solder/Paste Mask Prints
 OutputDocumentPath7=
 OutputVariantName7=[No Variations]
 OutputDefault7=0
-OutputType8=Mask
-OutputName8=Solder/Paste Mask Prints
+PageOptions7=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
+OutputType8=NC Drill
+OutputName8=NC Drill Files
 OutputDocumentPath8=
-OutputVariantName8=[No Variations]
+OutputVariantName8=
 OutputDefault8=0
-PageOptions8=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
-OutputType9=NC Drill
-OutputName9=NC Drill Files
+Configuration8_Name1=ForceUpdateSettings
+Configuration8_Item1=False
+Configuration8_Name2=OutputConfigurationParameter1
+Configuration8_Item2=BoardEdgeRoutToolDia=2000000|GenerateBoardEdgeRout=False|GenerateDrilledSlotsG85=False|GenerateEIADrillFile=False|GenerateSeparatePlatedNonPlatedFiles=True|GenerateSeparateViaTypeFiles=False|GenerateToolsByDrillSymbols=False|NumberOfDecimals=5|NumberOfUnits=2|OptimizeChangeLocationCommands=True|OriginPosition=Absolute|Record=DrillView|Units=Imperial|ZeroesMode=KeepLeadingAndTrailingZeroes|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\Terminal_IoT_rev2.PcbDoc
+OutputType9=IPC2581
+OutputName9=IPC-2581 Files
 OutputDocumentPath9=
-OutputVariantName9=
+OutputVariantName9=[No Variations]
 OutputDefault9=0
-OutputType10=ODB
-OutputName10=ODB++ Files
+OutputType10=Plane
+OutputName10=Power-Plane Prints
 OutputDocumentPath10=
 OutputVariantName10=[No Variations]
 OutputDefault10=0
-OutputType11=Plane
-OutputName11=Power-Plane Prints
+PageOptions10=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
+OutputType11=Test Points
+OutputName11=Test Point Report
 OutputDocumentPath11=
-OutputVariantName11=[No Variations]
+OutputVariantName11=
 OutputDefault11=0
-PageOptions11=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
-OutputType12=Test Points
-OutputName12=Test Point Report
+OutputType12=Gerber
+OutputName12=Gerber Files
 OutputDocumentPath12=
-OutputVariantName12=
+OutputVariantName12=[No Variations]
 OutputDefault12=0
+Configuration12_Name1=ForceUpdateSettings
+Configuration12_Item1=False
+Configuration12_Name2=OutputConfigurationParameter1
+Configuration12_Item2=AddToAllLayerClasses.Set= |AddToAllPlots.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray|BoardID=KSFVRUYI|CentrePlots=False|DrillDrawingSymbol=GraphicsSymbol|DrillDrawingSymbolSize=500000|EmbeddedApertures=True|FilmBorderSize=10000000|FilmXSize=200000000|FilmYSize=160000000|FlashAllFills=False|FlashPadShapes=True|G54OnApertureChange=False|GenerateDRCRulesFile=False|GenerateDRCRulesFile=False|GenerateReliefShapes=True|GenerateReports=True|GerberUnit=Imperial|GerberUnit=Imperial|IncludeUnconnectedMidLayerPads=True|LayerClassesMirror.Set= |LayerClassesPlot.Set= |LeadingAndTrailingZeroesMode=SuppressLeadingZeroes|MaxApertureSize=2500000|MergePadAndRegion=False|MinusApertureTolerance=50|MinusApertureTolerance=50|Mirror.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray|MirrorDrillDrawingPlots=False|MirrorDrillGuidePlots=False|NoRegularPolygons=False|NumberOfDecimals=5|NumberOfDecimals=5|OptimizeChangeLocationCommands=True|OptimizeChangeLocationCommands=True|OriginPosition=Relative|OutputFormat=Different|Panelize=False|Plot.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray,16777217~1,16842751~1,16973830~1,16973831~1,16973834~1,16973835~1,16973832~1,16973833~1|PlotBoardProfile=True|PlotBoardProfileFileName= |PlotPositivePlaneLayers=False|PlotUsedDrillDrawingLayerPairs=False|PlotUsedDrillGuideLayerPairs=False|PlusApertureTolerance=50|PlusApertureTolerance=50|Record=GerberView|SoftwareArcs=False|Sorted=False|Sorted=False|UncheckPlotDrillDrawingLayerPair0_Backdrill=False|UncheckPlotDrillDrawingLayerPair0_Checked=False|UncheckPlotDrillDrawingLayerPair0_DrillType=Regular|UncheckPlotDrillDrawingLayerPair0_FileName= |UncheckPlotDrillDrawingLayerPair0_HighLayer=Bottom Layer|UncheckPlotDrillDrawingLayerPair0_LowLayer=Top Layer|UncheckPlotDrillGuideLayerPair0_Backdrill=False|UncheckPlotDrillGuideLayerPair0_Checked=False|UncheckPlotDrillGuideLayerPair0_DrillType=Regular|UncheckPlotDrillGuideLayerPair0_FileName= |UncheckPlotDrillGuideLayerPair0_HighLayer=Bottom Layer|UncheckPlotDrillGuideLayerPair0_LowLayer=Top Layer|DocumentPath=C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\Terminal_IoT_rev2.PcbDoc
 
 [OutputGroup6]
 Name=Report Outputs

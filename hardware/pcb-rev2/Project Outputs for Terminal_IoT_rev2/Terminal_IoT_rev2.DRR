@@ -1,0 +1,22 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: Terminal_IoT_rev2.PcbDoc   15.11.2026  19:52:56
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII Plated RoundHoles File : Terminal_IoT_rev2-RoundHoles-Plated.TXT
+ASCII Non-Plated RoundHoles File : Terminal_IoT_rev2-RoundHoles-NonPlated.TXT
+ASCII Plated SlotHoles File : Terminal_IoT_rev2-SlotHoles-Plated.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      16mil (0.4mm)                                             Round             213       PTH        53.67inch (1363.14mm)
+T2      24mil (0.6mm)                                             Slot              4         PTH        1.50inch (38.17mm)
+T3      35mil (0.9mm)                                             Round             15        PTH        4.38inch (111.33mm)
+T4      39mil (1mm)                                               Round             49        PTH        10.69inch (271.60mm)
+T5      40mil (1.016mm)                                           Round             3         PTH        0.91inch (23.11mm)
+T6      26mil (0.65mm)                                            Round             2         NPTH       0.23inch (5.78mm)
+T7      126mil (3.2mm)                                            Round             4         NPTH       11.84inch (300.82mm)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              290
+
+Total Processing Time (hh:mm:ss) : 00:00:00

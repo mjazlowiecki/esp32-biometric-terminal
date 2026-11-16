@@ -1,0 +1,14 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [Terminal_IoT_rev2.PrjPcb]
+   Generated File[Terminal_IoT_rev2-RoundHoles-Plated.TXT]
+   Generated File[Terminal_IoT_rev2-RoundHoles-NonPlated.TXT]
+   Generated File[Terminal_IoT_rev2-SlotHoles-Plated.TXT]
+   Generated File[Terminal_IoT_rev2.LDP]
+   Generated File[Terminal_IoT_rev2.DRR]
+
+
+Files Generated   : 5
+Documents Printed : 0
+
+Finished Output Generation At 19:52:56 On 15.11.2026

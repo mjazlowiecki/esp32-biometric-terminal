@@ -1,0 +1,4 @@
+Layer Pairs Export File for PCB: C:\Users\LENOVO\Desktop\SMiW sem. 6\Oprogramowanie\SMiW_Uniwersalny_Terminal_IoT\hardware\pcb-rev2\Terminal_IoT_rev2.PcbDoc
+LayersSetName=Top_Bot_Plated_Thru_Holes|DrillFile=terminal_iot_rev2-roundholes-plated.txt|DrillLayers=gtl,gbl
+LayersSetName=Top_Bot_Plated_Slot_Holes|DrillFile=terminal_iot_rev2-slotholes-plated.txt|DrillLayers=gtl,gbl
+LayersSetName=Top_Bot_NonPlated_Thru_Holes|DrillFile=terminal_iot_rev2-roundholes-nonplated.txt|DrillLayers=gtl,gbl

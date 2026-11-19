@@ -126,8 +126,12 @@ static esp_err_t fp_read_ack(uint8_t *conf, uint8_t *params, size_t params_len)
     // stage 1: staly naglowek
     uint8_t hdr[FP_HDR_LEN];
     int got = uart_read_bytes(FP_UART, hdr, sizeof(hdr), pdMS_TO_TICKS(FP_TIMEOUT_MS));
-    ESP_RETURN_ON_FALSE(got == (int)sizeof(hdr), ESP_ERR_TIMEOUT, TAG,
-                        "brak odpowiedzi (odebrano %d B naglowka)", got);
+
+    if (got != (int)sizeof(hdr))
+    {
+        ESP_LOGD(TAG, "brak odpowiedzi (odebrano %d B naglowka)", got);
+        return ESP_ERR_TIMEOUT;
+    }
 
     uint16_t header = ((uint16_t)hdr[0] << 8) | hdr[1];
     uint32_t addr =
@@ -135,16 +139,28 @@ static esp_err_t fp_read_ack(uint8_t *conf, uint8_t *params, size_t params_len)
     uint8_t pid     = hdr[6];
     uint16_t length = ((uint16_t)hdr[7] << 8) | hdr[8];
 
-    ESP_RETURN_ON_FALSE(header == FP_HEADER && addr == FP_ADDR && pid == FP_PID_ACK,
-                        ESP_ERR_INVALID_RESPONSE, TAG, "zly naglowek odpowiedzi");
-    ESP_RETURN_ON_FALSE(length == 1 + params_len + 2, ESP_ERR_INVALID_SIZE, TAG,
-                        "dlugosc %u, oczekiwano %u", (unsigned)length,
-                        (unsigned)(1 + params_len + 2));
+    if (!(header == FP_HEADER && addr == FP_ADDR && pid == FP_PID_ACK))
+    {
+        ESP_LOGD(TAG, "zly naglowek odpowiedzi");
+        return ESP_ERR_INVALID_RESPONSE;
+    }
+
+    if (length != 1 + params_len + 2)
+    {
+        ESP_LOGD(TAG, "dlugosc %u, oczekiwano %u", (unsigned)length,
+                 (unsigned)(1 + params_len + 2));
+        return ESP_ERR_INVALID_SIZE;
+    }
 
     // etap 2: kod potwierdzenia + parametry + suma
     uint8_t body[1 + FP_MAX_PARAMS + 2];
     got = uart_read_bytes(FP_UART, body, length, pdMS_TO_TICKS(FP_TIMEOUT_MS));
-    ESP_RETURN_ON_FALSE(got == length, ESP_ERR_TIMEOUT, TAG, "ucieta odpowiedz");
+
+    if (got != length)
+    {
+        ESP_LOGD(TAG, "ucieta odpowiedz");
+        return ESP_ERR_TIMEOUT;
+    }
 
     uint16_t sum = pid + hdr[7] + hdr[8];
     for (int i = 0; i < length - 2; i++)
@@ -153,8 +169,12 @@ static esp_err_t fp_read_ack(uint8_t *conf, uint8_t *params, size_t params_len)
     }
 
     uint16_t sum_rx = ((uint16_t)body[length - 2] << 8) | body[length - 1];
-    ESP_RETURN_ON_FALSE(sum == sum_rx, ESP_ERR_INVALID_CRC, TAG,
-                        "zla suma kontrolna (0x%04X != 0x%04X)", sum, sum_rx);
+
+    if (sum != sum_rx)
+    {
+        ESP_LOGD(TAG, "zla suma kontrolna (0x%04X != 0x%04X)", sum, sum_rx);
+        return ESP_ERR_INVALID_CRC;
+    }
 
     *conf = body[0];
     if (params_len > 0)
@@ -192,7 +212,11 @@ esp_err_t fp_capture(void)
     const uint8_t cmd[] = {FP_CMD_GEN_IMG};
     uint8_t conf;
 
-    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, NULL, 0), TAG, "GenImg");
+    esp_err_t err = fp_transact(cmd, sizeof(cmd), &conf, NULL, 0);
+    if (err != ESP_OK)
+    {
+        return err; // bez logu: decyduje wywolujacy (UI zglasza raz)
+    }
 
     if (conf == FP_CONF_OK)
     {
@@ -290,7 +314,7 @@ static esp_err_t fp_store(uint8_t buffer_id, uint16_t id)
     const uint8_t cmd[] = {FP_CMD_STORE, buffer_id, id >> 8, id & 0xFF};
     uint8_t conf;
     ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, NULL, 0), TAG, "Store");
-    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "Store (ID &u): kod 0x%02X", id, conf);
+    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "Store (ID %u): kod 0x%02X", id, conf);
     return ESP_OK;
 }
 
@@ -335,7 +359,11 @@ esp_err_t fp_identify(fp_id_result_t *result, uint16_t *id, uint16_t *score)
         *result = FP_ID_NO_FINGER;
         return ESP_OK;
     }
-    ESP_RETURN_ON_ERROR(err, TAG, "GenImg");
+
+    if (err != ESP_OK)
+    {
+        return err;
+    }
     ESP_RETURN_ON_ERROR(fp_gen_char(1), TAG, "cechy palca");
 
     //"Search": schowek nr , od miejsca 0 - 1000 miejsc
@@ -349,7 +377,7 @@ esp_err_t fp_identify(fp_id_result_t *result, uint16_t *id, uint16_t *score)
         *result = FP_ID_NO_MATCH;
         return ESP_OK;
     }
-    ESP_RETURN_ON_FALSE(conf == ESP_OK, ESP_FAIL, TAG, "Search: kod 0x%02X", conf);
+    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "Search: kod 0x%02X", conf);
 
     *id     = ((uint16_t)p[0] << 8) | p[1];
     *score  = ((uint16_t)p[2] << 8) | p[3];

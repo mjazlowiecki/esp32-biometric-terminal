@@ -8,6 +8,8 @@ static const activity_t s_activities[] = {
     {.id = 2, .name = "Spotkanie", .min_min = ACTIVITY_NO_LIMIT, .max_min = 60},
     {.id = 3, .name = "Przerwa", .min_min = ACTIVITY_NO_LIMIT, .max_min = 15},
     {.id = 4, .name = "Nauka", .min_min = 45, .max_min = ACTIVITY_NO_LIMIT},
+    {5, "Test A", 0, 0},
+    {6, "Test B", 0, 0},
 };
 
 #define ACTIVITIES_N (sizeof(s_activities) / sizeof(s_activities[0]))

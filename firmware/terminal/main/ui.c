@@ -165,8 +165,6 @@ static void ui_draw(void)
         case UI_MAIN:
             draw_main();
             break;
-        default:
-            break; // pozostale stany: 63b
         case UI_CHOOSE:
             draw_choose();
             break;
@@ -255,8 +253,6 @@ void ui_tick(void)
             {
                 ui_enter(UI_MAIN);
             }
-            break;
-        default:
             break;
     }
 

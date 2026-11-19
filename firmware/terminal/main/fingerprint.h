@@ -3,6 +3,8 @@
 #include "esp_err.h"
 #include <stdint.h>
 
+#define FP_CAPACITY       1000
+
 typedef enum 
 {
     FP_STEP_PLACE_FIRST,  // przyloz palec (1. raz)

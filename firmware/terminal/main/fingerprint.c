@@ -49,7 +49,6 @@ static const char *TAG = "fp";
 #define FP_CONF_NOT_FOUND       0x09 // search -> brak szablonu w bazie (str 20 z dokumentacji)
 
 // baza szablonow -str. 1: pojemnosc 1000; str. 21: tablica indeksow
-#define FP_CAPACITY       1000
 #define FP_INDEX_PAGES    4  // 4 strony x 256 = 1024 >= 1000
 #define FP_INDEX_PAGE_LEN 32 // 256 miejsc na strone = 256 bitow = 32 bajty
 

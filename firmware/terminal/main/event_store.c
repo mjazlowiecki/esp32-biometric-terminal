@@ -225,3 +225,36 @@ esp_err_t event_store_ack(uint32_t seq)
     }
     return ESP_OK;
 }
+
+esp_err_t event_store_for_each(event_visit_cb_t visit, void *ctx)
+{
+    ESP_RETURN_ON_FALSE(s_ready, ESP_ERR_INVALID_SIZE, TAG, "magazyn niezainicjowany");
+
+    FILE *f = fopen(EVENTS_PATH, "rb");
+    ESP_RETURN_ON_FALSE(f != NULL, ESP_FAIL, TAG, "fopen do odczytu");
+
+    event_record_t rec;
+    uint32_t bad = 0;
+    for (uint32_t i = 0; i < s_record_count; i++)
+    {
+        if (fread(&rec, sizeof(rec), 1, f) != 1)
+        {
+            fclose(f);
+            ESP_LOGE(TAG, "Blad odczytu na pozycji %lu", (unsigned long)i);
+            return ESP_FAIL;
+        }
+        if (event_record_crc(&rec) != rec.crc)
+        {
+            bad++; // uszkodzony rekord, pomijamy ALE nie usuwamy -> tak jak przy wysylce
+            continue;
+        }
+        visit(&rec, ctx);
+    }
+    fclose(f);
+
+    if (bad > 0)
+    {
+        ESP_LOGW(TAG, "Pominieto %lu uszkodzonych rekordow", (unsigned long)bad);
+    }
+    return ESP_OK;
+}

@@ -144,7 +144,7 @@ bool event_store_is_ready(void)
 }
 
 esp_err_t event_store_append(uint16_t user_id, uint16_t activity_id, event_action_t action,
-                             uint32_t *out_seq)
+                             event_record_t *out_rec)
 {
     ESP_RETURN_ON_FALSE(s_ready, ESP_ERR_INVALID_STATE, TAG, "magazyn niezainicjowany");
 
@@ -177,9 +177,9 @@ esp_err_t event_store_append(uint16_t user_id, uint16_t activity_id, event_actio
     ESP_RETURN_ON_FALSE(ok, ESP_FAIL, TAG, "zapis rekordu #%lu", (unsigned long)seq);
 
     s_record_count++;
-    if (out_seq != NULL)
+    if (out_rec != NULL)
     {
-        *out_seq = seq;
+        *out_rec = rec; // kopia 20 B rekordu, ktory lezy na karcie
     }
     return ESP_OK;
 }

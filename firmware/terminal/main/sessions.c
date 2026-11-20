@@ -11,16 +11,15 @@ static const char *TAG = "sessions";
 
 static session_t s_sessions[FP_CAPACITY]; // indekx = user id | wyzerowana na starcie
 
-static void rebuild_cb(const event_record_t *rec, void *ctx)
+// ostatni wpis wygrywa - jedyne miejsce ktore zmienia tablice
+static void apply(const event_record_t *rec)
 {
-    (void)ctx; // nie uzywamy kontekstu, bo tablica jest w module
-
     if (rec->user_id >= FP_CAPACITY)
     {
-        return; // nie powinno sie indeksowac tablicy niesprawdzona liczba z pliku
+        return; // nie indeksowac tablicy niesprawdzana liczba z pliku
     }
 
-    session_t *s = &s_sessions[rec->user_id]; // zeby nie pisac s_sessions[rec->user_id]
+    session_t *s = &s_sessions[rec->user_id];
     if (rec->action == EVENT_ACTION_START)
     {
         s->activity_id = rec->activity_id;
@@ -31,6 +30,12 @@ static void rebuild_cb(const event_record_t *rec, void *ctx)
     {
         s->activity_id = 0;
     }
+}
+
+static void rebuild_cb(const event_record_t *rec, void *ctx)
+{
+    (void)ctx;
+    apply(rec);
 }
 
 esp_err_t sessions_init(void)
@@ -66,4 +71,38 @@ const session_t *sessions_get(uint16_t user_id)
         return NULL;
     }
     return &s_sessions[user_id];
+}
+
+esp_err_t sessions_stop(uint16_t user_id)
+{
+    ESP_RETURN_ON_FALSE(user_id < FP_CAPACITY, ESP_ERR_INVALID_ARG, TAG, "zle ID %u", user_id);
+    uint16_t current = s_sessions[user_id].activity_id;
+    ESP_RETURN_ON_FALSE(current != 0, ESP_ERR_INVALID_STATE, TAG, "ID %u: nic nie trwa", user_id);
+
+    event_record_t rec;
+    ESP_RETURN_ON_ERROR(event_store_append(user_id, current, EVENT_ACTION_STOP, &rec), TAG,
+                        "zapis STOP");
+    apply(&rec); // do RAM dopiero PO udanym zapisie na karte
+
+    ESP_LOGI(TAG, "STOP  #%lu: ID %u, akt %u", (unsigned long)rec.seq, user_id, current);
+    return ESP_OK;
+}
+
+esp_err_t sessions_start(uint16_t user_id, uint16_t activity_id)
+{
+    ESP_RETURN_ON_FALSE(user_id < FP_CAPACITY, ESP_ERR_INVALID_ARG, TAG, "zle ID %u", user_id);
+    ESP_RETURN_ON_FALSE(activity_id != 0, ESP_ERR_INVALID_ARG, TAG, "aktywnosc 0 zarezerwowana");
+
+    if (s_sessions[user_id].activity_id != 0)
+    {
+        ESP_RETURN_ON_ERROR(sessions_stop(user_id), TAG, "konczenie poprzedniej");
+    }
+
+    event_record_t rec;
+    ESP_RETURN_ON_ERROR(event_store_append(user_id, activity_id, EVENT_ACTION_START, &rec), TAG,
+                        "zapis START");
+    apply(&rec);
+
+    ESP_LOGI(TAG, "START #%lu: ID %u, akt %u", (unsigned long)rec.seq, user_id, activity_id);
+    return ESP_OK;
 }

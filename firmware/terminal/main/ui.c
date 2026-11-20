@@ -11,6 +11,7 @@
 #include "fingerprint.h"
 #include "indicators.h"
 #include "net.h"
+#include "sessions.h"
 #include "timesync.h"
 
 static const char *TAG = "ui";
@@ -291,10 +292,8 @@ void ui_on_encoder(encoder_event_t ev)
             else if (ev == ENC_EVENT_PRESS)
             {
                 const activity_t *a = activities_get(s_cursor);
-                uint32_t seq;
-                if (event_store_append(s_user_id, a->id, EVENT_ACTION_START, &seq) == ESP_OK)
+                if (sessions_start(s_user_id, a->id) == ESP_OK)
                 {
-                    ESP_LOGI(TAG, "START #%lu: ID %u, %s", (unsigned long)seq, s_user_id, a->name);
                     indicate_success();
                     ui_message("Rozpoczeto:", a->name);
                 }

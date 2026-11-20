@@ -20,6 +20,7 @@ static const char *TAG = "ui";
 #define UI_CHOOSE_TIMEOUT_MS 15000 // powrot z listy po 15 s bez ruchu
 #define UI_LIST_ROWS         4     // ile pozycji listy miesci sie na ekranie
 #define UI_LINE_LEN          22    // 128 px / 6 px na znak = 21 znakow + '\0'
+#define UI_ACTIVE_ROWS       2     // pozycje menu widoczne na ekranie aktywnosci
 
 typedef enum
 {
@@ -64,6 +65,24 @@ static void ui_touch(void)
 {
     s_entered_us = esp_timer_get_time();
     s_dirty      = true;
+}
+
+static size_t list_first(size_t cursor, size_t rows)
+{
+    return (cursor >= rows) ? cursor - (rows - 1) : 0;
+}
+
+static void draw_row(int y, const char *left, const char *right, bool selected)
+{
+    int w = u8g2_GetDisplayWidth(s_d);
+    if (selected)
+    {
+        u8g2_DrawBox(s_d, 0, y - 9, w, 11);
+        u8g2_SetDrawColor(s_d, 0);
+    }
+    u8g2_DrawStr(s_d, 2, y, left);
+    u8g2_DrawStr(s_d, w - u8g2_GetStrWidth(s_d, right) - 2, y, right);
+    u8g2_SetDrawColor(s_d, 1); // ZAWSZE przywroc - kolor to stan globalny biblioteki
 }
 
 static void ui_message(const char *line1, const char *line2)
@@ -120,7 +139,7 @@ static void draw_choose(void)
 {
     int w        = u8g2_GetDisplayWidth(s_d);
     size_t n     = activities_count();
-    size_t first = (s_cursor >= UI_LIST_ROWS) ? s_cursor - (UI_LIST_ROWS - 1) : 0;
+    size_t first = list_first(s_cursor, UI_LIST_ROWS);
 
     u8g2_ClearBuffer(s_d);
     u8g2_SetFont(s_d, u8g2_font_6x10_tr);
@@ -145,18 +164,35 @@ static void draw_choose(void)
             snprintf(limit, sizeof(limit), "min %um", a->min_min);
         }
 
-        bool selected = (first + row == s_cursor);
-        if (selected)
-        {
-            u8g2_DrawBox(s_d, 0, y - 9, w, 11); // jasny pasek pod zaznaczeniem
-            u8g2_SetDrawColor(s_d, 0);          // tekst "ciemny na jasnym"
-        }
-        u8g2_DrawStr(s_d, 2, y, a->name);
-        u8g2_DrawStr(s_d, w - u8g2_GetStrWidth(s_d, limit) - 2, y, limit);
-        u8g2_SetDrawColor(s_d, 1);
+        draw_row(y, a->name, limit, first + row == s_cursor);
     }
 
     u8g2_SendBuffer(s_d);
+}
+
+//"Zakoncz" + wszystkie aktywnosci poza trwajaca
+static size_t active_menu_len(uint16_t current)
+{
+    return 1 + activities_count() - (activities_find(current) != NULL ? 1 : 0);
+}
+
+// poz. menu k >= 1 -> k-ta aktywnosc z pominieciem trwajacej
+static const activity_t *active_menu_activity(size_t k, uint16_t current)
+{
+    size_t seen = 0;
+    for (size_t i = 0; i < activities_count(); i++)
+    {
+        const activity_t *a = activities_get(i);
+        if (a->id == current)
+        {
+            continue;
+        }
+        if (++seen == k)
+        {
+            return a;
+        }
+    }
+    return NULL;
 }
 
 static void draw_active(void)
@@ -189,7 +225,7 @@ static void draw_active(void)
         snprintf(line, sizeof(line), "Trwa:      ?");
     }
 
-    u8g2_DrawStr(s_d, 0, 24, line);
+    u8g2_DrawStr(s_d, 0, 21, line);
     if (known && a != NULL)
     {
         int64_t min_s = (int64_t)a->min_min * 60;
@@ -218,10 +254,26 @@ static void draw_active(void)
         {
             snprintf(line, sizeof(line), "Bez limitu");
         }
-        u8g2_DrawStr(s_d, 0, 36, line);
+        u8g2_DrawStr(s_d, 0, 32, line);
     }
+    uint16_t current = (s != NULL) ? s->activity_id : 0;
+    size_t n         = active_menu_len(current);
+    size_t first     = list_first(s_cursor, UI_ACTIVE_ROWS);
 
-    u8g2_DrawStr(s_d, 0, 62, "Dlugie: wstecz");
+    for (size_t row = 0; row < UI_ACTIVE_ROWS && first + row < n; row++)
+    {
+        size_t k = first + row;
+        if (k == 0)
+        {
+            snprintf(line, sizeof(line), "Zakoncz");
+        }
+        else
+        {
+            const activity_t *m = active_menu_activity(k, current);
+            snprintf(line, sizeof(line), "Zmien: %s", m ? m->name : "?");
+        }
+        draw_row(43 + row * 11, line, "", k == s_cursor);
+    }
     u8g2_SendBuffer(s_d);
 }
 
@@ -366,6 +418,49 @@ void ui_init(u8g2_t *display)
     ui_tick(); // od razu narysuj ekran
 }
 
+static void active_press(uint16_t current)
+{
+    const activity_t *cur = activities_find(current);
+    const char *cur_name  = cur ? cur->name : "?"; // nazwa przed stopem
+
+    if (s_cursor == 0)
+    {
+        if (sessions_stop(s_user_id) == ESP_OK)
+        {
+            indicate_success();
+            ui_message("Zakonczono:", cur_name);
+        }
+        else
+        {
+            indicate_error();
+            ui_message("Blad zapisu!", "Sprawdz karte SD");
+        }
+        return;
+    }
+
+    const activity_t *next = active_menu_activity(s_cursor, current);
+    if (next == NULL)
+    {
+        return; // kursor poza menu
+    }
+
+    if (sessions_start(s_user_id, next->id) == ESP_OK)
+    {
+        indicate_success();
+        ui_message("Zmieniono na:", next->name);
+    }
+    else if (sessions_get(s_user_id) == NULL)
+    {
+        indicate_error();
+        ui_message("Zakonczono, ale", "START nie zapisany!"); // STOP przeszedl, START nie
+    }
+    else
+    {
+        indicate_error();
+        ui_message("Blad zapisu!", "Sprawdz karte SD");
+    }
+}
+
 void ui_on_encoder(encoder_event_t ev)
 {
     switch (s_state)
@@ -411,10 +506,29 @@ void ui_on_encoder(encoder_event_t ev)
             }
             break;
         case UI_ACTIVE:
-            if (ev == ENC_EVENT_LONG_PRESS)
+        {
+            const session_t *s = sessions_get(s_user_id);
+            uint16_t current   = (s != NULL) ? s->activity_id : 0;
+
+            if (ev == ENC_EVENT_RIGHT && s_cursor + 1 < active_menu_len(current))
             {
-                ui_enter(UI_MAIN); // wstecz (menu: 64d-2)
+                s_cursor++;
+                ui_touch();
+            }
+            else if (ev == ENC_EVENT_LEFT && s_cursor > 0)
+            {
+                s_cursor--;
+                ui_touch();
+            }
+            else if (ev == ENC_EVENT_PRESS)
+            {
+                active_press(current);
+            }
+            else if (ev == ENC_EVENT_LONG_PRESS)
+            {
+                ui_enter(UI_MAIN); // wstecz
             }
             break;
+        }
     }
 }

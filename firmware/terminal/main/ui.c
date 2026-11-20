@@ -24,8 +24,9 @@ static const char *TAG = "ui";
 typedef enum
 {
     UI_MAIN,    // ekran glowny: zegar, status, "Przyloz palec"
-    UI_CHOOSE,  // wybor aktywnosci (63b)
-    UI_MESSAGE, // komunikat na chwile, potem powrot (63b)
+    UI_CHOOSE,  // wybor aktywnosci
+    UI_MESSAGE, // komunikat na chwile, potem powrot
+    UI_ACTIVE,  // trwajaca aktywnosc uzytkownika
 } ui_state_t;
 
 static u8g2_t *s_d;
@@ -70,6 +71,16 @@ static void ui_message(const char *line1, const char *line2)
     snprintf(s_msg1, sizeof(s_msg1), "%s", line1);
     snprintf(s_msg2, sizeof(s_msg2), "%s", line2);
     ui_enter(UI_MESSAGE);
+}
+
+static void fmt_hms(char *buf, size_t len, int64_t sec)
+{
+    const int64_t max = 9999LL * 3600 + 59 * 60 + 59; // 9999:59:59 = 10 znakow
+    if (sec > max)
+    {
+        sec = max; // sesja trwajaca ponad 416 dni i tak jest zapomniana
+    }
+    snprintf(buf, len, "%ld:%02d:%02d", (long)(sec / 3600), (int)(sec / 60 % 60), (int)(sec % 60));
 }
 
 static void draw_main(void)
@@ -148,6 +159,72 @@ static void draw_choose(void)
     u8g2_SendBuffer(s_d);
 }
 
+static void draw_active(void)
+{
+    const session_t *s  = sessions_get(s_user_id);
+    const activity_t *a = (s != NULL) ? activities_find(s->activity_id) : NULL;
+    int w               = u8g2_GetDisplayWidth(s_d);
+    char line[UI_LINE_LEN];
+
+    u8g2_ClearBuffer(s_d);
+    u8g2_SetFont(s_d, u8g2_font_6x10_tr);
+
+    snprintf(line, sizeof(line), "ID %u: %s", s_user_id, a ? a->name : "?");
+    u8g2_DrawStr(s_d, 0, 8, line);
+    u8g2_DrawHLine(s_d, 0, 10, w);
+
+    time_t now = time(NULL);
+    bool known = s != NULL && (s->flags & EVENT_FLAG_TIME_SYNCED) && timesync_is_valid() &&
+                 (int64_t)now >= (int64_t)s->start;
+    int64_t elapsed = known ? (int64_t)now - (int64_t)s->start : 0;
+
+    char hms[11];
+    if (known)
+    {
+        fmt_hms(hms, sizeof(hms), elapsed);
+        snprintf(line, sizeof(line), "Trwa:      %s", hms);
+    }
+    else
+    {
+        snprintf(line, sizeof(line), "Trwa:      ?");
+    }
+
+    u8g2_DrawStr(s_d, 0, 24, line);
+    if (known && a != NULL)
+    {
+        int64_t min_s = (int64_t)a->min_min * 60;
+        int64_t max_s = (int64_t)a->max_min * 60;
+
+        if (a->min_min != ACTIVITY_NO_LIMIT && elapsed < min_s)
+        {
+            fmt_hms(hms, sizeof(hms), min_s - elapsed);
+            snprintf(line, sizeof(line), "Min. za:   %s", hms);
+        }
+        else if (a->max_min != ACTIVITY_NO_LIMIT && elapsed <= max_s)
+        {
+            fmt_hms(hms, sizeof(hms), max_s - elapsed);
+            snprintf(line, sizeof(line), "Do limitu: %s", hms);
+        }
+        else if (a->max_min != ACTIVITY_NO_LIMIT)
+        {
+            fmt_hms(hms, sizeof(hms), elapsed - max_s);
+            snprintf(line, sizeof(line), "Przekr.:   %s", hms);
+        }
+        else if (a->min_min != ACTIVITY_NO_LIMIT)
+        {
+            snprintf(line, sizeof(line), "Minimum osiagniete");
+        }
+        else
+        {
+            snprintf(line, sizeof(line), "Bez limitu");
+        }
+        u8g2_DrawStr(s_d, 0, 36, line);
+    }
+
+    u8g2_DrawStr(s_d, 0, 62, "Dlugie: wstecz");
+    u8g2_SendBuffer(s_d);
+}
+
 static void draw_message(void)
 {
     int w = u8g2_GetDisplayWidth(s_d);
@@ -157,6 +234,19 @@ static void draw_message(void)
     u8g2_DrawStr(s_d, (w - u8g2_GetStrWidth(s_d, s_msg1)) / 2, 28, s_msg1);
     u8g2_DrawStr(s_d, (w - u8g2_GetStrWidth(s_d, s_msg2)) / 2, 44, s_msg2);
     u8g2_SendBuffer(s_d);
+}
+
+// true raz na kazda nowa sekunde zegara - wykrywanie zbocza
+static bool ui_new_second(void)
+{
+    static time_t s_last_sec;
+    time_t now = time(NULL);
+    if (now != s_last_sec)
+    {
+        s_last_sec = now;
+        return true;
+    }
+    return false;
 }
 
 static void ui_draw(void)
@@ -171,6 +261,9 @@ static void ui_draw(void)
             break;
         case UI_MESSAGE:
             draw_message();
+            break;
+        case UI_ACTIVE:
+            draw_active();
             break;
     }
 }
@@ -213,7 +306,7 @@ static void main_check_finger(void)
             s_user_id = id;
             s_cursor  = 0;
             indicate_success();
-            ui_enter(UI_CHOOSE);
+            ui_enter(sessions_get(id) != NULL ? UI_ACTIVE : UI_CHOOSE);
             break;
         case FP_ID_NO_MATCH:
             indicate_error();
@@ -229,20 +322,12 @@ void ui_tick(void)
     switch (s_state)
     {
         case UI_MAIN:
-        {
-            static time_t s_last_sec;
-            time_t now = time(NULL);
-            if (event_store_is_ready())
+            main_check_finger();
+            if (ui_new_second())
             {
-                main_check_finger(); // bez karty nie ma sensu pytac czujnika
-            }
-            if (now != s_last_sec)
-            {
-                s_last_sec = now;
-                s_dirty    = true; // nowa sekunda zegara
+                s_dirty = true; // nowa sekunda zegara
             }
             break;
-        }
         case UI_CHOOSE:
             if (ui_ms_in_state() > UI_CHOOSE_TIMEOUT_MS)
             {
@@ -251,6 +336,16 @@ void ui_tick(void)
             break;
         case UI_MESSAGE:
             if (ui_ms_in_state() > UI_MESSAGE_MS)
+            {
+                ui_enter(UI_MAIN);
+            }
+            break;
+        case UI_ACTIVE:
+            if (ui_new_second())
+            {
+                s_dirty = true; // licznik trwa, tyka
+            }
+            if (ui_ms_in_state() > UI_CHOOSE_TIMEOUT_MS)
             {
                 ui_enter(UI_MAIN);
             }
@@ -313,6 +408,12 @@ void ui_on_encoder(encoder_event_t ev)
             if (ev == ENC_EVENT_PRESS)
             {
                 ui_enter(UI_MAIN); // klik skraca komunikat
+            }
+            break;
+        case UI_ACTIVE:
+            if (ev == ENC_EVENT_LONG_PRESS)
+            {
+                ui_enter(UI_MAIN); // wstecz (menu: 64d-2)
             }
             break;
     }

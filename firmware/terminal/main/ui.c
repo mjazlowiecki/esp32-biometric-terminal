@@ -16,11 +16,12 @@
 
 static const char *TAG = "ui";
 
-#define UI_MESSAGE_MS        2000  // jak dlugo widac komunikat
-#define UI_CHOOSE_TIMEOUT_MS 15000 // powrot z listy po 15 s bez ruchu
-#define UI_LIST_ROWS         4     // ile pozycji listy miesci sie na ekranie
-#define UI_LINE_LEN          22    // 128 px / 6 px na znak = 21 znakow + '\0'
-#define UI_ACTIVE_ROWS       2     // pozycje menu widoczne na ekranie aktywnosci
+#define UI_MESSAGE_MS         2000  // jak dlugo widac komunikat
+#define UI_CHOOSE_TIMEOUT_MS  15000 // powrot z listy po 15 s bez ruchu
+#define UI_LIST_ROWS          4     // ile pozycji listy miesci sie na ekranie
+#define UI_LINE_LEN           22    // 128 px / 6 px na znak = 21 znakow + '\0'
+#define UI_ACTIVE_ROWS        2     // pozycje menu widoczne na ekranie aktywnosci
+#define UI_CONFIRM_TIMEOUT_MS 10000 // brak decyzji = NIE
 
 typedef enum
 {
@@ -28,6 +29,7 @@ typedef enum
     UI_CHOOSE,  // wybor aktywnosci
     UI_MESSAGE, // komunikat na chwile, potem powrot
     UI_ACTIVE,  // trwajaca aktywnosc uzytkownika
+    UI_CONFIRM, // potwierdzenie zakonczenia/zmiany
 } ui_state_t;
 
 static u8g2_t *s_d;
@@ -42,6 +44,8 @@ static size_t s_cursor;     // zaznaczona pozycja listy
 static char s_msg1[UI_LINE_LEN];
 static char s_msg2[UI_LINE_LEN];
 
+static bool s_confirm_yes; // w ekranie CONFIRM czy zaznaczone TAK?
+
 static void ui_enter(ui_state_t state)
 {
     ESP_LOGI(TAG, "stan %d -> %d", s_state, state);
@@ -52,6 +56,10 @@ static void ui_enter(ui_state_t state)
     if (state == UI_MAIN)
     {
         s_finger_armed = false; // najpierw musi zobaczyc pusty czujnik
+    }
+    if (state == UI_CONFIRM)
+    {
+        s_confirm_yes = false; // bezpieczna wartosc domyslna: NIE
     }
 }
 
@@ -187,12 +195,30 @@ static const activity_t *active_menu_activity(size_t k, uint16_t current)
         {
             continue;
         }
-        if (++seen == k)
+
+        seen++; // ile nieskreslonych minietych
+        if (seen == k)
         {
             return a;
         }
     }
     return NULL;
+}
+
+// czas trwania sesji w sekundach -> false gdzy nie da sie go policzyc
+static bool session_elapsed(const session_t *s, int64_t *out)
+{
+    if (s == NULL || !(s->flags & EVENT_FLAG_TIME_SYNCED) || !timesync_is_valid())
+    {
+        return false;
+    }
+    int64_t now = (int64_t)time(NULL);
+    if (now < (int64_t)s->start)
+    {
+        return false; // zegar cofniety - bez zgadywania czasu
+    }
+    *out = now - (int64_t)s->start;
+    return true;
 }
 
 static void draw_active(void)
@@ -209,10 +235,8 @@ static void draw_active(void)
     u8g2_DrawStr(s_d, 0, 8, line);
     u8g2_DrawHLine(s_d, 0, 10, w);
 
-    time_t now = time(NULL);
-    bool known = s != NULL && (s->flags & EVENT_FLAG_TIME_SYNCED) && timesync_is_valid() &&
-                 (int64_t)now >= (int64_t)s->start;
-    int64_t elapsed = known ? (int64_t)now - (int64_t)s->start : 0;
+    int64_t elapsed = 0;
+    bool known      = session_elapsed(s, &elapsed);
 
     char hms[11];
     if (known)
@@ -277,6 +301,52 @@ static void draw_active(void)
     u8g2_SendBuffer(s_d);
 }
 
+static void draw_option(int x, int y, int w, const char *text, bool selected)
+{
+    if (selected)
+    {
+        u8g2_DrawBox(s_d, x, y - 9, w, 11);
+        u8g2_SetDrawColor(s_d, 0);
+    }
+    u8g2_DrawStr(s_d, x + (w - u8g2_GetStrWidth(s_d, text)) / 2, y, text);
+    u8g2_SetDrawColor(s_d, 1);
+}
+
+static void draw_confirm(void)
+{
+    const session_t *s    = sessions_get(s_user_id);
+    uint16_t current      = (s != NULL) ? s->activity_id : 0;
+    const activity_t *cur = activities_find(current);
+    int w                 = u8g2_GetDisplayWidth(s_d);
+    char line[UI_LINE_LEN];
+
+    u8g2_ClearBuffer(s_d);
+    u8g2_SetFont(s_d, u8g2_font_6x10_tr);
+
+    // pytanie i nazwa: co konczymy albo na co zmieniamy
+    const activity_t *shown = (s_cursor == 0) ? cur : active_menu_activity(s_cursor, current);
+    u8g2_DrawStr(s_d, 0, 8, (s_cursor == 0) ? "Zakonczyc?" : "Zmienic na:");
+    u8g2_DrawHLine(s_d, 0, 10, w);
+    snprintf(line, sizeof(line), "%s", shown ? shown->name : "?");
+    u8g2_DrawStr(s_d, 0, 21, line);
+
+    // ostrzezenie: konczymy BIEZACA aktywnosc przed jej minimum
+    int64_t elapsed;
+    if (cur != NULL && cur->min_min != ACTIVITY_NO_LIMIT && session_elapsed(s, &elapsed) &&
+        elapsed < (int64_t)cur->min_min * 60)
+    {
+        char hms[11];
+        fmt_hms(hms, sizeof(hms), (int64_t)cur->min_min * 60 - elapsed);
+        u8g2_DrawStr(s_d, 0, 34, "Ponizej minimum!");
+        snprintf(line, sizeof(line), "Brakuje:   %s", hms);
+        u8g2_DrawStr(s_d, 0, 45, line);
+    }
+
+    draw_option(0, 60, w / 2, "NIE", !s_confirm_yes);
+    draw_option(w / 2, 60, w / 2, "TAK", s_confirm_yes);
+    u8g2_SendBuffer(s_d);
+}
+
 static void draw_message(void)
 {
     int w = u8g2_GetDisplayWidth(s_d);
@@ -316,6 +386,9 @@ static void ui_draw(void)
             break;
         case UI_ACTIVE:
             draw_active();
+            break;
+        case UI_CONFIRM:
+            draw_confirm();
             break;
     }
 }
@@ -400,6 +473,16 @@ void ui_tick(void)
             if (ui_ms_in_state() > UI_CHOOSE_TIMEOUT_MS)
             {
                 ui_enter(UI_MAIN);
+            }
+            break;
+        case UI_CONFIRM:
+            if (ui_new_second())
+            {
+                s_dirty = true; // "Brakuje" maleje na zywo
+            }
+            if (ui_ms_in_state() > UI_CONFIRM_TIMEOUT_MS)
+            {
+                ui_enter(UI_MAIN); // odszedl bez decyzji = NIE
             }
             break;
     }
@@ -522,7 +605,7 @@ void ui_on_encoder(encoder_event_t ev)
             }
             else if (ev == ENC_EVENT_PRESS)
             {
-                active_press(current);
+                ui_enter(UI_CONFIRM); // zapis dopiero po TAK
             }
             else if (ev == ENC_EVENT_LONG_PRESS)
             {
@@ -530,5 +613,21 @@ void ui_on_encoder(encoder_event_t ev)
             }
             break;
         }
+        case UI_CONFIRM:
+            if (ev == ENC_EVENT_RIGHT || ev == ENC_EVENT_LEFT)
+            {
+                s_confirm_yes = (ev == ENC_EVENT_RIGHT); // r = tak l; = nie
+                ui_touch();
+            }
+            else if (ev == ENC_EVENT_PRESS && s_confirm_yes)
+            {
+                const session_t *s = sessions_get(s_user_id);
+                active_press((s != NULL) ? s->activity_id : 0);
+            }
+            else if (ev == ENC_EVENT_PRESS || ev == ENC_EVENT_LONG_PRESS)
+            {
+                ui_enter(UI_ACTIVE); // wstecz
+            }
+            break;
     }
 }

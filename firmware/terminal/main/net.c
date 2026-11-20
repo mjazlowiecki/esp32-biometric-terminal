@@ -19,6 +19,7 @@ static const char *TAG = "net";
 
 static EventGroupHandle_t s_events;
 static esp_timer_handle_t s_retry_timer;
+static int s_last_reason = -1; // ostatnio zgloszony powod rozlaczenia; -1 = polaczono / start
 
 static void net_retry_cb(void *arg)
 {
@@ -37,8 +38,18 @@ static void net_event_handler(void *arg, esp_event_base_t base, int32_t id, void
     {
         const wifi_event_sta_disconnected_t *ev = data;
         xEventGroupClearBits(s_events, NET_CONNECTED_BIT);
-        ESP_LOGW(TAG, "Brak polaczenia (reason: %d), ponowna proba za %d s", ev->reason,
-                 NET_RETRY_DELAY_MS / 1000);
+
+        if (ev->reason != s_last_reason)
+        {
+            ESP_LOGW(TAG, "Brak polaczenia (reason: %d) - praca offline, ponawianie co %d s",
+                     ev->reason, NET_RETRY_DELAY_MS / 1000);
+            s_last_reason = ev->reason;
+        }
+        else
+        {
+            ESP_LOGD(TAG, "Ponowna proba nieudana (reason: %d)", ev->reason);
+        }
+
         (void)esp_timer_stop(s_retry_timer);
         esp_timer_start_once(s_retry_timer, (uint64_t)NET_RETRY_DELAY_MS * 1000);
     }
@@ -47,6 +58,7 @@ static void net_event_handler(void *arg, esp_event_base_t base, int32_t id, void
         const ip_event_got_ip_t *ev = data;
         ESP_LOGI(TAG, "Polaczono, IP: " IPSTR, IP2STR(&ev->ip_info.ip));
         xEventGroupSetBits(s_events, NET_CONNECTED_BIT);
+        s_last_reason = -1; // nastepne rozlaczenie znow zostanie zgloszone
     }
 }
 esp_err_t net_init(void)

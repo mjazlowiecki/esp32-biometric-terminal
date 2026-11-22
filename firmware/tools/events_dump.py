@@ -19,7 +19,7 @@ def main(path):
     count, tail = divmod(len(data), RECORD.size)
     print(f"{path}: {len(data)} B, {count} rekordow", end="")
     print(f", {tail} B ucietej koncowki!" if tail else "")
-    print(f"{'seq':>6}  {'czas lokalny':19}  {'user':>4}  {'akt':>4}  {'akcja':5}  synch  CRC")
+    print(f"{'seq':>6}  {'czas lokalny':19}  {'user':>4}  {'akt':>4}  {'akcja':6}  synch  CRC")
 
     for i in range(count):
         chunk = data[i * RECORD.size:(i + 1) * RECORD.size]

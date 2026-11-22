@@ -317,10 +317,44 @@ static esp_err_t fp_store(uint8_t buffer_id, uint16_t id)
     return ESP_OK;
 }
 
+// szukanie w bazie cech z bufora GenChar vs RegModel
+static esp_err_t fp_search(uint8_t buffer_id, bool *found, uint16_t *id, uint16_t *score)
+{
+    const uint8_t cmd[] = {FP_CMD_SEARCH, buffer_id,        0x00,
+                           0x00,          FP_CAPACITY >> 8, FP_CAPACITY & 0xFF};
+    uint8_t conf;
+    uint8_t p[4]; // PageID 2 B + MatchScore 2 B
+    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, p, sizeof(p)), TAG, "Search");
+
+    if (conf == FP_CONF_NOT_FOUND)
+    {
+        *found = false;
+        return ESP_OK;
+    }
+    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "Search: kod 0x%02X", conf);
+
+    *found = true;
+    *id    = ((uint16_t)p[0] << 8) | p[1];
+    *score = ((uint16_t)p[2] << 8) | p[3];
+    return ESP_OK;
+}
+
 esp_err_t fp_enroll(uint16_t *out_id, fp_enroll_cb_t on_step)
 {
     uint16_t id;
     ESP_RETURN_ON_ERROR(fp_find_free_id(&id), TAG, "brak wolnego miejsca w bazie");
+
+    // gdy palec ktory autoryzowal admina jeszcze lezy -> to bylby zarejestrowany 2gi raz
+
+    if (fp_capture() == ESP_OK) // czyli palec na czujniku...
+    {
+        if (on_step != NULL)
+        {
+            on_step(FP_STEP_REMOVE);
+        }
+        ESP_RETURN_ON_ERROR(fp_wait_finger(false, FP_ENROLL_STEP_TIMEOUT_MS), TAG,
+                            "czekanie na pusty czujnik");
+    }
 
     for (uint8_t buffer = 1; buffer <= 2; buffer++)
     {
@@ -344,6 +378,20 @@ esp_err_t fp_enroll(uint16_t *out_id, fp_enroll_cb_t on_step)
     }
 
     ESP_RETURN_ON_ERROR(fp_reg_model(), TAG, "laczenie w szablon");
+
+    // sprawdzamy duplikat (tresc vs czas)
+    // palec admina, albo os. rejestorwanej drugi raz. nie trafi w ten sposob
+    // pod nowy numer w bazie
+    bool dup;
+    uint16_t dup_id, dup_score;
+    ESP_RETURN_ON_ERROR(fp_search(1, &dup, &dup_id, &dup_score), TAG, "kontrola duplikatu");
+    if (dup)
+    {
+        ESP_LOGW(TAG, "Palec juz zarejestrowany jako ID %u (wynik %u)", dup_id, dup_score);
+        *out_id = dup_id; // wywolujacy pokaze pod jakim numerem juz jest
+        return ESP_ERR_NOT_ALLOWED;
+    }
+
     ESP_RETURN_ON_ERROR(fp_store(1, id), TAG, "zapis szablonu");
 
     *out_id = id;
@@ -365,21 +413,8 @@ esp_err_t fp_identify(fp_id_result_t *result, uint16_t *id, uint16_t *score)
     }
     ESP_RETURN_ON_ERROR(fp_gen_char(1), TAG, "cechy palca");
 
-    //"Search": schowek nr , od miejsca 0 - 1000 miejsc
-    const uint8_t cmd[] = {FP_CMD_SEARCH, 1, 0x00, 0x00, FP_CAPACITY >> 8, FP_CAPACITY & 0xFF};
-    uint8_t conf;
-    uint8_t p[4]; // PageID 2B + MatchScore 2B = 4B
-    ESP_RETURN_ON_ERROR(fp_transact(cmd, sizeof(cmd), &conf, p, sizeof(p)), TAG, "Search");
-
-    if (conf == FP_CONF_NOT_FOUND)
-    {
-        *result = FP_ID_NO_MATCH;
-        return ESP_OK;
-    }
-    ESP_RETURN_ON_FALSE(conf == FP_CONF_OK, ESP_FAIL, TAG, "Search: kod 0x%02X", conf);
-
-    *id     = ((uint16_t)p[0] << 8) | p[1];
-    *score  = ((uint16_t)p[2] << 8) | p[3];
-    *result = FP_ID_MATCH;
+    bool found;
+    ESP_RETURN_ON_ERROR(fp_search(1, &found, id, score), TAG, "Search");
+    *result = found ? FP_ID_MATCH : FP_ID_NO_MATCH;
     return ESP_OK;
 }

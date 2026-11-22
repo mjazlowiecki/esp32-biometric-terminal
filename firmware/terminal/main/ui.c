@@ -23,6 +23,8 @@ static const char *TAG = "ui";
 #define UI_ACTIVE_ROWS        2     // pozycje menu widoczne na ekranie aktywnosci
 #define UI_CONFIRM_TIMEOUT_MS 10000 // brak decyzji = NIE
 
+#define UI_ADMIN_TIMEOUT_MS 10000
+#define UI_ADMIN_ID         0 // admin - czyli pierwszy zarejestrowany palec
 typedef enum
 {
     UI_MAIN,    // ekran glowny: zegar, status, "Przyloz palec"
@@ -30,6 +32,7 @@ typedef enum
     UI_MESSAGE, // komunikat na chwile, potem powrot
     UI_ACTIVE,  // trwajaca aktywnosc uzytkownika
     UI_CONFIRM, // potwierdzenie zakonczenia/zmiany
+    UI_ADMIN,   // czekanie na palec administratora
 } ui_state_t;
 
 static u8g2_t *s_d;
@@ -53,7 +56,7 @@ static void ui_enter(ui_state_t state)
     s_entered_us = esp_timer_get_time();
     s_dirty      = true;
 
-    if (state == UI_MAIN)
+    if (state == UI_MAIN || state == UI_ADMIN)
     {
         s_finger_armed = false; // najpierw musi zobaczyc pusty czujnik
     }
@@ -91,13 +94,6 @@ static void draw_row(int y, const char *left, const char *right, bool selected)
     u8g2_DrawStr(s_d, 2, y, left);
     u8g2_DrawStr(s_d, w - u8g2_GetStrWidth(s_d, right) - 2, y, right);
     u8g2_SetDrawColor(s_d, 1); // ZAWSZE przywroc - kolor to stan globalny biblioteki
-}
-
-static void ui_message(const char *line1, const char *line2)
-{
-    snprintf(s_msg1, sizeof(s_msg1), "%s", line1);
-    snprintf(s_msg2, sizeof(s_msg2), "%s", line2);
-    ui_enter(UI_MESSAGE);
 }
 
 static void fmt_hms(char *buf, size_t len, int64_t sec)
@@ -301,6 +297,18 @@ static void draw_active(void)
     u8g2_SendBuffer(s_d);
 }
 
+static void ui_set_text(const char *line1, const char *line2)
+{
+    snprintf(s_msg1, sizeof(s_msg1), "%s", line1);
+    snprintf(s_msg2, sizeof(s_msg2), "%s", line2);
+}
+
+static void ui_message(const char *line1, const char *line2)
+{
+    ui_set_text(line1, line2);
+    ui_enter(UI_MESSAGE);
+}
+
 static void draw_option(int x, int y, int w, const char *text, bool selected)
 {
     if (selected)
@@ -382,6 +390,7 @@ static void ui_draw(void)
             draw_choose();
             break;
         case UI_MESSAGE:
+        case UI_ADMIN:
             draw_message();
             break;
         case UI_ACTIVE:
@@ -393,22 +402,28 @@ static void ui_draw(void)
     }
 }
 
-static void main_check_finger(void)
+typedef enum
+{
+    FINGER_NONE,     // brak palca, czujnik nieuzbrojony albo blad czytnika
+    FINGER_MATCH,    // rozpoznano, numer w *id
+    FINGER_NO_MATCH, // palca nie ma w bazie
+} finger_t;
+
+// sprawdzenie czujnika: uzbrajanie + identyfikacja + jedn. log bledow
+static finger_t finger_poll(uint16_t *id)
 {
     if (!s_finger_armed)
     {
-        // Czekamy na pusty czujnik - wystarczy samo zdjecie, bez szukania w bazie
         if (fp_capture() == ESP_ERR_NOT_FOUND)
         {
-            s_finger_armed = true;
+            s_finger_armed = true; // czujnik pusty wiec od razu reakcja na przylozenie palca
         }
-        return;
+        return FINGER_NONE;
     }
 
     fp_id_result_t res;
-    uint16_t id, score;
-    esp_err_t err = fp_identify(&res, &id, &score);
-
+    uint16_t score;
+    esp_err_t err = fp_identify(&res, id, &score);
     if (err != ESP_OK)
     {
         if (!s_fp_failing)
@@ -416,7 +431,7 @@ static void main_check_finger(void)
             ESP_LOGW(TAG, "Czytnik nie odpowiada: %s", esp_err_to_name(err));
             s_fp_failing = true;
         }
-        return;
+        return FINGER_NONE;
     }
     if (s_fp_failing)
     {
@@ -427,17 +442,147 @@ static void main_check_finger(void)
     switch (res)
     {
         case FP_ID_MATCH:
-            ESP_LOGI(TAG, "Rozpoznano ID %u (wynik %u)", id, score);
+            ESP_LOGI(TAG, "Rozpoznano ID %u (wynik %u)", *id, score);
+            return FINGER_MATCH;
+        case FP_ID_NO_MATCH:
+            return FINGER_NO_MATCH;
+        case FP_ID_NO_FINGER:
+            break;
+    }
+    return FINGER_NONE;
+}
+
+static void main_check_finger(void)
+{
+    uint16_t id;
+    switch (finger_poll(&id))
+    {
+        case FINGER_MATCH:
             s_user_id = id;
             s_cursor  = 0;
             indicate_success();
             ui_enter(sessions_get(id) != NULL ? UI_ACTIVE : UI_CHOOSE);
             break;
-        case FP_ID_NO_MATCH:
+        case FINGER_NO_MATCH:
             indicate_error();
             ui_message("Nie rozpoznano", "Sprobuj ponownie");
             break;
-        case FP_ID_NO_FINGER:
+        case FINGER_NONE:
+            break;
+    }
+}
+
+// rysuj natychmiast - dla operacji blokujacych petle - nie ui_tick()
+static void ui_show_now(const char *line1, const char *line2)
+{
+    ui_set_text(line1, line2);
+    draw_message();
+}
+
+// wolaj w trakcie fp_enroll
+static void enroll_step_cb(fp_enroll_step_t step)
+{
+    switch (step)
+    {
+        case FP_STEP_PLACE_FIRST:
+            ui_show_now("Nowy uzytkownik:", "Przyloz palec");
+            break;
+        case FP_STEP_REMOVE:
+            ui_show_now("Zabierz palec", "");
+            break;
+        case FP_STEP_PLACE_SECOND:
+            ui_show_now("Przyloz ten sam", "palec ponownie");
+            break;
+    }
+}
+
+static void enroll_run(void)
+{
+    uint16_t id;
+    // TODO
+    esp_err_t err = fp_enroll(&id, enroll_step_cb); //~4 s, max. 3 x 10 s
+
+    if (err == ESP_OK)
+    {
+        char line[UI_LINE_LEN];
+        snprintf(line, sizeof(line), "Dodano ID %u", id);
+        indicate_success();
+        ui_message("Zarejestrowano", line); // skopiuj, mamy line nawet jesli zniknie
+        return;
+    }
+
+    ESP_LOGW(TAG, "Rejestracja nieudana: %s", esp_err_to_name(err));
+    indicate_error();
+    switch (err)
+    {
+        case ESP_ERR_TIMEOUT:
+            ui_message("Przekroczono czas", "Sproboj ponownie");
+            break;
+        case ESP_ERR_INVALID_STATE:
+            ui_message("Rozne palce!", "Sproboj ponownie");
+            break;
+        case ESP_ERR_NOT_FOUND:
+            ui_message("Baza pelna", "");
+            break;
+        case ESP_ERR_NOT_ALLOWED:
+        {
+            char line[UI_LINE_LEN];
+            snprintf(line, sizeof(line), "jako ID %u", id);
+            ui_message("Palec juz w bazie", line);
+            break;
+        }
+        default:
+            ui_message("Blad rejestracji", "Sprawdz czytnik");
+            break;
+    }
+}
+
+// long press na mainie
+static void admin_begin(void)
+{
+    uint16_t count;
+    if (fp_template_count(&count) != ESP_OK)
+    {
+        indicate_error();
+        ui_message("czytnik nie", "odpowiada");
+        return;
+    }
+
+    if (count == 0)
+    {
+        // dla pustej bazy - pierwsz uzytkownik zostaje administratorem
+        ESP_LOGW(TAG, "Pusta baza - rejestracja bez autoryzacji [przpisanie do ID %u]",
+                 UI_ADMIN_ID);
+        enroll_run();
+        return;
+    }
+
+    ui_set_text("Przyloz palec", "adminitratora");
+    ui_enter(UI_ADMIN);
+}
+
+static void admin_check_finger(void)
+{
+    uint16_t id;
+    switch (finger_poll(&id))
+    {
+        case FINGER_MATCH:
+            if (id == UI_ADMIN_ID)
+            {
+                enroll_run();
+            }
+            else
+            {
+                ESP_LOGW(TAG, "ID %u bez uprawnien probowal dodac uzytkownika", id);
+                indicate_error();
+                ui_message("Brak uprawnien", "(tylko administrator)");
+            }
+            break;
+        case FINGER_NO_MATCH:
+            indicate_error();
+            ui_message("Brak uprawnien", "(tylko administraotor)");
+            break;
+        case FINGER_NONE:
             break;
     }
 }
@@ -478,11 +623,18 @@ void ui_tick(void)
         case UI_CONFIRM:
             if (ui_new_second())
             {
-                s_dirty = true; // "Brakuje" maleje na zywo
+                s_dirty = true; //
             }
             if (ui_ms_in_state() > UI_CONFIRM_TIMEOUT_MS)
             {
-                ui_enter(UI_MAIN); // odszedl bez decyzji = NIE
+                ui_enter(UI_MAIN); //
+            }
+            break;
+        case UI_ADMIN:
+            admin_check_finger();
+            if (s_state == UI_ADMIN && ui_ms_in_state() > UI_ADMIN_TIMEOUT_MS)
+            {
+                ui_enter(UI_MAIN);
             }
             break;
     }
@@ -549,7 +701,11 @@ void ui_on_encoder(encoder_event_t ev)
     switch (s_state)
     {
         case UI_MAIN:
-            break; // dlugie wcisniecie = rejestracja (krok 65)
+            if (ev == ENC_EVENT_LONG_PRESS && event_store_is_ready())
+            {
+                admin_begin();
+            }
+            break;
 
         case UI_CHOOSE:
             if (ev == ENC_EVENT_RIGHT && s_cursor + 1 < activities_count())
@@ -627,6 +783,12 @@ void ui_on_encoder(encoder_event_t ev)
             else if (ev == ENC_EVENT_PRESS || ev == ENC_EVENT_LONG_PRESS)
             {
                 ui_enter(UI_ACTIVE); // wstecz
+            }
+            break;
+        case UI_ADMIN:
+            if (ev == ENC_EVENT_PRESS || ev == ENC_EVENT_LONG_PRESS)
+            {
+                ui_enter(UI_MAIN); // anuluj
             }
             break;
     }

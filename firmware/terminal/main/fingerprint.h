@@ -37,5 +37,6 @@ esp_err_t fp_find_free_id(uint16_t *id);
 //   ESP_ERR_TIMEOUT       - uzytkownik nie przylozyl / nie zabral palca w czasie
 //   ESP_ERR_INVALID_STATE - dwa przylozenia to rozne palce
 //   ESP_FAIL              - zly obraz albo blad zapisu w czytniku
+//   ESP_ERR_NOT_ALLOWED   - ten palec juz jest w bazie (numer w *out_id)
 //   inne                  - blad komunikacji z czytnikiem
 esp_err_t fp_enroll(uint16_t *out_id, fp_enroll_cb_t on_step);

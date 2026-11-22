@@ -13,7 +13,7 @@ typedef struct
 
 esp_err_t sessions_init(void);
 
-// Trwajaca sesja uzytkownika albo NULL, gdy nic nie trwa.
+// Trwajaca sesja uzytkownika albo NULL, gdy nic nie trwa
 const session_t *sessions_get(uint16_t user_id);
 
 esp_err_t sessions_stop(uint16_t user_id);
@@ -21,3 +21,6 @@ esp_err_t sessions_stop(uint16_t user_id);
 //teraz tak, jesli cos TRWA to najpierw zapisac STOP a potem 
 // START nastepnej aktywnosci, czyli zmiana aktywnosci
 esp_err_t sessions_start(uint16_t user_id, uint16_t activity_id);
+
+// zapisuje w dzienniku- ze pod user_id zarejestrowano nowa osobe
+esp_err_t sessions_enroll(uint16_t user_id);

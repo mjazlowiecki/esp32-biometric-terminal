@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 # Uklad musi odpowiadac event_record_t w event_store.h
 RECORD = struct.Struct("<IIHHBB2sI")  # 20 B, little endian
 CRC_LEN = 16                          # offsetof(event_record_t, crc)
-ACTIONS = {1: "START", 2: "STOP"}
+ACTIONS = {1: "START", 2: "STOP", 3: "ENROLL"}
 FLAG_TIME_SYNCED = 0x01
 
 def main(path):

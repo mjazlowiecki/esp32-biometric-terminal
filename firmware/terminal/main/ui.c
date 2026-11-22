@@ -506,8 +506,19 @@ static void enroll_run(void)
     {
         char line[UI_LINE_LEN];
         snprintf(line, sizeof(line), "Dodano ID %u", id);
-        indicate_success();
-        ui_message("Zarejestrowano", line); // skopiuj, mamy line nawet jesli zniknie
+        ESP_LOGI(TAG, "Zarejestrowano nowego uzytkownika: ID %u", id);
+
+        if (sessions_enroll(id) == ESP_OK)
+        {
+            indicate_success();
+            ui_message("Zarejestrowano", line);
+        }
+        else
+        {
+            // szablon JEST w czytniku - osoba moze sie logowac - dziennik o tym nie wie
+            indicate_error();
+            ui_message(line, "Blad zapisu SD!");
+        }
         return;
     }
 

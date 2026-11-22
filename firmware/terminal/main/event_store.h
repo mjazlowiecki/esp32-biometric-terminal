@@ -6,10 +6,11 @@
 
 #include "esp_err.h"
 
-typedef enum 
+typedef enum
 {
-    EVENT_ACTION_START = 1,
-    EVENT_ACTION_STOP = 2,
+    EVENT_ACTION_START  = 1,
+    EVENT_ACTION_STOP   = 2,
+    EVENT_ACTION_ENROLL = 3, // pod user_id zarejestrowano NOWA osobe (activity_id = 0)
 } event_action_t;
 
 #define EVENT_FLAG_TIME_SYNCED 0x01

@@ -30,6 +30,10 @@ static void apply(const event_record_t *rec)
     {
         s->activity_id = 0;
     }
+    else if (rec->action == EVENT_ACTION_ENROLL)
+    {
+        s->activity_id = 0; // nowa osoba pod tym numerem nie dziedziczy cudzej sesji
+    }
 }
 
 static void rebuild_cb(const event_record_t *rec, void *ctx)
@@ -104,5 +108,24 @@ esp_err_t sessions_start(uint16_t user_id, uint16_t activity_id)
     apply(&rec);
 
     ESP_LOGI(TAG, "START #%lu: ID %u, akt %u", (unsigned long)rec.seq, user_id, activity_id);
+    return ESP_OK;
+}
+
+esp_err_t sessions_enroll(uint16_t user_id)
+{
+    ESP_RETURN_ON_FALSE(user_id < FP_CAPACITY, ESP_ERR_INVALID_ARG, TAG, " zle ID %u", user_id);
+
+    if (s_sessions[user_id].activity_id != 0)
+    {
+        ESP_LOGW(TAG, "ID %u mial otwarta sesje (akt %u) - zostaje porzucona", user_id,
+                 s_sessions[user_id].activity_id);
+    }
+
+    event_record_t rec;
+    ESP_RETURN_ON_ERROR(event_store_append(user_id, 0, EVENT_ACTION_ENROLL, &rec), TAG,
+                        "zapis ENROLL");
+    apply(&rec);
+
+    ESP_LOGI(TAG, "ENROLL #%lu: ID %u", (unsigned long)rec.seq, user_id);
     return ESP_OK;
 }

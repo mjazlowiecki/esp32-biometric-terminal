@@ -10,6 +10,10 @@ menu "Terminal - siec"
         string "Haslo sieci Wi-Fi"
         default ""
         help
-            Haslo sieci. Trafia do sdkconfig, ktory jest poza repozytorium.
-
+            Haslo sieci. Trafia do sdkconfig, ktory jest poza repo.
+    config TERMINAL_MQTT_URI
+        string "Adres brokera MQTT"
+        default "mqtt://192.168.0.10:1883"
+        help
+            Adres brokera, np. mqtt://172.20.10.2:1883 (w sieci test. komputer PC).
 endmenu

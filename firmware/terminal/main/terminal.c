@@ -12,6 +12,7 @@
 #include "freertos/task.h"
 #include "i2c_bus.h"
 #include "indicators.h"
+#include "mqtt_link.h"
 #include "net.h"
 #include "nvs_flash.h"
 #include "oled.h"
@@ -73,6 +74,7 @@ void app_main(void)
         if (net_init() == ESP_OK)
         {
             ESP_ERROR_CHECK(timesync_start_sntp());
+            mqtt_link_init();
         }
         else
         {

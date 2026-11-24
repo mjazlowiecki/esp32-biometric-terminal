@@ -7,6 +7,7 @@
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "event_store.h"
+#include "event_sync.h"
 #include "fingerprint.h"
 #include "freertos/projdefs.h"
 #include "freertos/task.h"
@@ -107,6 +108,7 @@ void app_main(void)
             last_tick = xTaskGetTickCount();
             timesync_poll();
             ui_tick();
+            event_sync_poll();
         }
     }
 }

@@ -18,6 +18,7 @@ static esp_mqtt_client_handle_t s_client;
 static atomic_bool s_connected;
 static char s_dev_id[13];       // MAC w/o " : " + '\0' = 13
 static char s_topic_status[48]; // "terminal/<dev>/status"
+static char s_topic_events[48]; // "terminal/<dev>/events"
 
 static bool s_error_logged; // blad laczenia juz zgloszony tylko zadanie MQTT - jeden wlasciciel
 
@@ -73,6 +74,7 @@ esp_err_t mqtt_link_init(void)
     snprintf(s_dev_id, sizeof(s_dev_id), "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3],
              mac[4], mac[5]);
     snprintf(s_topic_status, sizeof(s_topic_status), "terminal/%s/status", s_dev_id);
+    snprintf(s_topic_events, sizeof(s_topic_events), "terminal/%s/events", s_dev_id);
 
     const esp_mqtt_client_config_t cfg = {
         .broker.address.uri       = CONFIG_TERMINAL_MQTT_URI,
@@ -104,4 +106,12 @@ esp_err_t mqtt_link_init(void)
 bool mqtt_link_is_connected()
 {
     return atomic_load(&s_connected);
+}
+
+esp_err_t mqtt_link_publish_event(const char *json)
+{
+    // QoS1, no retain - zdarznie != stan
+    // 0 - streln liczy length
+    int msg_id = esp_mqtt_client_publish(s_client, s_topic_events, json, 0, 1, 0);
+    return (msg_id >= 0) ? ESP_OK : ESP_FAIL;
 }

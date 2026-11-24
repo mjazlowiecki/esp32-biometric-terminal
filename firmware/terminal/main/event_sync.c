@@ -28,6 +28,16 @@ static void format_event(const event_record_t *r, char *buf, size_t len)
 
 void event_sync_poll(void)
 {
+    uint32_t acked;
+    while (mqtt_link_get_ack(&acked))
+    {
+        if (event_store_ack(acked) == ESP_OK && s_in_flight && acked == s_flight_seq)
+        {
+            ESP_LOGI(TAG, "ACK #%lu", (unsigned long)acked);
+            s_in_flight = false; // pozniej od razu pojdzie nastepne
+        }
+    }
+
     if (!mqtt_link_is_connected() || !event_store_is_ready())
     {
         // wyslij ponownie od razu

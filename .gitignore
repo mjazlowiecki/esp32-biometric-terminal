@@ -98,3 +98,6 @@ Project Outputs for */
 *.PrjPcbStructure
 *.SchDocPreview
 *.PcbDocPreview
+
+# Pliki tymczasowego serwera zamaist Pi
+server/*.db

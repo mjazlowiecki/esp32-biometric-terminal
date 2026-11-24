@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "esp_err.h"
 
@@ -11,5 +12,5 @@ esp_err_t mqtt_link_init(void);
 bool mqtt_link_is_connected(void);
 
 esp_err_t mqtt_link_publish_event(const char *json); //retain  =0 
-
+bool mqtt_link_get_ack(uint32_t *seq);
 //subskrybent nie dostaje ostatniego zdarzenia jako aktualnego ^^

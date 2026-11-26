@@ -1,5 +1,7 @@
 import json
 import sqlite3
+import os
+import random
 import struct
 import zlib
 
@@ -7,6 +9,10 @@ import paho.mqtt.client as mqtt
 
 BROKER = "127.0.0.1"  # bez localhost
 RECORD_NO_CRC = struct.Struct("<IIHHBB2s")  # pierwsze 16 B rekordu
+
+# Test odpornosci: ulamek ACK celowo pomijanych PO zapisie w bazie
+# (symulacja awarii serwera miedzy COMMIT a ACK). 0 = normalna praca.
+DROP_ACK = float(os.environ.get("DROP_ACK", "0"))
 
 DB = sqlite3.connect("server/events.db")
 DB.execute("""
@@ -21,6 +27,12 @@ DB.execute("""
         crc     INTEGER NOT NULL,
         received_at TEXT DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (device, seq)
+    )""")
+DB.execute("""
+    CREATE TABLE IF NOT EXISTS conflicts (
+        device TEXT, seq INTEGER, ts INTEGER, user INTEGER, act INTEGER,
+        action INTEGER, flags INTEGER, crc INTEGER,
+        received_at TEXT DEFAULT CURRENT_TIMESTAMP
     )""")
 
 
@@ -49,9 +61,27 @@ def on_message(client, userdata, msg):
         (device, ev["seq"], ev["ts"], ev["user"], ev["act"], ev["action"], ev["flags"], ev["crc"]))
     DB.commit()  # najpierw trwaly zapis...
 
-    kind = "nowe" if cur.rowcount == 1 else "duplikat"
+    if cur.rowcount == 1:
+        kind = "nowe"
+    else:
+        (stored_crc,) = DB.execute("SELECT crc FROM events WHERE device = ? AND seq = ?",
+                                   (device, ev["seq"])).fetchone()
+        if stored_crc == ev["crc"]:
+            kind = "duplikat"
+        else:
+            DB.execute(
+                "INSERT INTO conflicts (device, seq, ts, user, act, action, flags, crc) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (device, ev["seq"], ev["ts"], ev["user"], ev["act"], ev["action"],
+                 ev["flags"], ev["crc"]))
+            DB.commit()
+            kind = "!!! KONFLIKT: inne zdarzenie z tym samym numerem - zapisane w 'conflicts'"
     print(f"{device} #{ev['seq']:<4} user {ev['user']} akt {ev['act']} "
           f"akcja {ev['action']} -> {kind}, ACK")
+    
+    if random.random() < DROP_ACK:
+        print("    [TEST] ACK celowo pominiety")
+        return
     client.publish(f"terminal/{device}/ack", str(ev["seq"]), qos=1)  # potem ACK - nawet dla duplikatu
 
 

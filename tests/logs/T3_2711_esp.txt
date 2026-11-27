@@ -1,0 +1,1660 @@
+entry 0x40080638
+--- 0x40080638: call_start_cpu0 at C:/Espressif/frameworks/esp-idf-v5.5.1/components/bootloader/subproject/main/bootloader_start.c:25
+I (29) boot: ESP-IDF v5.5.1 2nd stage bootloader
+I (29) boot: compile time Nov  2 2026 18:53:18
+I (29) boot: Multicore bootloader
+I (31) boot: chip revision: v3.1
+I (33) boot.esp32: SPI Speed      : 40MHz
+I (37) boot.esp32: SPI Mode       : DIO
+I (41) boot.esp32: SPI Flash Size : 4MB
+I (44) boot: Enabling RNG early entropy source...
+I (49) boot: Partition Table:
+I (51) boot: ## Label            Usage          Type ST Offset   Length
+I (58) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (71) boot:  2 factory          factory app      00 00 00010000 00177000
+I (77) boot: End of partition table
+I (81) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=2814ch (164172) map
+I (144) esp_image: segment 1: paddr=00038174 vaddr=3ffb0000 size=04168h ( 16744) load
+I (151) esp_image: segment 2: paddr=0003c2e4 vaddr=40080000 size=03d34h ( 15668) load
+I (157) esp_image: segment 3: paddr=00040020 vaddr=400d0020 size=bdb48h (777032) map
+I (423) esp_image: segment 4: paddr=000fdb70 vaddr=40083d34 size=177e0h ( 96224) load
+I (460) esp_image: segment 5: paddr=00115358 vaddr=50000000 size=00020h (    32) load
+I (474) boot: Loaded app from partition at offset 0x10000
+I (474) boot: Disabling RNG early entropy source...
+I (484) cpu_start: Multicore app
+I (493) cpu_start: Pro cpu start user code
+I (493) cpu_start: cpu freq: 160000000 Hz
+I (493) app_init: Application information:
+I (493) app_init: Project name:     terminal
+I (497) app_init: App version:      smiw-sem6-70-g4ed9778-dirty
+I (502) app_init: Compile time:     Nov 27 2026 12:37:05
+I (508) app_init: ELF file SHA256:  0841fc25c...
+I (512) app_init: ESP-IDF:          v5.5.1
+I (516) efuse_init: Min chip rev:     v0.0
+I (519) efuse_init: Max chip rev:     v3.99 
+I (523) efuse_init: Chip rev:         v3.1
+I (528) heap_init: Initializing. RAM available for dynamic allocation:
+I (534) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (539) heap_init: At 3FFBAF00 len 00025100 (148 KiB): DRAM
+I (544) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (549) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (555) heap_init: At 4009B514 len 00004AEC (18 KiB): IRAM
+I (562) spi_flash: detected chip: generic
+I (564) spi_flash: flash io: dio
+I (568) main_task: Started on CPU0
+I (578) main_task: Calling app_main()
+I (578) terminal: Firmware v3 start
+I (598) i2c_bus: Skan magistrali I2C...
+I (608) i2c_bus:   urzadzenie pod adresem 0x3C
+I (618) i2c_bus:   urzadzenie pod adresem 0x57
+I (618) i2c_bus:   urzadzenie pod adresem 0x68
+I (618) i2c_bus: Znaleziono: 3 urzadzen I2C
+I (628) timesync: Czas systemowy z RTC
+I (668) sdspi_transaction: cmd=5, R1 response: command not supported
+Name: 00000
+Type: SDHC
+Speed: 5.00 MHz (limit: 5.00 MHz)
+Size: 60950MB
+CSD: ver=2, sector_size=512, capacity=124825600 read_bl_len=9
+SSR: bus_width=1
+I (718) event_store: Utworzono pusty dziennik /sd/events.bin
+I (718) event_store: Dziennik: 0 rekordow, next_seq=1, acked_seq=0, do wyslania: 0
+I (718) sessions: Trwajacych sesji: 0
+W (718) terminal: TEST: generuje 500 zdarzen uzytkownika 999
+I (748) sessions: START #1: ID 999, akt 1
+I (758) sessions: STOP  #2: ID 999, akt 1
+I (768) sessions: START #3: ID 999, akt 2
+I (778) sessions: STOP  #4: ID 999, akt 2
+I (788) sessions: START #5: ID 999, akt 3
+I (798) sessions: STOP  #6: ID 999, akt 3
+I (808) sessions: START #7: ID 999, akt 4
+I (818) sessions: STOP  #8: ID 999, akt 4
+I (828) sessions: START #9: ID 999, akt 1
+I (838) sessions: STOP  #10: ID 999, akt 1
+I (848) sessions: START #11: ID 999, akt 2
+I (858) sessions: STOP  #12: ID 999, akt 2
+I (868) sessions: START #13: ID 999, akt 3
+I (878) sessions: STOP  #14: ID 999, akt 3
+I (888) sessions: START #15: ID 999, akt 4
+I (898) sessions: STOP  #16: ID 999, akt 4
+I (908) sessions: START #17: ID 999, akt 1
+I (928) sessions: STOP  #18: ID 999, akt 1
+I (938) sessions: START #19: ID 999, akt 2
+I (948) sessions: STOP  #20: ID 999, akt 2
+I (958) sessions: START #21: ID 999, akt 3
+I (968) sessions: STOP  #22: ID 999, akt 3
+I (978) sessions: START #23: ID 999, akt 4
+I (988) sessions: STOP  #24: ID 999, akt 4
+I (998) sessions: START #25: ID 999, akt 1
+I (1018) sessions: STOP  #26: ID 999, akt 1
+I (1028) sessions: START #27: ID 999, akt 2
+I (1038) sessions: STOP  #28: ID 999, akt 2
+I (1048) sessions: START #29: ID 999, akt 3
+I (1058) sessions: STOP  #30: ID 999, akt 3
+I (1068) sessions: START #31: ID 999, akt 4
+I (1078) sessions: STOP  #32: ID 999, akt 4
+I (1088) sessions: START #33: ID 999, akt 1
+I (1098) sessions: STOP  #34: ID 999, akt 1
+I (1108) sessions: START #35: ID 999, akt 2
+I (1128) sessions: STOP  #36: ID 999, akt 2
+I (1138) sessions: START #37: ID 999, akt 3
+I (1158) sessions: STOP  #38: ID 999, akt 3
+I (1168) sessions: START #39: ID 999, akt 4
+I (1178) sessions: STOP  #40: ID 999, akt 4
+I (1188) sessions: START #41: ID 999, akt 1
+I (1198) sessions: STOP  #42: ID 999, akt 1
+I (1208) sessions: START #43: ID 999, akt 2
+I (1218) sessions: STOP  #44: ID 999, akt 2
+I (1228) sessions: START #45: ID 999, akt 3
+I (1238) sessions: STOP  #46: ID 999, akt 3
+I (1248) sessions: START #47: ID 999, akt 4
+I (1258) sessions: STOP  #48: ID 999, akt 4
+I (1268) sessions: START #49: ID 999, akt 1
+I (1278) sessions: STOP  #50: ID 999, akt 1
+I (1288) sessions: START #51: ID 999, akt 2
+I (1308) sessions: STOP  #52: ID 999, akt 2
+I (1318) sessions: START #53: ID 999, akt 3
+I (1328) sessions: STOP  #54: ID 999, akt 3
+I (1348) sessions: START #55: ID 999, akt 4
+I (1358) sessions: STOP  #56: ID 999, akt 4
+I (1368) sessions: START #57: ID 999, akt 1
+I (1398) sessions: STOP  #58: ID 999, akt 1
+I (1408) sessions: START #59: ID 999, akt 2
+I (1418) sessions: STOP  #60: ID 999, akt 2
+I (1428) sessions: START #61: ID 999, akt 3
+I (1438) sessions: STOP  #62: ID 999, akt 3
+I (1448) sessions: START #63: ID 999, akt 4
+I (1458) sessions: STOP  #64: ID 999, akt 4
+I (1468) sessions: START #65: ID 999, akt 1
+I (1478) sessions: STOP  #66: ID 999, akt 1
+I (1488) sessions: START #67: ID 999, akt 2
+I (1498) sessions: STOP  #68: ID 999, akt 2
+I (1508) sessions: START #69: ID 999, akt 3
+I (1518) sessions: STOP  #70: ID 999, akt 3
+I (1528) sessions: START #71: ID 999, akt 4
+I (1538) sessions: STOP  #72: ID 999, akt 4
+I (1548) sessions: START #73: ID 999, akt 1
+I (1568) sessions: STOP  #74: ID 999, akt 1
+I (1578) sessions: START #75: ID 999, akt 2
+I (1588) sessions: STOP  #76: ID 999, akt 2
+I (1608) sessions: START #77: ID 999, akt 3
+I (1618) sessions: STOP  #78: ID 999, akt 3
+I (1628) sessions: START #79: ID 999, akt 4
+I (1638) sessions: STOP  #80: ID 999, akt 4
+I (1648) sessions: START #81: ID 999, akt 1
+I (1658) sessions: STOP  #82: ID 999, akt 1
+I (1668) sessions: START #83: ID 999, akt 2
+I (1678) sessions: STOP  #84: ID 999, akt 2
+I (1688) sessions: START #85: ID 999, akt 3
+I (1698) sessions: STOP  #86: ID 999, akt 3
+I (1708) sessions: START #87: ID 999, akt 4
+I (1718) sessions: STOP  #88: ID 999, akt 4
+I (1728) sessions: START #89: ID 999, akt 1
+I (1738) sessions: STOP  #90: ID 999, akt 1
+I (1748) sessions: START #91: ID 999, akt 2
+I (1758) sessions: STOP  #92: ID 999, akt 2
+I (1778) sessions: START #93: ID 999, akt 3
+I (1788) sessions: STOP  #94: ID 999, akt 3
+I (1798) sessions: START #95: ID 999, akt 4
+I (1818) sessions: STOP  #96: ID 999, akt 4
+I (1828) sessions: START #97: ID 999, akt 1
+I (1848) sessions: STOP  #98: ID 999, akt 1
+I (1848) sessions: START #99: ID 999, akt 2
+I (1868) sessions: STOP  #100: ID 999, akt 2
+I (1878) sessions: START #101: ID 999, akt 3
+I (1888) sessions: STOP  #102: ID 999, akt 3
+I (1908) sessions: START #103: ID 999, akt 4
+I (1918) sessions: STOP  #104: ID 999, akt 4
+I (1928) sessions: START #105: ID 999, akt 1
+I (1938) sessions: STOP  #106: ID 999, akt 1
+I (1948) sessions: START #107: ID 999, akt 2
+I (1958) sessions: STOP  #108: ID 999, akt 2
+I (1968) sessions: START #109: ID 999, akt 3
+I (1978) sessions: STOP  #110: ID 999, akt 3
+I (1988) sessions: START #111: ID 999, akt 4
+I (1998) sessions: STOP  #112: ID 999, akt 4
+I (2018) sessions: START #113: ID 999, akt 1
+I (2028) sessions: STOP  #114: ID 999, akt 1
+I (2038) sessions: START #115: ID 999, akt 2
+I (2058) sessions: STOP  #116: ID 999, akt 2
+I (2068) sessions: START #117: ID 999, akt 3
+I (2098) sessions: STOP  #118: ID 999, akt 3
+I (2098) sessions: START #119: ID 999, akt 4
+I (2118) sessions: STOP  #120: ID 999, akt 4
+I (2128) sessions: START #121: ID 999, akt 1
+I (2138) sessions: STOP  #122: ID 999, akt 1
+I (2148) sessions: START #123: ID 999, akt 2
+I (2158) sessions: STOP  #124: ID 999, akt 2
+I (2168) sessions: START #125: ID 999, akt 3
+I (2178) sessions: STOP  #126: ID 999, akt 3
+I (2188) sessions: START #127: ID 999, akt 4
+I (2198) sessions: STOP  #128: ID 999, akt 4
+I (2208) sessions: START #129: ID 999, akt 1
+I (2218) sessions: STOP  #130: ID 999, akt 1
+I (2228) sessions: START #131: ID 999, akt 2
+I (2238) sessions: STOP  #132: ID 999, akt 2
+I (2248) sessions: START #133: ID 999, akt 3
+I (2268) sessions: STOP  #134: ID 999, akt 3
+I (2278) sessions: START #135: ID 999, akt 4
+I (2298) sessions: STOP  #136: ID 999, akt 4
+I (2308) sessions: START #137: ID 999, akt 1
+I (2328) sessions: STOP  #138: ID 999, akt 1
+I (2338) sessions: START #139: ID 999, akt 2
+I (2358) sessions: STOP  #140: ID 999, akt 2
+I (2368) sessions: START #141: ID 999, akt 3
+I (2378) sessions: STOP  #142: ID 999, akt 3
+I (2388) sessions: START #143: ID 999, akt 4
+I (2398) sessions: STOP  #144: ID 999, akt 4
+I (2408) sessions: START #145: ID 999, akt 1
+I (2418) sessions: STOP  #146: ID 999, akt 1
+I (2428) sessions: START #147: ID 999, akt 2
+I (2438) sessions: STOP  #148: ID 999, akt 2
+I (2448) sessions: START #149: ID 999, akt 3
+I (2458) sessions: STOP  #150: ID 999, akt 3
+I (2478) sessions: START #151: ID 999, akt 4
+I (2488) sessions: STOP  #152: ID 999, akt 4
+I (2498) sessions: START #153: ID 999, akt 1
+I (2518) sessions: STOP  #154: ID 999, akt 1
+I (2528) sessions: START #155: ID 999, akt 2
+I (2538) sessions: STOP  #156: ID 999, akt 2
+I (2548) sessions: START #157: ID 999, akt 3
+I (2558) sessions: STOP  #158: ID 999, akt 3
+I (2578) sessions: START #159: ID 999, akt 4
+I (2588) sessions: STOP  #160: ID 999, akt 4
+I (2598) sessions: START #161: ID 999, akt 1
+I (2608) sessions: STOP  #162: ID 999, akt 1
+I (2618) sessions: START #163: ID 999, akt 2
+I (2628) sessions: STOP  #164: ID 999, akt 2
+I (2638) sessions: START #165: ID 999, akt 3
+I (2648) sessions: STOP  #166: ID 999, akt 3
+I (2658) sessions: START #167: ID 999, akt 4
+I (2668) sessions: STOP  #168: ID 999, akt 4
+I (2678) sessions: START #169: ID 999, akt 1
+I (2688) sessions: STOP  #170: ID 999, akt 1
+I (2698) sessions: START #171: ID 999, akt 2
+I (2708) sessions: STOP  #172: ID 999, akt 2
+I (2728) sessions: START #173: ID 999, akt 3
+I (2738) sessions: STOP  #174: ID 999, akt 3
+I (2758) sessions: START #175: ID 999, akt 4
+I (2768) sessions: STOP  #176: ID 999, akt 4
+I (2788) sessions: START #177: ID 999, akt 1
+I (2798) sessions: STOP  #178: ID 999, akt 1
+I (2818) sessions: START #179: ID 999, akt 2
+I (2838) sessions: STOP  #180: ID 999, akt 2
+I (2848) sessions: START #181: ID 999, akt 3
+I (2858) sessions: STOP  #182: ID 999, akt 3
+I (2868) sessions: START #183: ID 999, akt 4
+I (2878) sessions: STOP  #184: ID 999, akt 4
+I (2888) sessions: START #185: ID 999, akt 1
+I (2898) sessions: STOP  #186: ID 999, akt 1
+I (2908) sessions: START #187: ID 999, akt 2
+I (2918) sessions: STOP  #188: ID 999, akt 2
+I (2928) sessions: START #189: ID 999, akt 3
+I (2938) sessions: STOP  #190: ID 999, akt 3
+I (2948) sessions: START #191: ID 999, akt 4
+I (2968) sessions: STOP  #192: ID 999, akt 4
+I (2978) sessions: START #193: ID 999, akt 1
+I (2998) sessions: STOP  #194: ID 999, akt 1
+I (3008) sessions: START #195: ID 999, akt 2
+I (3028) sessions: STOP  #196: ID 999, akt 2
+I (3038) sessions: START #197: ID 999, akt 3
+I (3048) sessions: STOP  #198: ID 999, akt 3
+I (3068) sessions: START #199: ID 999, akt 4
+I (3078) sessions: STOP  #200: ID 999, akt 4
+I (3088) sessions: START #201: ID 999, akt 1
+I (3098) sessions: STOP  #202: ID 999, akt 1
+I (3108) sessions: START #203: ID 999, akt 2
+I (3118) sessions: STOP  #204: ID 999, akt 2
+I (3138) sessions: START #205: ID 999, akt 3
+I (3148) sessions: STOP  #206: ID 999, akt 3
+I (3158) sessions: START #207: ID 999, akt 4
+I (3168) sessions: STOP  #208: ID 999, akt 4
+I (3178) sessions: START #209: ID 999, akt 1
+I (3188) sessions: STOP  #210: ID 999, akt 1
+I (3198) sessions: START #211: ID 999, akt 2
+I (3218) sessions: STOP  #212: ID 999, akt 2
+I (3228) sessions: START #213: ID 999, akt 3
+I (3248) sessions: STOP  #214: ID 999, akt 3
+I (3258) sessions: START #215: ID 999, akt 4
+I (3268) sessions: STOP  #216: ID 999, akt 4
+I (3278) sessions: START #217: ID 999, akt 1
+I (3298) sessions: STOP  #218: ID 999, akt 1
+I (3308) sessions: START #219: ID 999, akt 2
+I (3318) sessions: STOP  #220: ID 999, akt 2
+I (3328) sessions: START #221: ID 999, akt 3
+I (3338) sessions: STOP  #222: ID 999, akt 3
+I (3348) sessions: START #223: ID 999, akt 4
+I (3358) sessions: STOP  #224: ID 999, akt 4
+I (3368) sessions: START #225: ID 999, akt 1
+I (3378) sessions: STOP  #226: ID 999, akt 1
+I (3388) sessions: START #227: ID 999, akt 2
+I (3398) sessions: STOP  #228: ID 999, akt 2
+I (3408) sessions: START #229: ID 999, akt 3
+I (3428) sessions: STOP  #230: ID 999, akt 3
+I (3448) sessions: START #231: ID 999, akt 4
+I (3458) sessions: STOP  #232: ID 999, akt 4
+I (3468) sessions: START #233: ID 999, akt 1
+I (3488) sessions: STOP  #234: ID 999, akt 1
+I (3498) sessions: START #235: ID 999, akt 2
+I (3508) sessions: STOP  #236: ID 999, akt 2
+I (3518) sessions: START #237: ID 999, akt 3
+I (3538) sessions: STOP  #238: ID 999, akt 3
+I (3548) sessions: START #239: ID 999, akt 4
+I (3558) sessions: STOP  #240: ID 999, akt 4
+I (3568) sessions: START #241: ID 999, akt 1
+I (3578) sessions: STOP  #242: ID 999, akt 1
+I (3588) sessions: START #243: ID 999, akt 2
+I (3598) sessions: STOP  #244: ID 999, akt 2
+I (3608) sessions: START #245: ID 999, akt 3
+I (3618) sessions: STOP  #246: ID 999, akt 3
+I (3628) sessions: START #247: ID 999, akt 4
+I (3638) sessions: STOP  #248: ID 999, akt 4
+I (3648) sessions: START #249: ID 999, akt 1
+I (3668) sessions: STOP  #250: ID 999, akt 1
+I (3678) sessions: START #251: ID 999, akt 2
+I (3698) sessions: STOP  #252: ID 999, akt 2
+I (3708) sessions: START #253: ID 999, akt 3
+I (3728) sessions: STOP  #254: ID 999, akt 3
+I (3738) sessions: START #255: ID 999, akt 4
+I (3748) sessions: STOP  #256: ID 999, akt 4
+I (3758) sessions: START #257: ID 999, akt 1
+I (3768) sessions: STOP  #258: ID 999, akt 1
+I (3778) sessions: START #259: ID 999, akt 2
+I (3788) sessions: STOP  #260: ID 999, akt 2
+I (3798) sessions: START #261: ID 999, akt 3
+I (3808) sessions: STOP  #262: ID 999, akt 3
+I (3818) sessions: START #263: ID 999, akt 4
+I (3828) sessions: STOP  #264: ID 999, akt 4
+I (3838) sessions: START #265: ID 999, akt 1
+I (3848) sessions: STOP  #266: ID 999, akt 1
+I (3858) sessions: START #267: ID 999, akt 2
+I (3868) sessions: STOP  #268: ID 999, akt 2
+I (3878) sessions: START #269: ID 999, akt 3
+I (3888) sessions: STOP  #270: ID 999, akt 3
+I (3908) sessions: START #271: ID 999, akt 4
+I (3918) sessions: STOP  #272: ID 999, akt 4
+I (3938) sessions: START #273: ID 999, akt 1
+I (3948) sessions: STOP  #274: ID 999, akt 1
+I (3958) sessions: START #275: ID 999, akt 2
+I (3968) sessions: STOP  #276: ID 999, akt 2
+I (3978) sessions: START #277: ID 999, akt 3
+I (3988) sessions: STOP  #278: ID 999, akt 3
+I (4008) sessions: START #279: ID 999, akt 4
+I (4018) sessions: STOP  #280: ID 999, akt 4
+I (4028) sessions: START #281: ID 999, akt 1
+I (4048) sessions: STOP  #282: ID 999, akt 1
+I (4058) sessions: START #283: ID 999, akt 2
+I (4068) sessions: STOP  #284: ID 999, akt 2
+I (4078) sessions: START #285: ID 999, akt 3
+I (4088) sessions: STOP  #286: ID 999, akt 3
+I (4098) sessions: START #287: ID 999, akt 4
+I (4108) sessions: STOP  #288: ID 999, akt 4
+I (4158) sessions: START #289: ID 999, akt 1
+I (4178) sessions: STOP  #290: ID 999, akt 1
+I (4188) sessions: START #291: ID 999, akt 2
+I (4208) sessions: STOP  #292: ID 999, akt 2
+I (4218) sessions: START #293: ID 999, akt 3
+I (4238) sessions: STOP  #294: ID 999, akt 3
+I (4248) sessions: START #295: ID 999, akt 4
+I (4268) sessions: STOP  #296: ID 999, akt 4
+I (4278) sessions: START #297: ID 999, akt 1
+I (4298) sessions: STOP  #298: ID 999, akt 1
+I (4308) sessions: START #299: ID 999, akt 2
+I (4328) sessions: STOP  #300: ID 999, akt 2
+I (4338) sessions: START #301: ID 999, akt 3
+I (4358) sessions: STOP  #302: ID 999, akt 3
+I (4368) sessions: START #303: ID 999, akt 4
+I (4388) sessions: STOP  #304: ID 999, akt 4
+I (4398) sessions: START #305: ID 999, akt 1
+I (4418) sessions: STOP  #306: ID 999, akt 1
+I (4428) sessions: START #307: ID 999, akt 2
+I (4448) sessions: STOP  #308: ID 999, akt 2
+I (4468) sessions: START #309: ID 999, akt 3
+I (4488) sessions: STOP  #310: ID 999, akt 3
+I (4498) sessions: START #311: ID 999, akt 4
+I (4518) sessions: STOP  #312: ID 999, akt 4
+I (4528) sessions: START #313: ID 999, akt 1
+I (4548) sessions: STOP  #314: ID 999, akt 1
+I (4558) sessions: START #315: ID 999, akt 2
+I (4578) sessions: STOP  #316: ID 999, akt 2
+I (4588) sessions: START #317: ID 999, akt 3
+I (4608) sessions: STOP  #318: ID 999, akt 3
+I (4618) sessions: START #319: ID 999, akt 4
+I (4638) sessions: STOP  #320: ID 999, akt 4
+I (4648) sessions: START #321: ID 999, akt 1
+I (4668) sessions: STOP  #322: ID 999, akt 1
+I (4678) sessions: START #323: ID 999, akt 2
+I (4698) sessions: STOP  #324: ID 999, akt 2
+I (4708) sessions: START #325: ID 999, akt 3
+I (4728) sessions: STOP  #326: ID 999, akt 3
+I (4738) sessions: START #327: ID 999, akt 4
+I (4758) sessions: STOP  #328: ID 999, akt 4
+I (4768) sessions: START #329: ID 999, akt 1
+I (4788) sessions: STOP  #330: ID 999, akt 1
+I (4798) sessions: START #331: ID 999, akt 2
+I (4818) sessions: STOP  #332: ID 999, akt 2
+I (4828) sessions: START #333: ID 999, akt 3
+I (4848) sessions: STOP  #334: ID 999, akt 3
+I (4858) sessions: START #335: ID 999, akt 4
+I (4878) sessions: STOP  #336: ID 999, akt 4
+I (4888) sessions: START #337: ID 999, akt 1
+I (4908) sessions: STOP  #338: ID 999, akt 1
+I (4918) sessions: START #339: ID 999, akt 2
+I (4938) sessions: STOP  #340: ID 999, akt 2
+I (4948) sessions: START #341: ID 999, akt 3
+I (4968) sessions: STOP  #342: ID 999, akt 3
+I (4978) sessions: START #343: ID 999, akt 4
+I (4998) sessions: STOP  #344: ID 999, akt 4
+I (5008) sessions: START #345: ID 999, akt 1
+I (5028) sessions: STOP  #346: ID 999, akt 1
+I (5038) sessions: START #347: ID 999, akt 2
+I (5058) sessions: STOP  #348: ID 999, akt 2
+I (5068) sessions: START #349: ID 999, akt 3
+I (5088) sessions: STOP  #350: ID 999, akt 3
+I (5098) sessions: START #351: ID 999, akt 4
+I (5118) sessions: STOP  #352: ID 999, akt 4
+I (5128) sessions: START #353: ID 999, akt 1
+I (5148) sessions: STOP  #354: ID 999, akt 1
+I (5158) sessions: START #355: ID 999, akt 2
+I (5178) sessions: STOP  #356: ID 999, akt 2
+I (5188) sessions: START #357: ID 999, akt 3
+I (5208) sessions: STOP  #358: ID 999, akt 3
+I (5218) sessions: START #359: ID 999, akt 4
+I (5248) sessions: STOP  #360: ID 999, akt 4
+I (5258) sessions: START #361: ID 999, akt 1
+I (5278) sessions: STOP  #362: ID 999, akt 1
+I (5288) sessions: START #363: ID 999, akt 2
+I (5308) sessions: STOP  #364: ID 999, akt 2
+I (5318) sessions: START #365: ID 999, akt 3
+I (5338) sessions: STOP  #366: ID 999, akt 3
+I (5348) sessions: START #367: ID 999, akt 4
+I (5368) sessions: STOP  #368: ID 999, akt 4
+I (5378) sessions: START #369: ID 999, akt 1
+I (5398) sessions: STOP  #370: ID 999, akt 1
+I (5408) sessions: START #371: ID 999, akt 2
+I (5428) sessions: STOP  #372: ID 999, akt 2
+I (5438) sessions: START #373: ID 999, akt 3
+I (5458) sessions: STOP  #374: ID 999, akt 3
+I (5468) sessions: START #375: ID 999, akt 4
+I (5488) sessions: STOP  #376: ID 999, akt 4
+I (5498) sessions: START #377: ID 999, akt 1
+I (5518) sessions: STOP  #378: ID 999, akt 1
+I (5528) sessions: START #379: ID 999, akt 2
+I (5548) sessions: STOP  #380: ID 999, akt 2
+I (5558) sessions: START #381: ID 999, akt 3
+I (5578) sessions: STOP  #382: ID 999, akt 3
+I (5588) sessions: START #383: ID 999, akt 4
+I (5608) sessions: STOP  #384: ID 999, akt 4
+I (5618) sessions: START #385: ID 999, akt 1
+I (5638) sessions: STOP  #386: ID 999, akt 1
+I (5648) sessions: START #387: ID 999, akt 2
+I (5668) sessions: STOP  #388: ID 999, akt 2
+I (5678) sessions: START #389: ID 999, akt 3
+I (5698) sessions: STOP  #390: ID 999, akt 3
+I (5708) sessions: START #391: ID 999, akt 4
+I (5728) sessions: STOP  #392: ID 999, akt 4
+I (5738) sessions: START #393: ID 999, akt 1
+I (5758) sessions: STOP  #394: ID 999, akt 1
+I (5768) sessions: START #395: ID 999, akt 2
+I (5788) sessions: STOP  #396: ID 999, akt 2
+I (5798) sessions: START #397: ID 999, akt 3
+I (5818) sessions: STOP  #398: ID 999, akt 3
+I (5828) sessions: START #399: ID 999, akt 4
+I (5848) sessions: STOP  #400: ID 999, akt 4
+I (5858) sessions: START #401: ID 999, akt 1
+I (5878) sessions: STOP  #402: ID 999, akt 1
+I (5888) sessions: START #403: ID 999, akt 2
+I (5908) sessions: STOP  #404: ID 999, akt 2
+I (5918) sessions: START #405: ID 999, akt 3
+I (5938) sessions: STOP  #406: ID 999, akt 3
+I (5948) sessions: START #407: ID 999, akt 4
+I (5968) sessions: STOP  #408: ID 999, akt 4
+I (5978) sessions: START #409: ID 999, akt 1
+I (5998) sessions: STOP  #410: ID 999, akt 1
+I (6008) sessions: START #411: ID 999, akt 2
+I (6028) sessions: STOP  #412: ID 999, akt 2
+I (6038) sessions: START #413: ID 999, akt 3
+I (6058) sessions: STOP  #414: ID 999, akt 3
+I (6068) sessions: START #415: ID 999, akt 4
+I (6088) sessions: STOP  #416: ID 999, akt 4
+I (6098) sessions: START #417: ID 999, akt 1
+I (6118) sessions: STOP  #418: ID 999, akt 1
+I (6128) sessions: START #419: ID 999, akt 2
+I (6148) sessions: STOP  #420: ID 999, akt 2
+I (6158) sessions: START #421: ID 999, akt 3
+I (6178) sessions: STOP  #422: ID 999, akt 3
+I (6188) sessions: START #423: ID 999, akt 4
+I (6208) sessions: STOP  #424: ID 999, akt 4
+I (6218) sessions: START #425: ID 999, akt 1
+I (6238) sessions: STOP  #426: ID 999, akt 1
+I (6248) sessions: START #427: ID 999, akt 2
+I (6268) sessions: STOP  #428: ID 999, akt 2
+I (6278) sessions: START #429: ID 999, akt 3
+I (6298) sessions: STOP  #430: ID 999, akt 3
+I (6308) sessions: START #431: ID 999, akt 4
+I (6328) sessions: STOP  #432: ID 999, akt 4
+I (6338) sessions: START #433: ID 999, akt 1
+I (6358) sessions: STOP  #434: ID 999, akt 1
+I (6368) sessions: START #435: ID 999, akt 2
+I (6388) sessions: STOP  #436: ID 999, akt 2
+I (6398) sessions: START #437: ID 999, akt 3
+I (6418) sessions: STOP  #438: ID 999, akt 3
+I (6428) sessions: START #439: ID 999, akt 4
+I (6448) sessions: STOP  #440: ID 999, akt 4
+I (6458) sessions: START #441: ID 999, akt 1
+I (6478) sessions: STOP  #442: ID 999, akt 1
+I (6488) sessions: START #443: ID 999, akt 2
+I (6508) sessions: STOP  #444: ID 999, akt 2
+I (6518) sessions: START #445: ID 999, akt 3
+I (6538) sessions: STOP  #446: ID 999, akt 3
+I (6548) sessions: START #447: ID 999, akt 4
+I (6568) sessions: STOP  #448: ID 999, akt 4
+I (6578) sessions: START #449: ID 999, akt 1
+I (6598) sessions: STOP  #450: ID 999, akt 1
+I (6608) sessions: START #451: ID 999, akt 2
+I (6678) sessions: STOP  #452: ID 999, akt 2
+I (6688) sessions: START #453: ID 999, akt 3
+I (6708) sessions: STOP  #454: ID 999, akt 3
+I (6718) sessions: START #455: ID 999, akt 4
+I (6738) sessions: STOP  #456: ID 999, akt 4
+I (6748) sessions: START #457: ID 999, akt 1
+I (6768) sessions: STOP  #458: ID 999, akt 1
+I (6778) sessions: START #459: ID 999, akt 2
+I (6798) sessions: STOP  #460: ID 999, akt 2
+I (6808) sessions: START #461: ID 999, akt 3
+I (6828) sessions: STOP  #462: ID 999, akt 3
+I (6838) sessions: START #463: ID 999, akt 4
+I (6858) sessions: STOP  #464: ID 999, akt 4
+I (6868) sessions: START #465: ID 999, akt 1
+I (6888) sessions: STOP  #466: ID 999, akt 1
+I (6898) sessions: START #467: ID 999, akt 2
+I (6918) sessions: STOP  #468: ID 999, akt 2
+I (6928) sessions: START #469: ID 999, akt 3
+I (6948) sessions: STOP  #470: ID 999, akt 3
+I (6958) sessions: START #471: ID 999, akt 4
+I (6978) sessions: STOP  #472: ID 999, akt 4
+I (6988) sessions: START #473: ID 999, akt 1
+I (7008) sessions: STOP  #474: ID 999, akt 1
+I (7018) sessions: START #475: ID 999, akt 2
+I (7038) sessions: STOP  #476: ID 999, akt 2
+I (7048) sessions: START #477: ID 999, akt 3
+I (7068) sessions: STOP  #478: ID 999, akt 3
+I (7078) sessions: START #479: ID 999, akt 4
+I (7098) sessions: STOP  #480: ID 999, akt 4
+I (7108) sessions: START #481: ID 999, akt 1
+I (7128) sessions: STOP  #482: ID 999, akt 1
+I (7138) sessions: START #483: ID 999, akt 2
+I (7158) sessions: STOP  #484: ID 999, akt 2
+I (7168) sessions: START #485: ID 999, akt 3
+I (7188) sessions: STOP  #486: ID 999, akt 3
+I (7198) sessions: START #487: ID 999, akt 4
+I (7218) sessions: STOP  #488: ID 999, akt 4
+I (7228) sessions: START #489: ID 999, akt 1
+I (7248) sessions: STOP  #490: ID 999, akt 1
+I (7258) sessions: START #491: ID 999, akt 2
+I (7278) sessions: STOP  #492: ID 999, akt 2
+I (7288) sessions: START #493: ID 999, akt 3
+I (7308) sessions: STOP  #494: ID 999, akt 3
+I (7318) sessions: START #495: ID 999, akt 4
+I (7338) sessions: STOP  #496: ID 999, akt 4
+I (7348) sessions: START #497: ID 999, akt 1
+I (7368) sessions: STOP  #498: ID 999, akt 1
+I (7378) sessions: START #499: ID 999, akt 2
+I (7398) sessions: STOP  #500: ID 999, akt 2
+W (7398) terminal: TEST: 500 zdarzen zapisanych w 6668 ms
+I (7598) terminal: Czytnik OK, szablonow w pamieci: 6
+I (7618) terminal: Pierwsze wolne miejsce w bazie: 6
+I (7998) wifi:wifi driver task: 3ffca824, prio:23, stack:6656, core=0
+I (8008) wifi:wifi firmware version: 14da9b7
+I (8008) wifi:wifi certification version: v7.0
+I (8008) wifi:config NVS flash: enabled
+I (8008) wifi:config nano formatting: disabled
+I (8018) wifi:Init data frame dynamic rx buffer num: 32
+I (8018) wifi:Init static rx mgmt buffer num: 5
+I (8028) wifi:Init management short buffer num: 32
+I (8028) wifi:Init dynamic tx buffer num: 32
+I (8028) wifi:Init static rx buffer size: 1600
+I (8038) wifi:Init static rx buffer num: 10
+I (8038) wifi:Init dynamic rx buffer num: 32
+I (8048) wifi_init: rx ba win: 6
+I (8048) wifi_init: accept mbox: 6
+I (8048) wifi_init: tcpip mbox: 32
+I (8058) wifi_init: udp mbox: 6
+I (8058) wifi_init: tcp mbox: 6
+I (8058) wifi_init: tcp tx win: 5760
+I (8058) wifi_init: tcp rx win: 5760
+I (8068) wifi_init: tcp mss: 1440
+I (8068) wifi_init: WiFi IRAM OP enabled
+I (8068) wifi_init: WiFi RX IRAM OP enabled
+I (8078) phy_init: phy_version 4861,b71b5ad,Aug  5 2025,11:16:06
+I (8168) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(0)
+I (8188) wifi:mode : sta (a4:f0:0f:5d:45:40)
+I (8188) wifi:enable tsf
+I (8208) wifi:new:<6,0>, old:<1,0>, ap:<255,255>, sta:<6,0>, prof:1, snd_ch_cfg:0x0
+I (8208) wifi:state: init -> auth (0xb0)
+I (8208) mqtt: Terminal a4f00f5d4540, broker mqtt://172.20.10.2:1883
+I (8218) ui: stan 0 -> 0
+I (8228) wifi:state: auth -> assoc (0x0)
+I (8238) wifi:state: assoc -> run (0x10)
+I (8298) wifi:connected with Robux_Generator, aid = 2, channel 6, BW20, bssid = 62:bc:d7:67:9c:94
+I (8308) wifi:security: WPA2-PSK, phy: bgn, rssi: -34
+I (8308) wifi:pm start, type: 1
+
+I (8308) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (8328) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (9458) esp_netif_handlers: sta ip: 172.20.10.12, mask: 255.255.255.240, gw: 172.20.10.1
+I (9458) net: Polaczono, IP: 172.20.10.12
+I (12928) wifi:<ba-add>idx:0 (ifx:0, 62:bc:d7:67:9c:94), tid:0, ssn:2, winSize:64
+I (13138) timesync: SNTP: czas zsynchronizowany, zapisano do RTC
+���������������������������������������������������������������� (24058) mqtt: Polaczono z brokerem
+I (24318) sync: Wyslano #1
+I (24518) sync: ACK #1
+I (24528) sync: Wyslano #2
+I (24778) sync: ACK #2
+I (24788) sync: Wyslano #3
+I (25028) sync: ACK #3
+I (25038) sync: Wyslano #4
+I (25528) sync: ACK #4
+I (25538) sync: Wyslano #5
+I (25778) sync: ACK #5
+I (25788) sync: Wyslano #6
+I (26028) sync: ACK #6
+I (26038) sync: Wyslano #7
+I (26318) sync: ACK #7
+I (26328) sync: Wyslano #8
+I (26528) sync: ACK #8
+I (26538) sync: Wyslano #9
+I (26778) sync: ACK #9
+I (26788) sync: Wyslano #10
+I (27028) sync: ACK #10
+I (27038) sync: Wyslano #11
+I (27318) sync: ACK #11
+I (27328) sync: Wyslano #12
+I (27528) sync: ACK #12
+I (27538) sync: Wyslano #13
+I (27778) sync: ACK #13
+I (27788) sync: Wyslano #14
+I (28028) sync: ACK #14
+I (28038) sync: Wyslano #15
+I (28318) sync: ACK #15
+I (28328) sync: Wyslano #16
+I (28598) sync: ACK #16
+I (28608) sync: Wyslano #17
+I (28778) sync: ACK #17
+I (28788) sync: Wyslano #18
+I (29028) sync: ACK #18
+I (29038) sync: Wyslano #19
+I (29318) sync: ACK #19
+I (29328) sync: Wyslano #20
+I (29538) sync: ACK #20
+I (29548) sync: Wyslano #21
+I (29788) sync: ACK #21
+I (29798) sync: Wyslano #22
+I (30038) sync: ACK #22
+I (30048) sync: Wyslano #23
+I (30328) sync: ACK #23
+I (30328) sync: Wyslano #24
+I (30538) sync: ACK #24
+I (30538) sync: Wyslano #25
+I (30788) sync: ACK #25
+I (30788) sync: Wyslano #26
+I (31028) sync: ACK #26
+I (31038) sync: Wyslano #27
+I (31318) sync: ACK #27
+I (31328) sync: Wyslano #28
+I (31528) sync: ACK #28
+I (31538) sync: Wyslano #29
+I (31778) sync: ACK #29
+I (31788) sync: Wyslano #30
+I (32028) sync: ACK #30
+I (32038) sync: Wyslano #31
+I (32318) sync: ACK #31
+I (32328) sync: Wyslano #32
+I (32528) sync: ACK #32
+I (32538) sync: Wyslano #33
+I (32778) sync: ACK #33
+I (32788) sync: Wyslano #34
+I (33028) sync: ACK #34
+I (33038) sync: Wyslano #35
+I (33318) sync: ACK #35
+I (33328) sync: Wyslano #36
+I (33528) sync: ACK #36
+I (33538) sync: Wyslano #37
+I (33778) sync: ACK #37
+I (33788) sync: Wyslano #38
+I (34028) sync: ACK #38
+I (34038) sync: Wyslano #39
+I (34318) sync: ACK #39
+I (34328) sync: Wyslano #40
+I (34528) sync: ACK #40
+I (34538) sync: Wyslano #41
+I (34778) sync: ACK #41
+I (34788) sync: Wyslano #42
+I (35028) sync: ACK #42
+I (35038) sync: Wyslano #43
+I (35318) sync: ACK #43
+I (35328) sync: Wyslano #44
+I (35528) sync: ACK #44
+I (35538) sync: Wyslano #45
+I (35788) sync: ACK #45
+I (35798) sync: Wyslano #46
+I (36038) sync: ACK #46
+I (36048) sync: Wyslano #47
+I (36328) sync: ACK #47
+I (36328) sync: Wyslano #48
+I (36538) sync: ACK #48
+I (36548) sync: Wyslano #49
+I (37328) sync: ACK #49
+I (37338) sync: Wyslano #50
+I (37538) sync: ACK #50
+I (37548) sync: Wyslano #51
+I (38038) sync: ACK #51
+I (38048) sync: Wyslano #52
+I (38318) sync: ACK #52
+I (38328) sync: Wyslano #53
+I (38528) sync: ACK #53
+I (38538) sync: Wyslano #54
+I (38778) sync: ACK #54
+I (38788) sync: Wyslano #55
+I (39318) sync: ACK #55
+I (39328) sync: Wyslano #56
+I (39778) sync: ACK #56
+I (39788) sync: Wyslano #57
+I (40318) sync: ACK #57
+I (40328) sync: Wyslano #58
+I (40528) sync: ACK #58
+I (40538) sync: Wyslano #59
+I (40778) sync: ACK #59
+I (40788) sync: Wyslano #60
+I (41028) sync: ACK #60
+I (41038) sync: Wyslano #61
+I (41318) sync: ACK #61
+I (41328) sync: Wyslano #62
+I (41528) sync: ACK #62
+I (41538) sync: Wyslano #63
+I (42028) sync: ACK #63
+I (42038) sync: Wyslano #64
+I (42318) sync: ACK #64
+I (42328) sync: Wyslano #65
+I (42528) sync: ACK #65
+I (42538) sync: Wyslano #66
+I (42778) sync: ACK #66
+I (42788) sync: Wyslano #67
+I (43318) sync: ACK #67
+I (43328) sync: Wyslano #68
+I (43528) sync: ACK #68
+I (43538) sync: Wyslano #69
+I (43778) sync: ACK #69
+I (43788) sync: Wyslano #70
+I (44028) sync: ACK #70
+I (44038) sync: Wyslano #71
+I (44318) sync: ACK #71
+I (44328) sync: Wyslano #72
+I (44538) sync: ACK #72
+I (44548) sync: Wyslano #73
+I (44788) sync: ACK #73
+I (44798) sync: Wyslano #74
+I (45038) sync: ACK #74
+I (45048) sync: Wyslano #75
+I (45328) sync: ACK #75
+I (45328) sync: Wyslano #76
+I (45538) sync: ACK #76
+I (45538) sync: Wyslano #77
+I (45778) sync: ACK #77
+I (45788) sync: Wyslano #78
+I (46028) sync: ACK #78
+I (46038) sync: Wyslano #79
+I (46318) sync: ACK #79
+I (46328) sync: Wyslano #80
+I (46538) sync: ACK #80
+I (46538) sync: Wyslano #81
+I (46778) sync: ACK #81
+I (46788) sync: Wyslano #82
+I (47028) sync: ACK #82
+I (47038) sync: Wyslano #83
+I (47318) sync: ACK #83
+I (47328) sync: Wyslano #84
+I (47528) sync: ACK #84
+I (47538) sync: Wyslano #85
+I (47778) sync: ACK #85
+I (47788) sync: Wyslano #86
+I (48028) sync: ACK #86
+I (48038) sync: Wyslano #87
+I (48318) sync: ACK #87
+I (48328) sync: Wyslano #88
+I (48528) sync: ACK #88
+I (48538) sync: Wyslano #89
+I (48778) sync: ACK #89
+I (48788) sync: Wyslano #90
+I (49028) sync: ACK #90
+I (49038) sync: Wyslano #91
+I (49318) sync: ACK #91
+I (49328) sync: Wyslano #92
+I (49528) sync: ACK #92
+I (49538) sync: Wyslano #93
+I (49778) sync: ACK #93
+I (49788) sync: Wyslano #94
+I (50028) sync: ACK #94
+I (50038) sync: Wyslano #95
+I (50318) sync: ACK #95
+I (50328) sync: Wyslano #96
+I (50528) sync: ACK #96
+I (50538) sync: Wyslano #97
+I (50778) sync: ACK #97
+I (50788) sync: Wyslano #98
+I (51038) sync: ACK #98
+I (51048) sync: Wyslano #99
+I (52788) sync: ACK #99
+I (52798) sync: Wyslano #100
+I (53038) sync: ACK #100
+I (53048) sync: Wyslano #101
+I (53328) sync: ACK #101
+I (53328) sync: Wyslano #102
+W (53398) mqtt: Rozlaczono z brokerem - ponowenie automatyczne
+���������������������������������������������������������������� (78408) mqtt: Broker nieosiagalny: ESP_ERR_ESP_TLS_CONNECTION_TIMEOUT - ponawianie w tle
+���������������������������������������������������������������� (93468) mqtt: Polaczono z brokerem
+I (93528) sync: Wyslano #102
+I (93788) sync: ACK #102
+I (93788) sync: Wyslano #103
+I (94028) sync: ACK #103
+I (94038) sync: Wyslano #104
+I (94318) sync: ACK #104
+I (94328) sync: Wyslano #105
+I (94528) sync: ACK #105
+I (94538) sync: Wyslano #106
+I (94778) sync: ACK #106
+I (94788) sync: Wyslano #107
+I (95028) sync: ACK #107
+I (95038) sync: Wyslano #108
+I (95318) sync: ACK #108
+I (95328) sync: Wyslano #109
+I (95528) sync: ACK #109
+I (95538) sync: Wyslano #110
+I (96028) sync: ACK #110
+I (96038) sync: Wyslano #111
+I (96318) sync: ACK #111
+I (96328) sync: Wyslano #112
+I (96528) sync: ACK #112
+I (96538) sync: Wyslano #113
+I (96778) sync: ACK #113
+I (96788) sync: Wyslano #114
+I (97318) sync: ACK #114
+I (97328) sync: Wyslano #115
+I (97528) sync: ACK #115
+I (97538) sync: Wyslano #116
+I (97778) sync: ACK #116
+I (97788) sync: Wyslano #117
+I (98028) sync: ACK #117
+I (98038) sync: Wyslano #118
+I (98318) sync: ACK #118
+I (98328) sync: Wyslano #119
+I (98528) sync: ACK #119
+I (98538) sync: Wyslano #120
+I (98778) sync: ACK #120
+I (98788) sync: Wyslano #121
+I (99028) sync: ACK #121
+I (99038) sync: Wyslano #122
+I (99528) sync: ACK #122
+I (99538) sync: Wyslano #123
+I (99788) sync: ACK #123
+I (99798) sync: Wyslano #124
+I (100038) sync: ACK #124
+I (100048) sync: Wyslano #125
+I (100328) sync: ACK #125
+I (100338) sync: Wyslano #126
+I (100538) sync: ACK #126
+I (100548) sync: Wyslano #127
+I (100788) sync: ACK #127
+I (100788) sync: Wyslano #128
+I (101318) sync: ACK #128
+I (101328) sync: Wyslano #129
+I (101528) sync: ACK #129
+I (101538) sync: Wyslano #130
+I (101778) sync: ACK #130
+I (101788) sync: Wyslano #131
+I (102028) sync: ACK #131
+I (102038) sync: Wyslano #132
+I (102318) sync: ACK #132
+I (102328) sync: Wyslano #133
+I (102778) sync: ACK #133
+I (102788) sync: Wyslano #134
+I (103028) sync: ACK #134
+I (103038) sync: Wyslano #135
+I (103318) sync: ACK #135
+I (103328) sync: Wyslano #136
+I (103528) sync: ACK #136
+I (103538) sync: Wyslano #137
+I (103778) sync: ACK #137
+I (103788) sync: Wyslano #138
+I (104028) sync: ACK #138
+I (104038) sync: Wyslano #139
+I (104318) sync: ACK #139
+I (104328) sync: Wyslano #140
+I (104528) sync: ACK #140
+I (104538) sync: Wyslano #141
+I (104778) sync: ACK #141
+I (104788) sync: Wyslano #142
+I (105098) sync: ACK #142
+I (105108) sync: Wyslano #143
+I (105318) sync: ACK #143
+I (105328) sync: Wyslano #144
+I (105528) sync: ACK #144
+I (105538) sync: Wyslano #145
+I (105778) sync: ACK #145
+I (105788) sync: Wyslano #146
+I (106028) sync: ACK #146
+I (106038) sync: Wyslano #147
+I (106318) sync: ACK #147
+I (106328) sync: Wyslano #148
+I (106538) sync: ACK #148
+I (106548) sync: Wyslano #149
+I (106788) sync: ACK #149
+I (106798) sync: Wyslano #150
+I (107038) sync: ACK #150
+I (107048) sync: Wyslano #151
+I (107328) sync: ACK #151
+I (107338) sync: Wyslano #152
+I (107538) sync: ACK #152
+I (107538) sync: Wyslano #153
+I (107788) sync: ACK #153
+I (107788) sync: Wyslano #154
+I (108028) sync: ACK #154
+I (108038) sync: Wyslano #155
+I (108318) sync: ACK #155
+I (108328) sync: Wyslano #156
+I (108528) sync: ACK #156
+I (108538) sync: Wyslano #157
+I (108778) sync: ACK #157
+I (108788) sync: Wyslano #158
+I (109028) sync: ACK #158
+I (109038) sync: Wyslano #159
+I (109318) sync: ACK #159
+I (109328) sync: Wyslano #160
+I (109528) sync: ACK #160
+I (109538) sync: Wyslano #161
+I (109778) sync: ACK #161
+I (109788) sync: Wyslano #162
+I (110028) sync: ACK #162
+I (110038) sync: Wyslano #163
+I (110318) sync: ACK #163
+I (110328) sync: Wyslano #164
+I (110528) sync: ACK #164
+I (110538) sync: Wyslano #165
+I (110778) sync: ACK #165
+I (110788) sync: Wyslano #166
+I (111028) sync: ACK #166
+I (111038) sync: Wyslano #167
+I (111318) sync: ACK #167
+I (111328) sync: Wyslano #168
+I (111528) sync: ACK #168
+I (111538) sync: Wyslano #169
+I (111778) sync: ACK #169
+I (111788) sync: Wyslano #170
+I (112028) sync: ACK #170
+I (112038) sync: Wyslano #171
+I (112318) sync: ACK #171
+I (112328) sync: Wyslano #172
+I (112528) sync: ACK #172
+I (112538) sync: Wyslano #173
+I (112788) sync: ACK #173
+I (112798) sync: Wyslano #174
+I (113038) sync: ACK #174
+I (113038) sync: Wyslano #175
+I (113328) sync: ACK #175
+I (113338) sync: Wyslano #176
+I (113538) sync: ACK #176
+I (113538) sync: Wyslano #177
+I (113788) sync: ACK #177
+I (113788) sync: Wyslano #178
+I (114038) sync: ACK #178
+I (114038) sync: Wyslano #179
+I (114328) sync: ACK #179
+I (114338) sync: Wyslano #180
+I (114528) sync: ACK #180
+I (114538) sync: Wyslano #181
+I (114778) sync: ACK #181
+I (114788) sync: Wyslano #182
+���������������������������������������������������������������� (115318) sync: ACK #182
+I (115328) sync: Wyslano #183
+I (115528) sync: ACK #183
+I (115538) sync: Wyslano #184
+I (115778) sync: ACK #184
+I (115788) sync: Wyslano #185
+I (116028) sync: ACK #185
+I (116038) sync: Wyslano #186
+I (116318) sync: ACK #186
+I (116328) sync: Wyslano #187
+I (116528) sync: ACK #187
+I (116538) sync: Wyslano #188
+I (116778) sync: ACK #188
+I (116788) sync: Wyslano #189
+I (117028) sync: ACK #189
+I (117038) sync: Wyslano #190
+I (117318) sync: ACK #190
+I (117328) sync: Wyslano #191
+I (117528) sync: ACK #191
+I (117538) sync: Wyslano #192
+I (117778) sync: ACK #192
+I (117788) sync: Wyslano #193
+I (118028) sync: ACK #193
+I (118038) sync: Wyslano #194
+I (118318) sync: ACK #194
+I (118328) sync: Wyslano #195
+I (118528) sync: ACK #195
+I (118538) sync: Wyslano #196
+I (118778) sync: ACK #196
+I (118788) sync: Wyslano #197
+I (119028) sync: ACK #197
+I (119038) sync: Wyslano #198
+I (119528) sync: ACK #198
+I (119538) sync: Wyslano #199
+I (119778) sync: ACK #199
+I (119788) sync: Wyslano #200
+I (120038) sync: ACK #200
+I (120048) sync: Wyslano #201
+I (120328) sync: ACK #201
+I (120338) sync: Wyslano #202
+I (120538) sync: ACK #202
+I (120538) sync: Wyslano #203
+I (120788) sync: ACK #203
+I (120798) sync: Wyslano #204
+I (121038) sync: ACK #204
+I (121048) sync: Wyslano #205
+I (121318) sync: ACK #205
+I (121328) sync: Wyslano #206
+I (121528) sync: ACK #206
+I (121538) sync: Wyslano #207
+I (122028) sync: ACK #207
+I (122038) sync: Wyslano #208
+I (122318) sync: ACK #208
+I (122328) sync: Wyslano #209
+I (122528) sync: ACK #209
+I (122538) sync: Wyslano #210
+I (122778) sync: ACK #210
+I (122788) sync: Wyslano #211
+I (123028) sync: ACK #211
+I (123038) sync: Wyslano #212
+I (123528) sync: ACK #212
+I (123538) sync: Wyslano #213
+I (123778) sync: ACK #213
+I (123788) sync: Wyslano #214
+I (124028) sync: ACK #214
+I (124038) sync: Wyslano #215
+I (124318) sync: ACK #215
+I (124328) sync: Wyslano #216
+I (124528) sync: ACK #216
+I (124538) sync: Wyslano #217
+I (125028) sync: ACK #217
+I (125038) sync: Wyslano #218
+I (125318) sync: ACK #218
+I (125328) sync: Wyslano #219
+I (125528) sync: ACK #219
+I (125538) sync: Wyslano #220
+I (126028) sync: ACK #220
+I (126038) sync: Wyslano #221
+I (126318) sync: ACK #221
+I (126328) sync: Wyslano #222
+I (126528) sync: ACK #222
+I (126538) sync: Wyslano #223
+I (126778) sync: ACK #223
+I (126788) sync: Wyslano #224
+I (127028) sync: ACK #224
+I (127038) sync: Wyslano #225
+I (127328) sync: ACK #225
+I (127328) sync: Wyslano #226
+I (127788) sync: ACK #226
+I (127788) sync: Wyslano #227
+I (128038) sync: ACK #227
+I (128048) sync: Wyslano #228
+I (128328) sync: ACK #228
+I (128338) sync: Wyslano #229
+I (128538) sync: ACK #229
+I (128538) sync: Wyslano #230
+I (128788) sync: ACK #230
+I (128788) sync: Wyslano #231
+I (129028) sync: ACK #231
+I (129038) sync: Wyslano #232
+I (129528) sync: ACK #232
+I (129538) sync: Wyslano #233
+I (129778) sync: ACK #233
+I (129788) sync: Wyslano #234
+I (130028) sync: ACK #234
+I (130038) sync: Wyslano #235
+I (130318) sync: ACK #235
+I (130328) sync: Wyslano #236
+I (130528) sync: ACK #236
+I (130538) sync: Wyslano #237
+I (130778) sync: ACK #237
+I (130788) sync: Wyslano #238
+I (131318) sync: ACK #238
+I (131328) sync: Wyslano #239
+I (131528) sync: ACK #239
+I (131538) sync: Wyslano #240
+I (131778) sync: ACK #240
+I (131788) sync: Wyslano #241
+I (132028) sync: ACK #241
+I (132038) sync: Wyslano #242
+I (132318) sync: ACK #242
+I (132328) sync: Wyslano #243
+I (132528) sync: ACK #243
+I (132538) sync: Wyslano #244
+I (132778) sync: ACK #244
+I (132788) sync: Wyslano #245
+I (133028) sync: ACK #245
+I (133038) sync: Wyslano #246
+I (133318) sync: ACK #246
+I (133328) sync: Wyslano #247
+I (133528) sync: ACK #247
+I (133538) sync: Wyslano #248
+I (133778) sync: ACK #248
+I (133788) sync: Wyslano #249
+I (134028) sync: ACK #249
+I (134038) sync: Wyslano #250
+I (134328) sync: ACK #250
+I (134338) sync: Wyslano #251
+I (134538) sync: ACK #251
+I (134548) sync: Wyslano #252
+I (134788) sync: ACK #252
+I (134798) sync: Wyslano #253
+I (135038) sync: ACK #253
+I (135038) sync: Wyslano #254
+I (135538) sync: ACK #254
+I (135548) sync: Wyslano #255
+I (135788) sync: ACK #255
+I (135798) sync: Wyslano #256
+I (136028) sync: ACK #256
+I (136038) sync: Wyslano #257
+I (136318) sync: ACK #257
+I (136328) sync: Wyslano #258
+I (136528) sync: ACK #258
+I (136538) sync: Wyslano #259
+I (136778) sync: ACK #259
+I (136788) sync: Wyslano #260
+I (137028) sync: ACK #260
+I (137038) sync: Wyslano #261
+I (137318) sync: ACK #261
+I (137328) sync: Wyslano #262
+I (137528) sync: ACK #262
+I (137538) sync: Wyslano #263
+I (137778) sync: ACK #263
+I (137788) sync: Wyslano #264
+I (138028) sync: ACK #264
+I (138038) sync: Wyslano #265
+I (138318) sync: ACK #265
+I (138328) sync: Wyslano #266
+I (138528) sync: ACK #266
+I (138538) sync: Wyslano #267
+I (138778) sync: ACK #267
+I (138788) sync: Wyslano #268
+I (139098) sync: ACK #268
+I (139108) sync: Wyslano #269
+I (139318) sync: ACK #269
+I (139328) sync: Wyslano #270
+I (139528) sync: ACK #270
+I (139538) sync: Wyslano #271
+I (139778) sync: ACK #271
+I (139788) sync: Wyslano #272
+I (140028) sync: ACK #272
+I (140038) sync: Wyslano #273
+I (140318) sync: ACK #273
+I (140328) sync: Wyslano #274
+I (140528) sync: ACK #274
+I (140538) sync: Wyslano #275
+I (140778) sync: ACK #275
+I (140788) sync: Wyslano #276
+I (141028) sync: ACK #276
+I (141048) sync: Wyslano #277
+I (141328) sync: ACK #277
+I (141338) sync: Wyslano #278
+I (141538) sync: ACK #278
+I (141538) sync: Wyslano #279
+I (141788) sync: ACK #279
+I (141788) sync: Wyslano #280
+I (142038) sync: ACK #280
+I (142048) sync: Wyslano #281
+I (142328) sync: ACK #281
+I (142328) sync: Wyslano #282
+I (142528) sync: ACK #282
+I (142538) sync: Wyslano #283
+I (142778) sync: ACK #283
+I (142788) sync: Wyslano #284
+I (143028) sync: ACK #284
+I (143038) sync: Wyslano #285
+I (143318) sync: ACK #285
+I (143328) sync: Wyslano #286
+I (143528) sync: ACK #286
+I (143538) sync: Wyslano #287
+I (143778) sync: ACK #287
+I (143788) sync: Wyslano #288
+I (144028) sync: ACK #288
+I (144038) sync: Wyslano #289
+I (144328) sync: ACK #289
+I (144328) sync: Wyslano #290
+I (144528) sync: ACK #290
+I (144538) sync: Wyslano #291
+I (144778) sync: ACK #291
+I (144788) sync: Wyslano #292
+I (145028) sync: ACK #292
+I (145038) sync: Wyslano #293
+I (145318) sync: ACK #293
+I (145328) sync: Wyslano #294
+I (145528) sync: ACK #294
+I (145538) sync: Wyslano #295
+I (145778) sync: ACK #295
+I (145788) sync: Wyslano #296
+I (146318) sync: ACK #296
+I (146328) sync: Wyslano #297
+I (146528) sync: ACK #297
+I (146538) sync: Wyslano #298
+I (146778) sync: ACK #298
+I (146788) sync: Wyslano #299
+I (147028) sync: ACK #299
+I (147038) sync: Wyslano #300
+I (147318) sync: ACK #300
+I (147328) sync: Wyslano #301
+I (147528) sync: ACK #301
+I (147538) sync: Wyslano #302
+I (153598) wifi:bcn_timeout,ap_probe_send_start
+I (156098) wifi:ap_probe_send over, reset wifi status to disassoc
+I (156098) wifi:state: run -> init (0xc800)
+I (156118) wifi:pm stop, total sleep time: 63867464 us / 147805874 us
+
+I (156118) wifi:<ba-del>idx:0, tid:0
+I (156118) wifi:new:<6,0>, old:<6,0>, ap:<255,255>, sta:<6,0>, prof:1, snd_ch_cfg:0x0
+W (156128) net: Brak polaczenia (reason: 200) - praca offline, ponawianie co 5 s
+W (156128) mqtt: Rozlaczono z brokerem - ponowenie automatyczne
+W (163548) net: Brak polaczenia (reason: 201) - praca offline, ponawianie co 5 s
+���������������������������������������������������������������� (193728) ui: Rozpoznano ID 0 (wynik 47)
+I (193728) ui: stan 0 -> 1
+I (196198) sessions: START #501: ID 0, akt 2
+I (196198) ui: stan 1 -> 2
+I (198268) ui: stan 2 -> 0
+I (200058) ui: Rozpoznano ID 1 (wynik 145)
+I (200058) ui: stan 0 -> 1
+I (201858) sessions: START #502: ID 1, akt 1
+I (201858) ui: stan 1 -> 2
+I (204108) ui: stan 2 -> 0
+I (207168) ui: Rozpoznano ID 2 (wynik 182)
+I (207168) ui: stan 0 -> 1
+I (210208) sessions: START #503: ID 2, akt 4
+I (210208) ui: stan 1 -> 2
+I (212458) ui: stan 2 -> 0
+I (220478) wifi:new:<6,0>, old:<6,0>, ap:<255,255>, sta:<6,0>, prof:1, snd_ch_cfg:0x0
+I (220478) wifi:state: init -> auth (0xb0)
+I (220488) wifi:state: auth -> assoc (0x0)
+I (220498) wifi:state: assoc -> run (0x10)
+I (220918) wifi:connected with Robux_Generator, aid = 1, channel 6, BW20, bssid = ba:3d:42:de:77:70
+I (220918) wifi:security: WPA2-PSK, phy: bgn, rssi: -39
+I (220918) wifi:pm start, type: 1
+
+I (220968) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (222098) esp_netif_handlers: sta ip: 172.20.10.12, mask: 255.255.255.240, gw: 172.20.10.1
+I (222098) net: Polaczono, IP: 172.20.10.12
+W (236148) mqtt: Broker nieosiagalny: ESP_ERR_ESP_TLS_CONNECTION_TIMEOUT - ponawianie w tle
+���������������������������������������������������������������� (251168) wifi:<ba-add>idx:0 (ifx:0, ba:3d:42:de:77:70), tid:0, ssn:2, winSize:64
+I (251198) mqtt: Polaczono z brokerem
+I (251398) sync: Wyslano #302
+I (251868) sync: ACK #302
+I (251878) sync: Wyslano #303
+I (252118) sync: ACK #303
+I (252128) sync: Wyslano #304
+I (252408) sync: ACK #304
+I (252418) sync: Wyslano #305
+I (252868) sync: ACK #305
+I (252868) sync: Wyslano #306
+I (253408) sync: ACK #306
+I (253418) sync: Wyslano #307
+I (253868) sync: ACK #307
+I (253868) sync: Wyslano #308
+I (254108) sync: ACK #308
+I (254118) sync: Wyslano #309
+I (254398) sync: ACK #309
+I (254408) sync: Wyslano #310
+I (254858) sync: ACK #310
+I (254868) sync: Wyslano #311
+I (255108) sync: ACK #311
+I (255118) sync: Wyslano #312
+I (255398) sync: ACK #312
+I (255408) sync: Wyslano #313
+I (255858) sync: ACK #313
+I (255868) sync: Wyslano #314
+I (256108) sync: ACK #314
+I (256118) sync: Wyslano #315
+I (256408) sync: ACK #315
+I (256408) sync: Wyslano #316
+I (256858) sync: ACK #316
+I (256868) sync: Wyslano #317
+I (257108) sync: ACK #317
+I (257118) sync: Wyslano #318
+I (257398) sync: ACK #318
+I (257408) sync: Wyslano #319
+I (257858) sync: ACK #319
+I (257868) sync: Wyslano #320
+I (258108) sync: ACK #320
+I (258118) sync: Wyslano #321
+I (258398) sync: ACK #321
+I (258408) sync: Wyslano #322
+I (258858) sync: ACK #322
+I (258868) sync: Wyslano #323
+I (259108) sync: ACK #323
+I (259118) sync: Wyslano #324
+I (259398) sync: ACK #324
+I (259408) sync: Wyslano #325
+I (259858) sync: ACK #325
+I (259868) sync: Wyslano #326
+I (260108) sync: ACK #326
+I (260118) sync: Wyslano #327
+I (260398) sync: ACK #327
+I (260408) sync: Wyslano #328
+I (260868) sync: ACK #328
+I (260878) sync: Wyslano #329
+I (261118) sync: ACK #329
+I (261128) sync: Wyslano #330
+I (261408) sync: ACK #330
+I (261418) sync: Wyslano #331
+I (261868) sync: ACK #331
+I (261878) sync: Wyslano #332
+I (262118) sync: ACK #332
+I (262118) sync: Wyslano #333
+I (262398) sync: ACK #333
+I (262408) sync: Wyslano #334
+I (262858) sync: ACK #334
+I (262868) sync: Wyslano #335
+I (263108) sync: ACK #335
+I (263118) sync: Wyslano #336
+I (263398) sync: ACK #336
+I (263408) sync: Wyslano #337
+I (263858) sync: ACK #337
+I (263868) sync: Wyslano #338
+I (264108) sync: ACK #338
+I (264118) sync: Wyslano #339
+I (264398) sync: ACK #339
+I (264408) sync: Wyslano #340
+I (265108) sync: ACK #340
+I (265118) sync: Wyslano #341
+I (265398) sync: ACK #341
+I (265408) sync: Wyslano #342
+I (265858) sync: ACK #342
+I (265868) sync: Wyslano #343
+I (266108) sync: ACK #343
+I (266118) sync: Wyslano #344
+I (266608) sync: ACK #344
+I (266618) sync: Wyslano #345
+I (266858) sync: ACK #345
+I (266868) sync: Wyslano #346
+I (267108) sync: ACK #346
+I (267118) sync: Wyslano #347
+I (267398) sync: ACK #347
+I (267408) sync: Wyslano #348
+I (267858) sync: ACK #348
+I (267868) sync: Wyslano #349
+I (268108) sync: ACK #349
+I (268118) sync: Wyslano #350
+I (268398) sync: ACK #350
+I (268408) sync: Wyslano #351
+I (268858) sync: ACK #351
+I (268868) sync: Wyslano #352
+I (269108) sync: ACK #352
+I (269118) sync: Wyslano #353
+I (269398) sync: ACK #353
+I (269418) sync: Wyslano #354
+I (269868) sync: ACK #354
+I (269878) sync: Wyslano #355
+I (270118) sync: ACK #355
+I (270128) sync: Wyslano #356
+I (270408) sync: ACK #356
+I (270418) sync: Wyslano #357
+I (270868) sync: ACK #357
+I (270878) sync: Wyslano #358
+I (271408) sync: ACK #358
+I (271418) sync: Wyslano #359
+I (271858) sync: ACK #359
+I (271868) sync: Wyslano #360
+I (272108) sync: ACK #360
+I (272118) sync: Wyslano #361
+I (272398) sync: ACK #361
+I (272408) sync: Wyslano #362
+I (272858) sync: ACK #362
+I (272868) sync: Wyslano #363
+I (273398) sync: ACK #363
+I (273408) sync: Wyslano #364
+I (273858) sync: ACK #364
+I (273868) sync: Wyslano #365
+I (274108) sync: ACK #365
+I (274118) sync: Wyslano #366
+I (274398) sync: ACK #366
+I (274408) sync: Wyslano #367
+I (274858) sync: ACK #367
+I (274868) sync: Wyslano #368
+I (276608) sync: ACK #368
+I (276618) sync: Wyslano #369
+I (276858) sync: ACK #369
+I (276868) sync: Wyslano #370
+I (277398) sync: ACK #370
+I (277408) sync: Wyslano #371
+I (279398) sync: ACK #371
+I (279408) sync: Wyslano #372
+I (279858) sync: ACK #372
+I (279868) sync: Wyslano #373
+I (280398) sync: ACK #373
+I (280408) sync: Wyslano #374
+I (280858) sync: ACK #374
+I (280868) sync: Wyslano #375
+I (281108) sync: ACK #375
+I (281118) sync: Wyslano #376
+I (281398) sync: ACK #376
+I (281408) sync: Wyslano #377
+I (281858) sync: ACK #377
+I (281868) sync: Wyslano #378
+I (282108) sync: ACK #378
+I (282128) sync: Wyslano #379
+I (282408) sync: ACK #379
+I (282418) sync: Wyslano #380
+I (282868) sync: ACK #380
+I (282878) sync: Wyslano #381
+I (283118) sync: ACK #381
+I (283128) sync: Wyslano #382
+I (283408) sync: ACK #382
+I (283418) sync: Wyslano #383
+I (283868) sync: ACK #383
+I (283868) sync: Wyslano #384
+I (285398) sync: ACK #384
+I (285408) sync: Wyslano #385
+I (285858) sync: ACK #385
+I (285868) sync: Wyslano #386
+I (286108) sync: ACK #386
+I (286118) sync: Wyslano #387
+I (286398) sync: ACK #387
+I (286408) sync: Wyslano #388
+I (286858) sync: ACK #388
+I (286868) sync: Wyslano #389
+I (287468) sync: ACK #389
+I (287478) sync: Wyslano #390
+I (287868) sync: ACK #390
+I (287878) sync: Wyslano #391
+I (288118) sync: ACK #391
+I (288128) sync: Wyslano #392
+I (288408) sync: ACK #392
+I (288418) sync: Wyslano #393
+I (288868) sync: ACK #393
+I (288878) sync: Wyslano #394
+I (289408) sync: ACK #394
+I (289418) sync: Wyslano #395
+I (289618) sync: ACK #395
+I (289628) sync: Wyslano #396
+I (290118) sync: ACK #396
+I (290128) sync: Wyslano #397
+I (290408) sync: ACK #397
+I (290418) sync: Wyslano #398
+I (290868) sync: ACK #398
+I (290878) sync: Wyslano #399
+I (291118) sync: ACK #399
+I (291128) sync: Wyslano #400
+I (291408) sync: ACK #400
+I (291418) sync: Wyslano #401
+I (291868) sync: ACK #401
+I (291878) sync: Wyslano #402
+I (292118) sync: ACK #402
+I (292128) sync: Wyslano #403
+I (292618) sync: ACK #403
+I (292628) sync: Wyslano #404
+I (292868) sync: ACK #404
+I (292878) sync: Wyslano #405
+I (293128) sync: ACK #405
+I (293138) sync: Wyslano #406
+I (293628) sync: ACK #406
+I (293638) sync: Wyslano #407
+I (294128) sync: ACK #407
+I (294138) sync: Wyslano #408
+I (294628) sync: ACK #408
+I (294638) sync: Wyslano #409
+I (295128) sync: ACK #409
+I (295138) sync: Wyslano #410
+I (295618) sync: ACK #410
+I (295628) sync: Wyslano #411
+I (295868) sync: ACK #411
+I (295878) sync: Wyslano #412
+I (296118) sync: ACK #412
+I (296128) sync: Wyslano #413
+I (296868) sync: ACK #413
+I (296878) sync: Wyslano #414
+I (297118) sync: ACK #414
+I (297128) sync: Wyslano #415
+I (297408) sync: ACK #415
+I (297418) sync: Wyslano #416
+I (297868) sync: ACK #416
+I (297878) sync: Wyslano #417
+I (298118) sync: ACK #417
+I (298128) sync: Wyslano #418
+I (298408) sync: ACK #418
+I (298418) sync: Wyslano #419
+I (298868) sync: ACK #419
+I (298878) sync: Wyslano #420
+I (299118) sync: ACK #420
+I (299128) sync: Wyslano #421
+I (299618) sync: ACK #421
+I (299628) sync: Wyslano #422
+I (299868) sync: ACK #422
+I (299878) sync: Wyslano #423
+I (300118) sync: ACK #423
+I (300128) sync: Wyslano #424
+I (300408) sync: ACK #424
+I (300418) sync: Wyslano #425
+I (300868) sync: ACK #425
+I (300878) sync: Wyslano #426
+I (301118) sync: ACK #426
+I (301128) sync: Wyslano #427
+I (301408) sync: ACK #427
+I (301418) sync: Wyslano #428
+I (301868) sync: ACK #428
+I (301878) sync: Wyslano #429
+I (302118) sync: ACK #429
+I (302128) sync: Wyslano #430
+I (302418) sync: ACK #430
+I (302428) sync: Wyslano #431
+I (302878) sync: ACK #431
+I (302888) sync: Wyslano #432
+I (303418) sync: ACK #432
+I (303428) sync: Wyslano #433
+I (303878) sync: ACK #433
+I (303888) sync: Wyslano #434
+I (304418) sync: ACK #434
+I (304428) sync: Wyslano #435
+I (304878) sync: ACK #435
+I (304878) sync: Wyslano #436
+I (305118) sync: ACK #436
+I (305128) sync: Wyslano #437
+I (305408) sync: ACK #437
+I (305418) sync: Wyslano #438
+I (305868) sync: ACK #438
+I (305878) sync: Wyslano #439
+I (306408) sync: ACK #439
+I (306418) sync: Wyslano #440
+I (306868) sync: ACK #440
+I (306878) sync: Wyslano #441
+I (307408) sync: ACK #441
+I (307418) sync: Wyslano #442
+I (309868) sync: ACK #442
+I (309878) sync: Wyslano #443
+I (310118) sync: ACK #443
+I (310128) sync: Wyslano #444
+I (310618) sync: ACK #444
+I (310628) sync: Wyslano #445
+I (310868) sync: ACK #445
+I (310878) sync: Wyslano #446
+I (311408) sync: ACK #446
+I (311418) sync: Wyslano #447
+I (311868) sync: ACK #447
+I (311878) sync: Wyslano #448
+I (312408) sync: ACK #448
+I (312418) sync: Wyslano #449
+I (312618) sync: ACK #449
+I (312628) sync: Wyslano #450
+I (312868) sync: ACK #450
+I (312878) sync: Wyslano #451
+I (313408) sync: ACK #451
+I (313418) sync: Wyslano #452
+I (313868) sync: ACK #452
+I (313878) sync: Wyslano #453
+I (314118) sync: ACK #453
+I (314128) sync: Wyslano #454
+I (314408) sync: ACK #454
+I (314418) sync: Wyslano #455
+I (314878) sync: ACK #455
+I (314888) sync: Wyslano #456
+I (315418) sync: ACK #456
+I (315428) sync: Wyslano #457
+I (315878) sync: ACK #457
+I (315888) sync: Wyslano #458
+I (316418) sync: ACK #458
+I (316428) sync: Wyslano #459
+I (316878) sync: ACK #459
+I (316888) sync: Wyslano #460
+I (317418) sync: ACK #460
+I (317418) sync: Wyslano #461
+I (317868) sync: ACK #461
+I (317878) sync: Wyslano #462
+I (318118) sync: ACK #462
+I (318128) sync: Wyslano #463
+I (318408) sync: ACK #463
+I (318418) sync: Wyslano #464
+I (318868) sync: ACK #464
+I (318878) sync: Wyslano #465
+I (319118) sync: ACK #465
+I (319128) sync: Wyslano #466
+I (319618) sync: ACK #466
+I (319628) sync: Wyslano #467
+I (319868) sync: ACK #467
+I (319878) sync: Wyslano #468
+I (320118) sync: ACK #468
+I (320128) sync: Wyslano #469
+I (320408) sync: ACK #469
+I (320418) sync: Wyslano #470
+I (320868) sync: ACK #470
+I (320878) sync: Wyslano #471
+I (321118) sync: ACK #471
+I (321128) sync: Wyslano #472
+I (321408) sync: ACK #472
+I (321418) sync: Wyslano #473
+I (321868) sync: ACK #473
+I (321878) sync: Wyslano #474
+I (322118) sync: ACK #474
+I (322128) sync: Wyslano #475
+I (322618) sync: ACK #475
+I (322628) sync: Wyslano #476
+I (323118) sync: ACK #476
+I (323128) sync: Wyslano #477
+I (323618) sync: ACK #477
+I (323628) sync: Wyslano #478
+I (324118) sync: ACK #478
+I (324128) sync: Wyslano #479
+I (324408) sync: ACK #479
+I (324418) sync: Wyslano #480
+I (324868) sync: ACK #480
+I (324878) sync: Wyslano #481
+I (325118) sync: ACK #481
+I (325128) sync: Wyslano #482
+I (325628) sync: ACK #482
+I (325638) sync: Wyslano #483
+I (326128) sync: ACK #483
+I (326138) sync: Wyslano #484
+I (326628) sync: ACK #484
+I (326638) sync: Wyslano #485
+I (327128) sync: ACK #485
+I (327138) sync: Wyslano #486
+I (327628) sync: ACK #486
+I (327628) sync: Wyslano #487
+I (327868) sync: ACK #487
+I (327878) sync: Wyslano #488
+I (328118) sync: ACK #488
+I (328128) sync: Wyslano #489
+I (328408) sync: ACK #489
+I (328418) sync: Wyslano #490
+I (328868) sync: ACK #490
+I (328878) sync: Wyslano #491
+I (329118) sync: ACK #491
+I (329128) sync: Wyslano #492
+I (329408) sync: ACK #492
+I (329418) sync: Wyslano #493
+I (329868) sync: ACK #493
+I (329878) sync: Wyslano #494
+I (330408) sync: ACK #494
+I (330418) sync: Wyslano #495
+I (330868) sync: ACK #495
+I (330878) sync: Wyslano #496
+I (331118) sync: ACK #496
+I (331128) sync: Wyslano #497
+I (331618) sync: ACK #497
+I (331628) sync: Wyslano #498
+I (331868) sync: ACK #498
+I (331878) sync: Wyslano #499
+I (332118) sync: ACK #499
+I (332128) sync: Wyslano #500
+I (333868) sync: ACK #500
+I (333878) sync: Wyslano #501
+I (334408) sync: ACK #501
+I (334418) sync: Wyslano #502
+I (334868) sync: ACK #502
+I (334878) sync: Wyslano #503
+I (335408) sync: ACK #503

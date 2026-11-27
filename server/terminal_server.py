@@ -5,6 +5,8 @@ import random
 import struct
 import zlib
 
+from datetime import datetime
+
 import paho.mqtt.client as mqtt
 
 BROKER = "127.0.0.1"  # bez localhost
@@ -41,9 +43,15 @@ def crc_ok(ev):
                              ev["action"], ev["flags"], b"\x00\x00")
     return zlib.crc32(raw) == ev["crc"]
 
+def ts():
+    return datetime.now().strftime("%H:%M:%S.%f")[:-3]  # np. 12:41:07.318
+
+
+def on_disconnect(client, userdata, flags, reason_code, properties):
+    print(f"{ts()} Rozlaczono z brokerem: {reason_code} - ponawianie automatyczne")
 
 def on_connect(client, userdata, flags, reason_code, properties):
-    print("Polaczono z brokerem:", reason_code)
+    print(f"{ts()} Polaczono z brokerem: {reason_code}")
     client.subscribe("terminal/+/events", qos=1)  # + = dowolny terminal
 
 
@@ -52,7 +60,7 @@ def on_message(client, userdata, msg):
     ev = json.loads(msg.payload)
 
     if not crc_ok(ev):
-        print(f"{device} #{ev['seq']}: ZLE CRC - odrzucone, bez ACK")
+        print(f"{ts()} | {device} #{ev['seq']}: ZLE CRC - odrzucone, bez ACK")
         return  # terminal wysle ponownie
 
     cur = DB.execute(
@@ -76,11 +84,11 @@ def on_message(client, userdata, msg):
                  ev["flags"], ev["crc"]))
             DB.commit()
             kind = "!!! KONFLIKT: inne zdarzenie z tym samym numerem - zapisane w 'conflicts'"
-    print(f"{device} #{ev['seq']:<4} user {ev['user']} akt {ev['act']} "
+    print(f"{ts()} | {device} #{ev['seq']:<4} user {ev['user']} akt {ev['act']} "
           f"akcja {ev['action']} -> {kind}, ACK")
     
     if random.random() < DROP_ACK:
-        print("    [TEST] ACK celowo pominiety")
+        print("{ts()}    [TEST] ACK celowo pominiety")
         return
     client.publish(f"terminal/{device}/ack", str(ev["seq"]), qos=1)  # potem ACK - nawet dla duplikatu
 
@@ -89,4 +97,5 @@ client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect(BROKER, 1883)
+client.on_disconnect = on_disconnect
 client.loop_forever()

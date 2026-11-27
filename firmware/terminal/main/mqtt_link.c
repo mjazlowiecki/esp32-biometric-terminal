@@ -95,6 +95,7 @@ static void mqtt_event_handler(void *arg, esp_event_base_t base, int32_t id, voi
             uint32_t s = (uint32_t)seq;
             xQueueSend(s_ack_queue, &s, 0); // dla pelnej kolejki ACK przepadnie
             // terminal wyśle ponownie
+            break;
         }
         default:
             break;

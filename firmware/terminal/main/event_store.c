@@ -143,6 +143,11 @@ bool event_store_is_ready(void)
     return s_ready;
 }
 
+uint32_t event_store_record_count(void)
+{
+    return s_record_count;
+}
+
 esp_err_t event_store_append(uint16_t user_id, uint16_t activity_id, event_action_t action,
                              event_record_t *out_rec)
 {

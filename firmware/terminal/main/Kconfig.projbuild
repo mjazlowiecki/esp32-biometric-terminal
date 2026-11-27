@@ -17,3 +17,15 @@ menu "Terminal - siec"
         help
             Adres brokera, np. mqtt://172.20.10.2:1883 (w sieci test. komputer PC).
 endmenu
+
+menu "Terminal - testy"
+
+config TERMINAL_TEST_EVENTS
+    int "Testowe zdarzenia, przy pustym dzienniku (0 = wylaczone)"
+    default 0
+    range 0 5000
+    help
+        TYLKO do testow synchronizacji. Przy starcie z pustym dziennikiem
+        zapisuje N zdarzen uzytkownika testowego ID: 999 (START/STOP na przemian).
+
+endmenu

@@ -42,6 +42,8 @@ esp_err_t event_store_for_each(event_visit_cb_t visit, void *ctx);
 
 bool event_store_is_ready(void);
 
+uint32_t event_store_record_count(void);
+
 _Static_assert(sizeof(event_record_t) == 20, "zmienil sie rozmiar rekordu - format pliku!");
 
 _Static_assert(offsetof(event_record_t, crc) == offsetof(event_record_t, reserved) + sizeof(((event_record_t *)0)->reserved), "ukryty padding przed polem crc!");

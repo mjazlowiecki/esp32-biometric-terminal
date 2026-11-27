@@ -26,6 +26,34 @@
 
 static const char *TAG = "terminal";
 
+#if CONFIG_TERMINAL_TEST_EVENTS > 0
+#define TEST_USER_ID 999 // ostatnie miejsce w czytniku [0-999]
+
+// TEST N zdarzen przechodzacych przez pelen cykl: [ sessions -> event_store -> event_sync ]
+static void test_generate_events(int n)
+{
+    if (!event_store_is_ready() || event_store_record_count() != 0)
+    {
+        ESP_LOGW(TAG, "TEST: dziennik niepusty - generator pominiety");
+        return;
+    }
+    ESP_LOGW(TAG, "TEST: generuje %d zdarzen uzytkownika %u", n, TEST_USER_ID);
+
+    int64_t t0 = esp_timer_get_time();
+    for (int i = 0; i < n; i++)
+    {
+        esp_err_t err = (i % 2 == 0) ? sessions_start(TEST_USER_ID, 1 + (i / 2) % 4)
+                                     : sessions_stop(TEST_USER_ID);
+        if (err != ESP_OK)
+        {
+            ESP_LOGE(TAG, "TEST: przerwano na zdarzeniu %d", i);
+            return;
+        }
+    }
+    ESP_LOGW(TAG, "TEST: %d zdarzen zapisanych w %lld ms", n, (esp_timer_get_time() - t0) / 1000);
+}
+#endif
+
 void app_main(void)
 {
     ESP_LOGI(TAG, "Firmware v3 start");
@@ -49,6 +77,9 @@ void app_main(void)
     else
     {
         sessions_init(); // blad zaloguje sam
+#if CONFIG_TERMINAL_TEST_EVENTS > 0
+        test_generate_events(CONFIG_TERMINAL_TEST_EVENTS);
+#endif
     }
 
     if (fp_init() == ESP_OK)

@@ -94,3 +94,13 @@ Każdy test od czystego stanu, procedura niżej - chyba że opisano inaczej.
   **zgodne co do bitu**.
 - Test narzędzia: kopia bazy z usuniętym #250 i zmienionym polem `user` w #300 →
   wykryto brak [250] i różnicę [300], wynik NIEZGODNOSCI (kod wyjścia 1), co dowodzi, że narzędzie działa prawidłowo.
+
+  ## T5 — konflikt numeracji (27.11.2026)
+- Cel: wyzerowanie terminala, zarówno karty jak i NVS - przy zachowanej bazie, skutkuje powtórzonymi numerami `seq`.
+  Serwer ma to wykryć, a nie uznać za duplikaty.
+- Metoda: baza z T3 (503 wiersze) zachowana; karta przemianowana, `erase-flash`; generator 5 zdarzeń.
+- Wynik: 5 × KONFLIKT (ta sama para `(device, seq)`, inne CRC); tabela `conflicts` = 5,
+  `events` = 503 (bez zmian); terminal otrzymał ACK dla #1–#5 i nie zablokował się.
+  `verify.py`: różne pola [1–5], nadmiarowe 498 (historia T3 nieobecna na nowej karcie — oczekiwane).
+- Wniosek: powtórzenie numeracji nie powoduje cichej utraty — zdarzenia zachowane do decyzji administratora.
+- Logi: `logs/T5_2711_esp.txt`, `logs/T5_2711_server.txt`

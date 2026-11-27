@@ -77,10 +77,20 @@ Każdy test od czystego stanu, procedura niżej - chyba że opisano inaczej.
 | baza `(count, min, max)` | (503, 1, 503) |
 | T3: powrót po starcie brokera | ESP ~4 s, serwer ~3 s; wysyłka od #102 |
 | T4: wykrycie utraty sieci | reason 200 (beacon timeout), potem 201 |
-| T4: Wi-Fi -> MQTT po powrocie sieci | 29 s |
+| T4: Wi-Fi -> MQTT po powrocie sieci | 29 s* |
 | T4: przerwa w dostawie zdarzeń | 104 s (#301 -> #302) |
+
+*czas zawyżony przez środowisko testowe: po wyłączeniu hotspotu laptop przełączył się automatycznie na sieć domową
 
 - Wniosek: 0 utraconych, 0 zdublowanych; zdarzenia z czasu braku sieci dosłane w kolejności.
   Duplikat #442 powstał bez awarii (chwilowe opóźnienie sieci 2,5 s) — deduplikacja jest konieczna
   również w normalnej pracy.
 - Logi: ESP32: `logs/T3_2711_esp.txt`, SERWER: `logs/T3_2711_server.txt`
+
+## W1 — weryfikacja karta <-> baza (27.11.2026)
+- Narzędzie: `server/verify.py` — porównuje każdy rekord z EVENTS.BIN, w tym CRC - 
+  z wierszem w bazie: brakujące, nadmiarowe, różne pola oraz uszkodzone i powtórzone numery na karcie.
+- Dane T3+T4: karta 503 rekordy, baza 503 wiersze -> 0 brakujących, 0 nadmiarowych, 0 różnic —
+  **zgodne co do bitu**.
+- Test narzędzia: kopia bazy z usuniętym #250 i zmienionym polem `user` w #300 →
+  wykryto brak [250] i różnicę [300], wynik NIEZGODNOSCI (kod wyjścia 1), co dowodzi, że narzędzie działa prawidłowo.

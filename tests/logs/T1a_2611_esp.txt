@@ -1,0 +1,273 @@
+I (29) boot: ESP-IDF v5.5.1 2nd stage bootloader
+I (29) boot: compile time Nov  2 2026 18:53:18
+I (29) boot: Multicore bootloader
+I (31) boot: chip revision: v3.1
+I (33) boot.esp32: SPI Speed      : 40MHz
+I (37) boot.esp32: SPI Mode       : DIO
+I (41) boot.esp32: SPI Flash Size : 4MB
+I (44) boot: Enabling RNG early entropy source...
+I (49) boot: Partition Table:
+I (51) boot: ## Label            Usage          Type ST Offset   Length
+I (58) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (71) boot:  2 factory          factory app      00 00 00010000 00177000
+I (77) boot: End of partition table
+I (81) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=2807ch (163964) map
+I (144) esp_image: segment 1: paddr=000380a4 vaddr=3ffb0000 size=04168h ( 16744) load
+I (150) esp_image: segment 2: paddr=0003c214 vaddr=40080000 size=03e04h ( 15876) load
+I (157) esp_image: segment 3: paddr=00040020 vaddr=400d0020 size=bda34h (776756) map
+I (423) esp_image: segment 4: paddr=000fda5c vaddr=40083e04 size=17710h ( 96016) load
+I (460) esp_image: segment 5: paddr=00115174 vaddr=50000000 size=00020h (    32) load
+I (474) boot: Loaded app from partition at offset 0x10000
+I (474) boot: Disabling RNG early entropy source...
+I (484) cpu_start: Multicore app
+I (493) cpu_start: Pro cpu start user code
+I (493) cpu_start: cpu freq: 160000000 Hz
+I (493) app_init: Application information:
+I (493) app_init: Project name:     terminal
+I (497) app_init: App version:      smiw-sem6-66-gb14f805-dirty
+I (502) app_init: Compile time:     Nov 26 2026 18:39:48
+I (507) app_init: ELF file SHA256:  e931995bd...
+I (512) app_init: ESP-IDF:          v5.5.1
+I (516) efuse_init: Min chip rev:     v0.0
+I (519) efuse_init: Max chip rev:     v3.99 
+I (523) efuse_init: Chip rev:         v3.1
+I (527) heap_init: Initializing. RAM available for dynamic allocation:
+I (534) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (539) heap_init: At 3FFBAF00 len 00025100 (148 KiB): DRAM
+I (544) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (549) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (555) heap_init: At 4009B514 len 00004AEC (18 KiB): IRAM
+I (562) spi_flash: detected chip: generic
+I (564) spi_flash: flash io: dio
+I (568) main_task: Started on CPU0
+I (578) main_task: Calling app_main()
+I (578) terminal: Firmware v3 start
+I (598) i2c_bus: Skan magistrali I2C...
+I (608) i2c_bus:   urzadzenie pod adresem 0x3C
+I (618) i2c_bus:   urzadzenie pod adresem 0x57
+I (618) i2c_bus:   urzadzenie pod adresem 0x68
+I (618) i2c_bus: Znaleziono: 3 urzadzen I2C
+I (628) timesync: Czas systemowy z RTC
+I (628) sdspi_transaction: cmd=52, R1 response: command not supported
+I (668) sdspi_transaction: cmd=5, R1 response: command not supported
+Name: 00000
+Type: SDHC
+Speed: 5.00 MHz (limit: 5.00 MHz)
+Size: 60950MB
+CSD: ver=2, sector_size=512, capacity=124825600 read_bl_len=9
+SSR: bus_width=1
+I (688) event_store: Dziennik: 0 rekordow, next_seq=1, acked_seq=0, do wyslania: 0
+I (698) sessions: Trwajacych sesji: 0
+I (898) terminal: Czytnik OK, szablonow w pamieci: 6
+I (918) terminal: Pierwsze wolne miejsce w bazie: 6
+I (1298) wifi:wifi driver task: 3ffca7a0, prio:23, stack:6656, core=0
+I (1308) wifi:wifi firmware version: 14da9b7
+I (1308) wifi:wifi certification version: v7.0
+I (1308) wifi:config NVS flash: enabled
+I (1308) wifi:config nano formatting: disabled
+I (1308) wifi:Init data frame dynamic rx buffer num: 32
+I (1318) wifi:Init static rx mgmt buffer num: 5
+I (1318) wifi:Init management short buffer num: 32
+I (1328) wifi:Init dynamic tx buffer num: 32
+I (1328) wifi:Init static rx buffer size: 1600
+I (1338) wifi:Init static rx buffer num: 10
+I (1338) wifi:Init dynamic rx buffer num: 32
+I (1348) wifi_init: rx ba win: 6
+I (1348) wifi_init: accept mbox: 6
+I (1348) wifi_init: tcpip mbox: 32
+I (1348) wifi_init: udp mbox: 6
+I (1358) wifi_init: tcp mbox: 6
+I (1358) wifi_init: tcp tx win: 5760
+I (1358) wifi_init: tcp rx win: 5760
+I (1368) wifi_init: tcp mss: 1440
+I (1368) wifi_init: WiFi IRAM OP enabled
+I (1368) wifi_init: WiFi RX IRAM OP enabled
+I (1378) phy_init: phy_version 4861,b71b5ad,Aug  5 2025,11:16:06
+I (1458) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(0)
+I (1488) wifi:mode : sta (a4:f0:0f:5d:45:40)
+I (1488) wifi:enable tsf
+I (1498) mqtt: Terminal a4f00f5d4540, broker mqtt://172.20.10.2:1883
+I (1508) ui: stan 0 -> 0
+I (2368) wifi:new:<6,0>, old:<1,0>, ap:<255,255>, sta:<6,0>, prof:1, snd_ch_cfg:0x0
+I (2368) wifi:state: init -> auth (0xb0)
+I (2388) wifi:state: auth -> assoc (0x0)
+I (2388) wifi:state: assoc -> run (0x10)
+I (2438) wifi:connected with Robux_Generator, aid = 2, channel 6, BW20, bssid = 2a:1a:cb:8b:62:6f
+I (2448) wifi:security: WPA2-PSK, phy: bgn, rssi: -51
+I (2458) wifi:pm start, type: 1
+
+I (2458) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (2538) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (3488) esp_netif_handlers: sta ip: 172.20.10.12, mask: 255.255.255.240, gw: 172.20.10.1
+I (3488) net: Polaczono, IP: 172.20.10.12
+I (6008) wifi:<ba-add>idx:0 (ifx:0, 2a:1a:cb:8b:62:6f), tid:0, ssn:2, winSize:64
+I (6008) wifi:<ba-del>idx:0, tid:0
+I (6008) wifi:<ba-add>idx:0 (ifx:0, 2a:1a:cb:8b:62:6f), tid:0, ssn:2, winSize:64
+I (6358) timesync: SNTP: czas zsynchronizowany, zapisano do RTC
+I (17808) mqtt: Polaczono z brokerem
+W (45858) ui: Czytnik nie odpowiada: ESP_ERR_TIMEOUT
+I (50178) ui: Czytnik znowu odpowiada
+W (54518) ui: Czytnik nie odpowiada: ESP_ERR_TIMEOUT
+I (54728) ui: Czytnik znowu odpowiada
+I (57418) ui: Rozpoznano ID 0 (wynik 95)
+I (57418) ui: stan 0 -> 1
+���������������������������������������������������������������� (61368) sessions: START #1: ID 0, akt 3
+I (61378) ui: stan 1 -> 2
+I (61508) sync: Wyslano #1
+I (63458) ui: stan 2 -> 0
+I (64908) ui: Rozpoznano ID 1 (wynik 109)
+I (64908) ui: stan 0 -> 1
+I (67198) sessions: START #2: ID 1, akt 1
+I (67208) ui: stan 1 -> 2
+I (69458) ui: stan 2 -> 0
+I (70598) ui: Rozpoznano ID 2 (wynik 69)
+I (70598) ui: stan 0 -> 1
+W (71648) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (71648) sync: Wyslano #1
+I (74028) sessions: START #3: ID 2, akt 3
+I (74038) ui: stan 1 -> 2
+I (76148) ui: stan 2 -> 0
+I (77678) ui: Rozpoznano ID 3 (wynik 83)
+I (77678) ui: stan 0 -> 1
+I (80758) sessions: START #4: ID 3, akt 4
+I (80758) ui: stan 1 -> 2
+W (81718) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (81728) sync: Wyslano #1
+I (82968) ui: stan 2 -> 0
+I (84778) ui: stan 0 -> 2
+���������������������������������������������������������������� (86818) ui: stan 2 -> 0
+I (89598) ui: Rozpoznano ID 4 (wynik 84)
+I (89608) ui: stan 0 -> 1
+I (91748) sessions: START #5: ID 4, akt 1
+I (91758) ui: stan 1 -> 2
+W (91938) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (91938) sync: Wyslano #1
+I (93898) ui: stan 2 -> 0
+I (96268) ui: stan 0 -> 2
+I (98298) ui: stan 2 -> 0
+I (99818) ui: Rozpoznano ID 5 (wynik 134)
+I (99818) ui: stan 0 -> 1
+I (101838) sessions: START #6: ID 5, akt 1
+I (101848) ui: stan 1 -> 2
+W (102108) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (102108) sync: Wyslano #1
+I (103858) ui: stan 2 -> 0
+I (107938) ui: Rozpoznano ID 0 (wynik 131)
+I (107938) ui: stan 0 -> 3
+I (111528) ui: stan 3 -> 4
+W (112268) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (112268) sync: Wyslano #1
+I (113088) sessions: STOP  #7: ID 0, akt 3
+I (113098) sessions: START #8: ID 0, akt 1
+I (113108) ui: stan 4 -> 2
+I (115228) ui: stan 2 -> 0
+I (119588) ui: Rozpoznano ID 1 (wynik 107)
+I (119588) ui: stan 0 -> 3
+W (122378) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (122388) sync: Wyslano #1
+I (127698) ui: stan 3 -> 4
+I (128798) sessions: STOP  #9: ID 1, akt 1
+I (128798) ui: stan 4 -> 2
+I (130878) ui: stan 2 -> 0
+W (132508) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (132518) sync: Wyslano #1
+I (133988) ui: stan 0 -> 2
+I (136028) ui: stan 2 -> 0
+I (140208) ui: Rozpoznano ID 2 (wynik 153)
+I (140218) ui: stan 0 -> 3
+W (142758) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (142758) sync: Wyslano #1
+I (146658) ui: stan 3 -> 0
+I (150748) ui: Rozpoznano ID 3 (wynik 257)
+I (150748) ui: stan 0 -> 3
+W (152828) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (152828) sync: Wyslano #1
+I (153998) ui: stan 3 -> 4
+I (154978) sessions: STOP  #10: ID 3, akt 4
+I (154988) ui: stan 4 -> 2
+I (157038) ui: stan 2 -> 0
+I (162998) ui: Rozpoznano ID 5 (wynik 201)
+I (162998) ui: stan 0 -> 3
+W (163038) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (163048) sync: Wyslano #1
+I (165598) ui: stan 3 -> 4
+I (166738) sessions: STOP  #11: ID 5, akt 1
+I (166748) sessions: START #12: ID 5, akt 2
+I (166748) ui: stan 4 -> 2
+I (168798) ui: stan 2 -> 0
+W (173218) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (173228) sync: Wyslano #1
+W (183428) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (183438) sync: Wyslano #1
+W (193678) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (193688) sync: Wyslano #1
+I (193928) sync: ACK #1
+I (193938) sync: Wyslano #2
+I (194228) sync: ACK #2
+I (194238) sync: Wyslano #3
+I (194688) sync: ACK #3
+I (194698) sync: Wyslano #4
+W (204928) sync: Brak ACK dla #4 po 10 s - wysylam ponownie
+I (204938) sync: Wyslano #4
+I (205228) sync: ACK #4
+I (205238) sync: Wyslano #5
+I (205688) sync: ACK #5
+I (205698) sync: Wyslano #6
+I (205938) sync: ACK #6
+I (205948) sync: Wyslano #7
+I (206438) sync: ACK #7
+I (206448) sync: Wyslano #8
+I (206688) sync: ACK #8
+I (206698) sync: Wyslano #9
+W (216928) sync: Brak ACK dla #9 po 10 s - wysylam ponownie
+I (216938) sync: Wyslano #9
+I (217228) sync: ACK #9
+I (217238) sync: Wyslano #10
+I (217688) sync: ACK #10
+I (217698) sync: Wyslano #11
+I (217938) sync: ACK #11
+I (217948) sync: Wyslano #12
+I (218228) sync: ACK #12
+I (243608) ui: stan 0 -> 2
+I (245638) ui: stan 2 -> 0
+I (246928) ui: Rozpoznano ID 0 (wynik 138)
+I (246928) ui: stan 0 -> 3
+I (251148) ui: stan 3 -> 4
+I (252158) sessions: STOP  #13: ID 0, akt 1
+I (252158) ui: stan 4 -> 2
+I (252268) sync: Wyslano #13
+I (252738) sync: ACK #13
+I (254228) ui: stan 2 -> 0
+I (255878) ui: Rozpoznano ID 1 (wynik 122)
+I (255878) ui: stan 0 -> 1
+I (259678) ui: stan 1 -> 0
+I (262268) ui: stan 0 -> 2
+I (264308) ui: stan 2 -> 0
+I (266158) ui: Rozpoznano ID 2 (wynik 156)
+I (266158) ui: stan 0 -> 3
+I (268688) ui: stan 3 -> 4
+I (269908) sessions: STOP  #14: ID 2, akt 3
+I (269918) ui: stan 4 -> 2
+I (269988) sync: Wyslano #14
+I (270458) sync: ACK #14
+I (271948) ui: stan 2 -> 0
+I (274698) ui: Rozpoznano ID 3 (wynik 195)
+I (274698) ui: stan 0 -> 1
+I (277918) ui: stan 1 -> 0
+I (280058) ui: stan 0 -> 2
+I (282098) ui: stan 2 -> 0
+I (283588) ui: Rozpoznano ID 4 (wynik 47)
+I (283588) ui: stan 0 -> 3
+I (285588) ui: stan 3 -> 4
+I (287358) ui: stan 4 -> 3
+I (288978) ui: stan 3 -> 4
+I (290098) sessions: STOP  #15: ID 4, akt 1
+I (290108) ui: stan 4 -> 2
+I (290168) sync: Wyslano #15
+I (292128) ui: stan 2 -> 0
+���������������������������������������������������������������� (300258) sync: Brak ACK dla #15 po 10 s - wysylam ponownie
+I (300268) sync: Wyslano #15
+W (310508) sync: Brak ACK dla #15 po 10 s - wysylam ponownie
+I (310518) sync: Wyslano #15
+I (311058) sync: ACK #15

@@ -1,0 +1,633 @@
+entry 0x40080638
+--- 0x40080638: call_start_cpu0 at C:/Espressif/frameworks/esp-idf-v5.5.1/components/bootloader/subproject/main/bootloader_start.c:25
+I (29) boot: ESP-IDF v5.5.1 2nd stage bootloader
+I (29) boot: compile time Nov  2 2026 18:53:18
+I (29) boot: Multicore bootloader
+I (31) boot: chip revision: v3.1
+I (33) boot.esp32: SPI Speed      : 40MHz
+I (37) boot.esp32: SPI Mode       : DIO
+I (41) boot.esp32: SPI Flash Size : 4MB
+I (44) boot: Enabling RNG early entropy source...
+I (49) boot: Partition Table:
+I (51) boot: ## Label            Usage          Type ST Offset   Length
+I (58) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (71) boot:  2 factory          factory app      00 00 00010000 00177000
+I (77) boot: End of partition table
+I (81) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=2814ch (164172) map
+I (144) esp_image: segment 1: paddr=00038174 vaddr=3ffb0000 size=04168h ( 16744) load
+I (151) esp_image: segment 2: paddr=0003c2e4 vaddr=40080000 size=03d34h ( 15668) load
+I (157) esp_image: segment 3: paddr=00040020 vaddr=400d0020 size=bdb48h (777032) map
+I (423) esp_image: segment 4: paddr=000fdb70 vaddr=40083d34 size=177e0h ( 96224) load
+I (460) esp_image: segment 5: paddr=00115358 vaddr=50000000 size=00020h (    32) load
+I (474) boot: Loaded app from partition at offset 0x10000
+I (474) boot: Disabling RNG early entropy source...
+I (484) cpu_start: Multicore app
+I (493) cpu_start: Pro cpu start user code
+I (493) cpu_start: cpu freq: 160000000 Hz
+I (493) app_init: Application information:
+I (493) app_init: Project name:     terminal
+I (497) app_init: App version:      smiw-sem6-67-g5443adf-dirty
+I (502) app_init: Compile time:     Nov 27 2026 11:09:25
+I (508) app_init: ELF file SHA256:  002a83063...
+I (512) app_init: ESP-IDF:          v5.5.1
+I (516) efuse_init: Min chip rev:     v0.0
+I (519) efuse_init: Max chip rev:     v3.99 
+I (523) efuse_init: Chip rev:         v3.1
+I (528) heap_init: Initializing. RAM available for dynamic allocation:
+I (534) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (539) heap_init: At 3FFBAF00 len 00025100 (148 KiB): DRAM
+I (544) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (549) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (555) heap_init: At 4009B514 len 00004AEC (18 KiB): IRAM
+I (562) spi_flash: detected chip: generic
+I (564) spi_flash: flash io: dio
+I (568) main_task: Started on CPU0
+I (578) main_task: Calling app_main()
+I (578) terminal: Firmware v3 start
+I (588) i2c_bus: Skan magistrali I2C...
+I (598) i2c_bus:   urzadzenie pod adresem 0x3C
+I (598) i2c_bus:   urzadzenie pod adresem 0x57
+I (608) i2c_bus:   urzadzenie pod adresem 0x68
+I (608) i2c_bus: Znaleziono: 3 urzadzen I2C
+I (608) timesync: Czas systemowy z RTC
+E (808) sdmmc_sd: sdmmc_init_sd_if_cond: send_if_cond (1) returned 0x108
+E (808) vfs_fat_sdmmc: sdmmc_card_init failed (0x108).
+HINT: Please verify if there is an SD card inserted into the SD slot. Then, try rebooting the board.
+E (808) sdcard: sdcard_init(47): mount
+E (808) terminal: Brak karty SD - zdarzenia nie beda zapisywane!
+I (1018) terminal: Czytnik OK, szablonow w pamieci: 6
+I (1038) terminal: Pierwsze wolne miejsce w bazie: 6
+I (1418) wifi:wifi driver task: 3ffc3d14, prio:23, stack:6656, core=0
+I (1418) wifi:wifi firmware version: 14da9b7
+I (1418) wifi:wifi certification version: v7.0
+I (1418) wifi:config NVS flash: enabled
+I (1418) wifi:config nano formatting: disabled
+I (1428) wifi:Init data frame dynamic rx buffer num: 32
+I (1428) wifi:Init static rx mgmt buffer num: 5
+I (1438) wifi:Init management short buffer num: 32
+I (1438) wifi:Init dynamic tx buffer num: 32
+I (1438) wifi:Init static rx buffer size: 1600
+I (1448) wifi:Init static rx buffer num: 10
+I (1448) wifi:Init dynamic rx buffer num: 32
+I (1458) wifi_init: rx ba win: 6
+I (1458) wifi_init: accept mbox: 6
+I (1458) wifi_init: tcpip mbox: 32
+I (1468) wifi_init: udp mbox: 6
+I (1468) wifi_init: tcp mbox: 6
+I (1468) wifi_init: tcp tx win: 5760
+I (1468) wifi_init: tcp rx win: 5760
+I (1478) wifi_init: tcp mss: 1440
+I (1478) wifi_init: WiFi IRAM OP enabled
+I (1478) wifi_init: WiFi RX IRAM OP enabled
+I (1508) phy_init: phy_version 4861,b71b5ad,Aug  5 2025,11:16:06
+W (1508) phy_init: failed to load RF calibration data (0x1102), falling back to full calibration
+I (1588) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(2)
+I (1598) wifi:mode : sta (a4:f0:0f:5d:45:40)
+I (1598) wifi:enable tsf
+I (1608) mqtt: Terminal a4f00f5d4540, broker mqtt://172.20.10.2:1883
+I (1618) ui: stan 0 -> 0
+I (2488) wifi:new:<6,0>, old:<1,0>, ap:<255,255>, sta:<6,0>, prof:1, snd_ch_cfg:0x0
+I (2488) wifi:state: init -> auth (0xb0)
+I (2498) wifi:state: auth -> assoc (0x0)
+I (2508) wifi:state: assoc -> run (0x10)
+I (2568) wifi:connected with Robux_Generator, aid = 2, channel 6, BW20, bssid = 36:d2:78:81:98:70
+I (2568) wifi:security: WPA2-PSK, phy: bgn, rssi: -54
+I (2578) wifi:pm start, type: 1
+
+I (2578) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (2628) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (3628) esp_netif_handlers: sta ip: 172.20.10.12, mask: 255.255.255.240, gw: 172.20.10.1
+I (3628) net: Polaczono, IP: 172.20.10.12
+I (3778) wifi:<ba-add>idx:0 (ifx:0, 36:d2:78:81:98:70), tid:0, ssn:2, winSize:64
+I (3978) timesync: SNTP: czas zsynchronizowany, zapisano do RTC
+I (17428) mqtt: Polaczono z brokerem
+W (29478) fp: GenImg: kod potwierdzenia 0x01
+W (29478) ui: Czytnik nie odpowiada: ESP_FAIL
+I (29828) ui: Czytnik znowu odpowiada
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6380
+ho 0 tail 12 room 4
+load:0x40078000,len:15916
+load:0x40080400,len:3860
+--- 0x40080400: _invalid_pc_placeholder at C:/Espressif/frameworks/esp-idf-v5.5.1/components/xtensa/xtensa_vectors.S:2235
+entry 0x40080638
+--- 0x40080638: call_start_cpu0 at C:/Espressif/frameworks/esp-idf-v5.5.1/components/bootloader/subproject/main/bootloader_start.c:25
+I (29) boot: ESP-IDF v5.5.1 2nd stage bootloader
+I (29) boot: compile time Nov  2 2026 18:53:18
+I (29) boot: Multicore bootloader
+I (31) boot: chip revision: v3.1
+I (33) boot.esp32: SPI Speed      : 40MHz
+I (37) boot.esp32: SPI Mode       : DIO
+I (41) boot.esp32: SPI Flash Size : 4MB
+I (44) boot: Enabling RNG early entropy source...
+I (49) boot: Partition Table:
+I (51) boot: ## Label            Usage          Type ST Offset   Length
+I (58) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (71) boot:  2 factory          factory app      00 00 00010000 00177000
+I (77) boot: End of partition table
+I (81) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=2814ch (164172) map
+I (144) esp_image: segment 1: paddr=00038174 vaddr=3ffb0000 size=04168h ( 16744) load
+I (151) esp_image: segment 2: paddr=0003c2e4 vaddr=40080000 size=03d34h ( 15668) load
+I (157) esp_image: segment 3: paddr=00040020 vaddr=400d0020 size=bdb48h (777032) map
+I (423) esp_image: segment 4: paddr=000fdb70 vaddr=40083d34 size=177e0h ( 96224) load
+I (460) esp_image: segment 5: paddr=00115358 vaddr=50000000 size=00020h (    32) load
+I (474) boot: Loaded app from partition at offset 0x10000
+I (474) boot: Disabling RNG early entropy source...
+I (484) cpu_start: Multicore app
+I (493) cpu_start: Pro cpu start user code
+I (493) cpu_start: cpu freq: 160000000 Hz
+I (493) app_init: Application information:
+I (493) app_init: Project name:     terminal
+I (497) app_init: App version:      smiw-sem6-67-g5443adf-dirty
+I (502) app_init: Compile time:     Nov 27 2026 11:09:25
+I (508) app_init: ELF file SHA256:  002a83063...
+I (512) app_init: ESP-IDF:          v5.5.1
+I (516) efuse_init: Min chip rev:     v0.0
+I (519) efuse_init: Max chip rev:     v3.99 
+I (523) efuse_init: Chip rev:         v3.1
+I (528) heap_init: Initializing. RAM available for dynamic allocation:
+I (534) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (539) heap_init: At 3FFBAF00 len 00025100 (148 KiB): DRAM
+I (544) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (549) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (555) heap_init: At 4009B514 len 00004AEC (18 KiB): IRAM
+I (562) spi_flash: detected chip: generic
+I (564) spi_flash: flash io: dio
+I (568) main_task: Started on CPU0
+I (578) main_task: Calling app_main()
+I (578) terminal: Firmware v3 start
+I (598) i2c_bus: Skan magistrali I2C...
+I (608) i2c_bus:   urzadzenie pod adresem 0x3C
+I (618) i2c_bus:   urzadzenie pod adresem 0x57
+I (618) i2c_bus:   urzadzenie pod adresem 0x68
+I (618) i2c_bus: Znaleziono: 3 urzadzen I2C
+I (628) timesync: Czas systemowy z RTC
+I (668) sdspi_transaction: cmd=5, R1 response: command not supported
+Name: 00000
+Type: SDHC
+Speed: 5.00 MHz (limit: 5.00 MHz)
+Size: 60950MB
+CSD: ver=2, sector_size=512, capacity=124825600 read_bl_len=9
+SSR: bus_width=1
+I (718) event_store: Utworzono pusty dziennik /sd/events.bin
+I (718) event_store: Dziennik: 0 rekordow, next_seq=1, acked_seq=0, do wyslania: 0
+I (718) sessions: Trwajacych sesji: 0
+W (718) terminal: TEST: generuje 100 zdarzen uzytkownika 999
+I (748) sessions: START #1: ID 999, akt 1
+I (758) sessions: STOP  #2: ID 999, akt 1
+I (768) sessions: START #3: ID 999, akt 2
+I (778) sessions: STOP  #4: ID 999, akt 2
+I (788) sessions: START #5: ID 999, akt 3
+I (808) sessions: STOP  #6: ID 999, akt 3
+I (818) sessions: START #7: ID 999, akt 4
+I (828) sessions: STOP  #8: ID 999, akt 4
+I (838) sessions: START #9: ID 999, akt 1
+I (848) sessions: STOP  #10: ID 999, akt 1
+I (858) sessions: START #11: ID 999, akt 2
+I (868) sessions: STOP  #12: ID 999, akt 2
+I (878) sessions: START #13: ID 999, akt 3
+I (888) sessions: STOP  #14: ID 999, akt 3
+I (898) sessions: START #15: ID 999, akt 4
+I (918) sessions: STOP  #16: ID 999, akt 4
+I (928) sessions: START #17: ID 999, akt 1
+I (948) sessions: STOP  #18: ID 999, akt 1
+I (958) sessions: START #19: ID 999, akt 2
+I (968) sessions: STOP  #20: ID 999, akt 2
+I (978) sessions: START #21: ID 999, akt 3
+I (988) sessions: STOP  #22: ID 999, akt 3
+I (998) sessions: START #23: ID 999, akt 4
+I (1008) sessions: STOP  #24: ID 999, akt 4
+I (1018) sessions: START #25: ID 999, akt 1
+I (1048) sessions: STOP  #26: ID 999, akt 1
+I (1058) sessions: START #27: ID 999, akt 2
+I (1068) sessions: STOP  #28: ID 999, akt 2
+I (1078) sessions: START #29: ID 999, akt 3
+I (1088) sessions: STOP  #30: ID 999, akt 3
+I (1098) sessions: START #31: ID 999, akt 4
+I (1108) sessions: STOP  #32: ID 999, akt 4
+I (1118) sessions: START #33: ID 999, akt 1
+I (1128) sessions: STOP  #34: ID 999, akt 1
+I (1148) sessions: START #35: ID 999, akt 2
+I (1158) sessions: STOP  #36: ID 999, akt 2
+I (1178) sessions: START #37: ID 999, akt 3
+I (1188) sessions: STOP  #38: ID 999, akt 3
+I (1198) sessions: START #39: ID 999, akt 4
+I (1208) sessions: STOP  #40: ID 999, akt 4
+I (1218) sessions: START #41: ID 999, akt 1
+I (1228) sessions: STOP  #42: ID 999, akt 1
+I (1238) sessions: START #43: ID 999, akt 2
+I (1248) sessions: STOP  #44: ID 999, akt 2
+I (1258) sessions: START #45: ID 999, akt 3
+I (1278) sessions: STOP  #46: ID 999, akt 3
+I (1288) sessions: START #47: ID 999, akt 4
+I (1298) sessions: STOP  #48: ID 999, akt 4
+I (1308) sessions: START #49: ID 999, akt 1
+I (1318) sessions: STOP  #50: ID 999, akt 1
+I (1328) sessions: START #51: ID 999, akt 2
+I (1348) sessions: STOP  #52: ID 999, akt 2
+I (1368) sessions: START #53: ID 999, akt 3
+I (1378) sessions: STOP  #54: ID 999, akt 3
+I (1388) sessions: START #55: ID 999, akt 4
+I (1398) sessions: STOP  #56: ID 999, akt 4
+I (1408) sessions: START #57: ID 999, akt 1
+I (1418) sessions: STOP  #58: ID 999, akt 1
+I (1428) sessions: START #59: ID 999, akt 2
+I (1438) sessions: STOP  #60: ID 999, akt 2
+I (1448) sessions: START #61: ID 999, akt 3
+I (1458) sessions: STOP  #62: ID 999, akt 3
+I (1468) sessions: START #63: ID 999, akt 4
+I (1478) sessions: STOP  #64: ID 999, akt 4
+I (1488) sessions: START #65: ID 999, akt 1
+I (1498) sessions: STOP  #66: ID 999, akt 1
+I (1518) sessions: START #67: ID 999, akt 2
+I (1528) sessions: STOP  #68: ID 999, akt 2
+I (1538) sessions: START #69: ID 999, akt 3
+I (1548) sessions: STOP  #70: ID 999, akt 3
+I (1558) sessions: START #71: ID 999, akt 4
+I (1568) sessions: STOP  #72: ID 999, akt 4
+I (1588) sessions: START #73: ID 999, akt 1
+I (1598) sessions: STOP  #74: ID 999, akt 1
+I (1608) sessions: START #75: ID 999, akt 2
+I (1618) sessions: STOP  #76: ID 999, akt 2
+I (1628) sessions: START #77: ID 999, akt 3
+I (1648) sessions: STOP  #78: ID 999, akt 3
+I (1658) sessions: START #79: ID 999, akt 4
+I (1668) sessions: STOP  #80: ID 999, akt 4
+I (1678) sessions: START #81: ID 999, akt 1
+I (1688) sessions: STOP  #82: ID 999, akt 1
+I (1698) sessions: START #83: ID 999, akt 2
+I (1708) sessions: STOP  #84: ID 999, akt 2
+I (1718) sessions: START #85: ID 999, akt 3
+I (1738) sessions: STOP  #86: ID 999, akt 3
+I (1748) sessions: START #87: ID 999, akt 4
+I (1758) sessions: STOP  #88: ID 999, akt 4
+I (1768) sessions: START #89: ID 999, akt 1
+I (1778) sessions: STOP  #90: ID 999, akt 1
+I (1788) sessions: START #91: ID 999, akt 2
+I (1798) sessions: STOP  #92: ID 999, akt 2
+I (1818) sessions: START #93: ID 999, akt 3
+I (1828) sessions: STOP  #94: ID 999, akt 3
+I (1848) sessions: START #95: ID 999, akt 4
+I (1858) sessions: STOP  #96: ID 999, akt 4
+I (1868) sessions: START #97: ID 999, akt 1
+I (1878) sessions: STOP  #98: ID 999, akt 1
+I (1888) sessions: START #99: ID 999, akt 2
+I (1898) sessions: STOP  #100: ID 999, akt 2
+W (1898) terminal: TEST: 100 zdarzen zapisanych w 1174 ms
+I (2098) terminal: Czytnik OK, szablonow w pamieci: 6
+I (2118) terminal: Pierwsze wolne miejsce w bazie: 6
+I (2498) wifi:wifi driver task: 3ffca824, prio:23, stack:6656, core=0
+I (2508) wifi:wifi firmware version: 14da9b7
+I (2508) wifi:wifi certification version: v7.0
+I (2508) wifi:config NVS flash: enabled
+I (2508) wifi:config nano formatting: disabled
+I (2518) wifi:Init data frame dynamic rx buffer num: 32
+I (2518) wifi:Init static rx mgmt buffer num: 5
+I (2518) wifi:Init management short buffer num: 32
+I (2528) wifi:Init dynamic tx buffer num: 32
+I (2528) wifi:Init static rx buffer size: 1600
+I (2538) wifi:Init static rx buffer num: 10
+I (2538) wifi:Init dynamic rx buffer num: 32
+I (2548) wifi_init: rx ba win: 6
+I (2548) wifi_init: accept mbox: 6
+I (2548) wifi_init: tcpip mbox: 32
+I (2548) wifi_init: udp mbox: 6
+I (2558) wifi_init: tcp mbox: 6
+I (2558) wifi_init: tcp tx win: 5760
+I (2558) wifi_init: tcp rx win: 5760
+I (2568) wifi_init: tcp mss: 1440
+I (2568) wifi_init: WiFi IRAM OP enabled
+I (2568) wifi_init: WiFi RX IRAM OP enabled
+I (2578) phy_init: phy_version 4861,b71b5ad,Aug  5 2025,11:16:06
+I (2668) wifi:mode : sta (a4:f0:0f:5d:45:40)
+I (2668) wifi:enable tsf
+I (2678) mqtt: Terminal a4f00f5d4540, broker mqtt://172.20.10.2:1883
+I (2678) ui: stan 0 -> 0
+I (2688) wifi:new:<6,0>, old:<1,0>, ap:<255,255>, sta:<6,0>, prof:1, snd_ch_cfg:0x0
+I (2688) wifi:state: init -> auth (0xb0)
+I (2698) wifi:state: auth -> assoc (0x0)
+I (2708) wifi:state: assoc -> run (0x10)
+I (2748) wifi:connected with Robux_Generator, aid = 2, channel 6, BW20, bssid = 36:d2:78:81:98:70
+I (2748) wifi:security: WPA2-PSK, phy: bgn, rssi: -53
+I (2758) wifi:pm start, type: 1
+
+I (2758) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (2828) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (3798) esp_netif_handlers: sta ip: 172.20.10.12, mask: 255.255.255.240, gw: 172.20.10.1
+I (3798) net: Polaczono, IP: 172.20.10.12
+I (4568) wifi:<ba-add>idx:0 (ifx:0, 36:d2:78:81:98:70), tid:0, ssn:2, winSize:64
+I (4878) timesync: SNTP: czas zsynchronizowany, zapisano do RTC
+I (17728) mqtt: Polaczono z brokerem
+I (17768) sync: Wyslano #1
+W (28048) sync: Brak ACK dla #1 po 10 s - wysylam ponownie
+I (28058) sync: Wyslano #1
+I (28258) sync: ACK #1
+I (28268) sync: Wyslano #2
+W (38508) sync: Brak ACK dla #2 po 10 s - wysylam ponownie
+I (38518) sync: Wyslano #2
+W (48508) sync: Brak ACK dla #2 po 10 s - wysylam ponownie
+I (48518) sync: Wyslano #2
+I (48768) sync: ACK #2
+I (48778) sync: Wyslano #3
+���������������������������������������������������������������� (59048) sync: Brak ACK dla #3 po 10 s - wysylam ponownie
+I (59058) sync: Wyslano #3
+I (59268) sync: ACK #3
+I (59278) sync: Wyslano #4
+I (59518) sync: ACK #4
+I (59528) sync: Wyslano #5
+I (59768) sync: ACK #5
+I (59778) sync: Wyslano #6
+I (60058) sync: ACK #6
+I (60068) sync: Wyslano #7
+W (70258) sync: Brak ACK dla #7 po 10 s - wysylam ponownie
+I (70268) sync: Wyslano #7
+I (70518) sync: ACK #7
+I (70528) sync: Wyslano #8
+W (80758) sync: Brak ACK dla #8 po 10 s - wysylam ponownie
+I (80768) sync: Wyslano #8
+I (81058) sync: ACK #8
+I (81068) sync: Wyslano #9
+I (81268) sync: ACK #9
+I (81278) sync: Wyslano #10
+W (91508) sync: Brak ACK dla #10 po 10 s - wysylam ponownie
+I (91518) sync: Wyslano #10
+����������������������������������������������������������������(101758) sync: Brak ACK dla #10 po 10 s - wysylam ponownie
+I (101768) sync: Wyslano #10
+W (112048) sync: Brak ACK dla #10 po 10 s - wysylam ponownie
+I (112058) sync: Wyslano #10
+W (122048) sync: Brak ACK dla #10 po 10 s - wysylam ponownie
+I (122058) sync: Wyslano #10
+I (122268) sync: ACK #10
+I (122278) sync: Wyslano #11
+W (132508) sync: Brak ACK dla #11 po 10 s - wysylam ponownie
+I (132518) sync: Wyslano #11
+W (142508) sync: Brak ACK dla #11 po 10 s - wysylam ponownie
+I (142518) sync: Wyslano #11
+I (142768) sync: ACK #11
+I (142778) sync: Wyslano #12
+W (153048) sync: Brak ACK dla #12 po 10 s - wysylam ponownie
+I (153058) sync: Wyslano #12
+I (153268) sync: ACK #12
+I (153278) sync: Wyslano #13
+I (153518) sync: ACK #13
+I (153528) sync: Wyslano #14
+I (153768) sync: ACK #14
+I (153778) sync: Wyslano #15
+I (154058) sync: ACK #15
+I (154068) sync: Wyslano #16
+W (164258) sync: Brak ACK dla #16 po 10 s - wysylam ponownie
+I (164268) sync: Wyslano #16
+I (164518) sync: ACK #16
+I (164528) sync: Wyslano #17
+I (164768) sync: ACK #17
+I (164778) sync: Wyslano #18
+W (175048) sync: Brak ACK dla #18 po 10 s - wysylam ponownie
+I (175058) sync: Wyslano #18
+W (185048) sync: Brak ACK dla #18 po 10 s - wysylam ponownie
+I (185058) sync: Wyslano #18
+I (185268) sync: ACK #18
+I (185278) sync: Wyslano #19
+W (195508) sync: Brak ACK dla #19 po 10 s - wysylam ponownie
+I (195518) sync: Wyslano #19
+W (205508) sync: Brak ACK dla #19 po 10 s - wysylam ponownie
+I (205518) sync: Wyslano #19
+���������������������������������������������������������������� (215758) sync: Brak ACK dla #19 po 10 s - wysylam ponownie
+I (215768) sync: Wyslano #19
+W (225758) sync: Brak ACK dla #19 po 10 s - wysylam ponownie
+I (225768) sync: Wyslano #19
+I (226058) sync: ACK #19
+I (226068) sync: Wyslano #20
+W (236258) sync: Brak ACK dla #20 po 10 s - wysylam ponownie
+I (236268) sync: Wyslano #20
+I (236518) sync: ACK #20
+I (236538) sync: Wyslano #21
+I (236778) sync: ACK #21
+I (236788) sync: Wyslano #22
+I (237068) sync: ACK #22
+I (237068) sync: Wyslano #23
+I (237278) sync: ACK #23
+I (237278) sync: Wyslano #24
+W (247508) sync: Brak ACK dla #24 po 10 s - wysylam ponownie
+I (247518) sync: Wyslano #24
+W (257508) sync: Brak ACK dla #24 po 10 s - wysylam ponownie
+I (257518) sync: Wyslano #24
+W (267508) sync: Brak ACK dla #24 po 10 s - wysylam ponownie
+I (267518) sync: Wyslano #24
+I (267778) sync: ACK #24
+I (267788) sync: Wyslano #25
+W (278048) sync: Brak ACK dla #25 po 10 s - wysylam ponownie
+I (278058) sync: Wyslano #25
+I (278278) sync: ACK #25
+I (278278) sync: Wyslano #26
+I (278518) sync: ACK #26
+I (278528) sync: Wyslano #27
+I (279058) sync: ACK #27
+I (279068) sync: Wyslano #28
+W (289258) sync: Brak ACK dla #28 po 10 s - wysylam ponownie
+I (289268) sync: Wyslano #28
+W (299508) sync: Brak ACK dla #28 po 10 s - wysylam ponownie
+I (299518) sync: Wyslano #28
+I (299768) sync: ACK #28
+I (299778) sync: Wyslano #29
+W (310048) sync: Brak ACK dla #29 po 10 s - wysylam ponownie
+I (310058) sync: Wyslano #29
+I (310268) sync: ACK #29
+I (310278) sync: Wyslano #30
+I (310518) sync: ACK #30
+I (310528) sync: Wyslano #31
+W (320758) sync: Brak ACK dla #31 po 10 s - wysylam ponownie
+I (320768) sync: Wyslano #31
+I (321058) sync: ACK #31
+I (321068) sync: Wyslano #32
+I (321268) sync: ACK #32
+I (321278) sync: Wyslano #33
+I (321518) sync: ACK #33
+I (321528) sync: Wyslano #34
+I (321768) sync: ACK #34
+I (321778) sync: Wyslano #35
+I (323268) sync: ACK #35
+I (323278) sync: Wyslano #36
+I (323518) sync: ACK #36
+I (323528) sync: Wyslano #37
+I (323768) sync: ACK #37
+I (323778) sync: Wyslano #38
+W (334048) sync: Brak ACK dla #38 po 10 s - wysylam ponownie
+I (334058) sync: Wyslano #38
+���������������������������������������������������������������� (344048) sync: Brak ACK dla #38 po 10 s - wysylam ponownie
+I (344058) sync: Wyslano #38
+I (344268) sync: ACK #38
+I (344278) sync: Wyslano #39
+I (344518) sync: ACK #39
+I (344528) sync: Wyslano #40
+I (344768) sync: ACK #40
+I (344778) sync: Wyslano #41
+I (345058) sync: ACK #41
+I (345068) sync: Wyslano #42
+I (345268) sync: ACK #42
+I (345278) sync: Wyslano #43
+I (345518) sync: ACK #43
+I (345528) sync: Wyslano #44
+I (345768) sync: ACK #44
+I (345778) sync: Wyslano #45
+W (356048) sync: Brak ACK dla #45 po 10 s - wysylam ponownie
+I (356058) sync: Wyslano #45
+I (356278) sync: ACK #45
+I (356278) sync: Wyslano #46
+I (356528) sync: ACK #46
+I (356538) sync: Wyslano #47
+I (356778) sync: ACK #47
+I (356788) sync: Wyslano #48
+I (357068) sync: ACK #48
+I (357078) sync: Wyslano #49
+W (367258) sync: Brak ACK dla #49 po 10 s - wysylam ponownie
+I (367268) sync: Wyslano #49
+I (367528) sync: ACK #49
+I (367528) sync: Wyslano #50
+W (377758) sync: Brak ACK dla #50 po 10 s - wysylam ponownie
+I (377768) sync: Wyslano #50
+I (378068) sync: ACK #50
+I (378068) sync: Wyslano #51
+I (378278) sync: ACK #51
+I (378278) sync: Wyslano #52
+I (378518) sync: ACK #52
+I (378528) sync: Wyslano #53
+W (388758) sync: Brak ACK dla #53 po 10 s - wysylam ponownie
+I (388768) sync: Wyslano #53
+W (398758) sync: Brak ACK dla #53 po 10 s - wysylam ponownie
+I (398768) sync: Wyslano #53
+I (399058) sync: ACK #53
+I (399068) sync: Wyslano #54
+I (399268) sync: ACK #54
+I (399278) sync: Wyslano #55
+I (400768) sync: ACK #55
+I (400778) sync: Wyslano #56
+I (401058) sync: ACK #56
+I (401068) sync: Wyslano #57
+I (401268) sync: ACK #57
+I (401278) sync: Wyslano #58
+I (401518) sync: ACK #58
+I (401528) sync: Wyslano #59
+I (401768) sync: ACK #59
+I (401778) sync: Wyslano #60
+I (402058) sync: ACK #60
+I (402068) sync: Wyslano #61
+W (412258) sync: Brak ACK dla #61 po 10 s - wysylam ponownie
+I (412268) sync: Wyslano #61
+W (422508) sync: Brak ACK dla #61 po 10 s - wysylam ponownie
+I (422518) sync: Wyslano #61
+W (432758) sync: Brak ACK dla #61 po 10 s - wysylam ponownie
+I (432768) sync: Wyslano #61
+I (433058) sync: ACK #61
+I (433068) sync: Wyslano #62
+I (433268) sync: ACK #62
+I (433278) sync: Wyslano #63
+I (433518) sync: ACK #63
+I (433528) sync: Wyslano #64
+W (443758) sync: Brak ACK dla #64 po 10 s - wysylam ponownie
+I (443768) sync: Wyslano #64
+I (444058) sync: ACK #64
+I (444068) sync: Wyslano #65
+I (444278) sync: ACK #65
+I (444278) sync: Wyslano #66
+I (444518) sync: ACK #66
+I (444528) sync: Wyslano #67
+I (444768) sync: ACK #67
+I (444778) sync: Wyslano #68
+I (445058) sync: ACK #68
+I (445068) sync: Wyslano #69
+I (445268) sync: ACK #69
+I (445278) sync: Wyslano #70
+I (445518) sync: ACK #70
+I (445528) sync: Wyslano #71
+I (445768) sync: ACK #71
+I (445788) sync: Wyslano #72
+I (446068) sync: ACK #72
+I (446078) sync: Wyslano #73
+W (456258) sync: Brak ACK dla #73 po 10 s - wysylam ponownie
+I (456268) sync: Wyslano #73
+I (456528) sync: ACK #73
+I (456538) sync: Wyslano #74
+W (466768) sync: Brak ACK dla #74 po 10 s - wysylam ponownie
+I (466768) sync: Wyslano #74
+I (467068) sync: ACK #74
+I (467068) sync: Wyslano #75
+I (467278) sync: ACK #75
+I (467288) sync: Wyslano #76
+I (467528) sync: ACK #76
+I (467528) sync: Wyslano #77
+W (477758) sync: Brak ACK dla #77 po 10 s - wysylam ponownie
+I (477768) sync: Wyslano #77
+I (478058) sync: ACK #77
+I (478068) sync: Wyslano #78
+I (478268) sync: ACK #78
+I (478278) sync: Wyslano #79
+I (478518) sync: ACK #79
+I (478528) sync: Wyslano #80
+���������������������������������������������������������������� (488758) sync: Brak ACK dla #80 po 10 s - wysylam ponownie
+I (488768) sync: Wyslano #80
+���������������������������������������������������������������� (498758) sync: Brak ACK dla #80 po 10 s - wysylam ponownie
+I (498768) sync: Wyslano #80
+W (508758) sync: Brak ACK dla #80 po 10 s - wysylam ponownie
+I (508768) sync: Wyslano #80
+I (509058) sync: ACK #80
+I (509068) sync: Wyslano #81
+I (509268) sync: ACK #81
+I (509278) sync: Wyslano #82
+W (519508) sync: Brak ACK dla #82 po 10 s - wysylam ponownie
+I (519518) sync: Wyslano #82
+I (519768) sync: ACK #82
+I (519778) sync: Wyslano #83
+I (520058) sync: ACK #83
+I (520068) sync: Wyslano #84
+I (520518) sync: ACK #84
+I (520528) sync: Wyslano #85
+I (520768) sync: ACK #85
+I (520778) sync: Wyslano #86
+I (521058) sync: ACK #86
+I (521068) sync: Wyslano #87
+I (521268) sync: ACK #87
+I (521278) sync: Wyslano #88
+I (521518) sync: ACK #88
+I (521528) sync: Wyslano #89
+I (521768) sync: ACK #89
+I (521778) sync: Wyslano #90
+I (522058) sync: ACK #90
+I (522068) sync: Wyslano #91
+W (532258) sync: Brak ACK dla #91 po 10 s - wysylam ponownie
+I (532268) sync: Wyslano #91
+I (532518) sync: ACK #91
+I (532528) sync: Wyslano #92
+I (532768) sync: ACK #92
+I (532778) sync: Wyslano #93
+I (533058) sync: ACK #93
+I (533068) sync: Wyslano #94
+W (543258) sync: Brak ACK dla #94 po 10 s - wysylam ponownie
+I (543258) sync: Wyslano #94
+���������������������������������������������������������������� (543518) sync: ACK #94
+I (543528) sync: Wyslano #95
+I (543768) sync: ACK #95
+I (543778) sync: Wyslano #96
+W (554048) sync: Brak ACK dla #96 po 10 s - wysylam ponownie
+I (554058) sync: Wyslano #96
+���������������������������������������������������������������� (564258) sync: Brak ACK dla #96 po 10 s - wysylam ponownie
+I (564268) sync: Wyslano #96
+W (574258) sync: Brak ACK dla #96 po 10 s - wysylam ponownie
+I (574268) sync: Wyslano #96
+W (584258) sync: Brak ACK dla #96 po 10 s - wysylam ponownie
+I (584268) sync: Wyslano #96
+I (584518) sync: ACK #96
+I (584528) sync: Wyslano #97
+I (584768) sync: ACK #97
+I (584778) sync: Wyslano #98
+I (585058) sync: ACK #98
+I (585068) sync: Wyslano #99
+I (585268) sync: ACK #99
+I (585278) sync: Wyslano #100
+I (585518) sync: ACK #100

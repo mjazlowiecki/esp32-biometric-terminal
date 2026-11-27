@@ -1,0 +1,24 @@
+Polaczono z brokerem: Success
+a4f00f5d4540 #1    user 0 akt 3 akcja 1 -> nowe, ACK
+a4f00f5d4540 #2    user 1 akt 1 akcja 1 -> nowe, ACK
+a4f00f5d4540 #3    user 2 akt 3 akcja 1 -> nowe, ACK
+a4f00f5d4540 #4    user 3 akt 4 akcja 1 -> nowe, ACK
+    [TEST] ACK celowo pominiety
+a4f00f5d4540 #4    user 3 akt 4 akcja 1 -> duplikat, ACK
+a4f00f5d4540 #5    user 4 akt 1 akcja 1 -> nowe, ACK
+a4f00f5d4540 #6    user 5 akt 1 akcja 1 -> nowe, ACK
+a4f00f5d4540 #7    user 0 akt 3 akcja 2 -> nowe, ACK
+a4f00f5d4540 #8    user 0 akt 1 akcja 1 -> nowe, ACK
+a4f00f5d4540 #9    user 1 akt 1 akcja 2 -> nowe, ACK
+    [TEST] ACK celowo pominiety
+a4f00f5d4540 #9    user 1 akt 1 akcja 2 -> duplikat, ACK
+a4f00f5d4540 #10   user 3 akt 4 akcja 2 -> nowe, ACK
+a4f00f5d4540 #11   user 5 akt 1 akcja 2 -> nowe, ACK
+a4f00f5d4540 #12   user 5 akt 2 akcja 1 -> nowe, ACK
+a4f00f5d4540 #13   user 0 akt 1 akcja 2 -> nowe, ACK
+a4f00f5d4540 #14   user 2 akt 3 akcja 2 -> nowe, ACK
+a4f00f5d4540 #15   user 4 akt 1 akcja 2 -> nowe, ACK
+    [TEST] ACK celowo pominiety
+a4f00f5d4540 #15   user 4 akt 1 akcja 2 -> duplikat, ACK
+    [TEST] ACK celowo pominiety
+a4f00f5d4540 #15   user 4 akt 1 akcja 2 -> duplikat, ACK
